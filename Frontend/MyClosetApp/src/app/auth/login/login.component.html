@@ -1,0 +1,46 @@
+<html>
+
+<head>
+    <style>
+        .container {}
+
+        #frontimg {
+            width: 600px;
+            height: auto;
+            float: left;
+        }
+
+        .login-form-container {
+            float: right;
+            width: 35%;
+            top: 250px;
+            margin: 0 3.5%;
+            padding: 20px;
+            border-radius: 8px;
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <img id="frontimg"
+            src="https://media.vogue.co.uk/photos/639206c634bc3e7228867716/3:4/width_1600/RPA_210522_BV_12_008_C.jpg"
+            alt="Logo" />
+    </div>
+
+    <div class="login-form-container">
+        <h1>My Closet</h1>
+        <h2>Sign in or create a profile</h2>
+        <form (ngSubmit)="login()" #loginForm="ngForm">
+            <input type="email" [(ngModel)]="email" name="email" placeholder="Email address" required />
+            <input type="password" [(ngModel)]="password" name="password" placeholder="Password" required />
+            <button type="submit">Sign In</button>
+        </form>
+        <p>
+            Don't have a profile? <a (click)="goToRegister()">Create your profile here</a>
+        </p>
+    </div>
+</body>
+
+</html>
