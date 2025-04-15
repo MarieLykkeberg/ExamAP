@@ -1,6 +1,3 @@
-<html>
-
-<head>
     <style>
         .container {}
 
@@ -8,21 +5,22 @@
             width: 600px;
             height: auto;
             float: left;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
 
         .login-form-container {
             float: right;
-            width: 35%;
-            top: 250px;
+            width: 40%;
+            top: 125px;
             margin: 0 3.5%;
             padding: 20px;
             border-radius: 8px;
             position: relative;
         }
     </style>
-</head>
 
-<body>
     <div class="container">
         <img id="frontimg"
             src="https://media.vogue.co.uk/photos/639206c634bc3e7228867716/3:4/width_1600/RPA_210522_BV_12_008_C.jpg"
@@ -30,17 +28,24 @@
     </div>
 
     <div class="login-form-container">
-        <h1>My Closet</h1>
-        <h2>Sign in or create a profile</h2>
+        <p style="font-family: Didot; font-size: 45px; margin: 0;">ARMOIRE</p>
+        <p style="font-family: Didot; margin: 0; line-height: 1;"><em>Your reimagined wardrobe</em></p>
+        <p style="font-family: Didot; font-size: 15px; margin-top: 4em;">SIGN IN</p>
         <form (ngSubmit)="login()" #loginForm="ngForm">
-            <input type="email" [(ngModel)]="email" name="email" placeholder="Email address" required />
-            <input type="password" [(ngModel)]="password" name="password" placeholder="Password" required />
-            <button type="submit">Sign In</button>
+            <div>
+            <input type="email" [(ngModel)]="email" name="email" placeholder="Email address" required style="font-family: Didot; background-color: rgb(255, 254, 254); color: rgb(0, 0, 0); width: 100%; border: 2px solid rgb(164, 164, 164); font-size: 16px; height: 35px; width: 400px;"/>
+            </div>
+            <div style="height: 20px;"></div>
+            <div>
+            <input type="password" [(ngModel)]="password" name="password" placeholder="Password" required style="font-family: Didot; background-color: rgb(255, 254, 254); color: rgb(0, 0, 0); width: 100%; border: 2px solid rgb(164, 164, 164); font-size: 16px; height: 35px; width: 400px;" />
+            </div>
+            <div style="height: 20px;"></div>
+            <div>
+            <input type="submit" value="Sign In" style="font-family: Didot; background-color: black; color: white; width: 100%; padding: 10px; border: none; border-radius: 5px solid black;; font-size: 16px; width: 405px;" />
+            </div>
         </form>
-        <p>
-            Don't have a profile? <a (click)="goToRegister()">Create your profile here</a>
+        <p style="font-family: Didot;">
+            <a (click)="goToRegister()">Not part of Armoire yet? Step into your dream wardrobe.</a>
         </p>
     </div>
-</body>
 
-</html>
