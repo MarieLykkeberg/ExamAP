@@ -1,4 +1,5 @@
 using ExamAP.Model.Repositories;
+using Microsoft.AspNetCore.Builder;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -19,6 +20,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthorization();
+
+app.UseStaticFiles();
 
 app.MapControllers();
 

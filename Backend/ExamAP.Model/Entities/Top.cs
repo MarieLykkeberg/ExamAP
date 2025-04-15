@@ -10,7 +10,7 @@ namespace ExamAP.Model.Entities
         public int BrandId { get; set; }
         public int OccasionId { get; set; }
         public string ImageUrl { get; set; }
-        public DateTime? LastWorn { get; set; }
+        public DateTime? PurchaseDate { get; set; }
         public bool? IsFavorite { get; set; }
     }
 }
