@@ -26,16 +26,35 @@ namespace ExamAP.API.Controllers
                     return BadRequest("Invalid user data");
                 }
 
-    bool status = Repository.InsertUser(user);
+        bool status = Repository.InsertUser(user);
 
-        if (status)
-        {
-            Console.WriteLine("User registration successful");
-            return new JsonResult(new { message = "User registered successfully" });
-        }
+            if (status)
+            {
+                Console.WriteLine("User registration successful");
+                return new JsonResult(new { message = "User registered successfully" });
+            }
 
         Console.WriteLine("User registration failed");
         return BadRequest("Something went wrong while registering the user.");
+        }
+
+        [HttpPost("login")]
+        public IActionResult Login([FromBody] User user)
+        {
+            Console.WriteLine($"Login attempt:");
+            Console.WriteLine($"Email: {user.Email}");
+            Console.WriteLine($"Password: {user.Password}");
+
+            var existingUser = Repository.GetUserByCredentials(user.Email, user.Password);
+            
+            if (existingUser == null)
+            {
+                Console.WriteLine("No matching user found.");
+                return Unauthorized("Invalid email or password");
+            }
+
+            Console.WriteLine("Login successful!");
+            return new JsonResult(new { message = "Login successful", email = existingUser.Email });
         }
     }
 }

@@ -8,13 +8,14 @@ import { AuthService } from '../../core/auth.service';
   selector: 'app-register',
   standalone: true,
   templateUrl: './register.component.html',
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule],
+  styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
   email = '';
   password = '';
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(private router: Router, private authService: AuthService) { }
 
   register() {
     console.log('Register function called');

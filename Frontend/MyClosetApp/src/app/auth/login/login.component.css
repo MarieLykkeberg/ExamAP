@@ -1,0 +1,64 @@
+.container {}
+
+#frontimg {
+  width: 600px;
+  height: auto;
+  float: left;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.login-form-container {
+  float: right;
+  width: 40%;
+  top: 125px;
+  margin: 0 3.5%;
+  padding: 20px;
+  border-radius: 8px;
+  position: relative;
+}
+
+.login-title {
+  font-family: Didot;
+  font-size: 45px;
+  margin: 0;
+}
+
+.login-subtitle {
+  font-family: Didot;
+  margin: 0;
+  line-height: 1;
+}
+
+.login-section-title {
+  font-family: Didot;
+  font-size: 15px;
+  margin-top: 4em;
+}
+
+.login-input {
+  font-family: Didot;
+  background-color: rgb(255, 254, 254);
+  color: rgb(0, 0, 0);
+  border: 2px solid rgb(164, 164, 164);
+  font-size: 16px;
+  height: 35px;
+  width: 400px;
+}
+
+.login-submit {
+  font-family: Didot;
+  background-color: black;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 405px;
+}
+
+.login-link {
+  font-family: Didot;
+
+}
