@@ -19,13 +19,13 @@
   position: relative;
 }
 
-.login-title {
+.siteName {
   font-family: Didot;
   font-size: 45px;
   margin: 0;
 }
 
-.login-subtitle {
+.siteSubtitle {
   font-family: Didot;
   margin: 0;
   line-height: 1;

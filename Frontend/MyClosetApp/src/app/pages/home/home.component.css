@@ -1,0 +1,56 @@
+.dashboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+  }
+  
+  .header-section.left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .header-section.center {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    flex: 1;
+    margin-left: -70px;
+  }
+  
+  .header-section.right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  
+  .siteName {
+    font-family: Didot;
+    font-size: 45px;
+    margin: 0;
+    color: #242424;
+  }
+  
+  .siteSubtitle {
+    font-family: Didot;
+    font-size: 16px;
+    color: #666;
+    margin: 0;
+  }
+  
+  .menu-btn,
+  .profile-btn {
+    background: none;
+    border: none;
+    font-family: Didot;
+    font-size: 16px;
+    color: #242424;
+    cursor: pointer;
+  }
+  
+  .menu-btn:hover,
+  .profile-btn:hover {
+    text-decoration: underline;
+  }
+  
