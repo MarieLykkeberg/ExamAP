@@ -90,7 +90,7 @@ namespace ExamAP.Model.Repositories
         WHERE bottomid = @bottomid
     ";
 
-            cmd.Parameters.AddWithValue("@bottomid", NpgsqlDbType.Integer, bottom.TopId);
+            cmd.Parameters.AddWithValue("@bottomid", NpgsqlDbType.Integer, bottom.BottomId);
             cmd.Parameters.AddWithValue("@userid", NpgsqlDbType.Integer, bottom.UserId);
             cmd.Parameters.AddWithValue("@colorid", NpgsqlDbType.Integer, bottom.ColorId);
             cmd.Parameters.AddWithValue("@materialid", NpgsqlDbType.Integer, bottom.MaterialId);
