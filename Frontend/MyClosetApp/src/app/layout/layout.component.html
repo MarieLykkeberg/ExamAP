@@ -1,0 +1,25 @@
+<div class="dashboard-header">
+    <div class="header-section left">
+      <p class="siteName">ARMOIRE</p>
+      <p class="siteSubtitle"><em>Your reimagined wardrobe</em></p>
+    </div>
+  
+    <div class="header-section center">
+        <button class="menu-btn" routerLink="/wardrobe" routerLinkActive="active">Wardrobe</button>
+        <button class="menu-btn" routerLink="/styling" routerLinkActive="active">Styling</button>
+    </div>
+  
+    <div class="header-section right">
+      <button class="profile-btn" routerLink="/profile">My Profile</button>
+    </div>
+  </div>
+
+  <hr class="divider-line" />
+
+  <nav *ngIf="showWardrobeSubnav" class="wardrobe-subnav">
+    <button class="subnav-btn" routerLink="/wardrobe" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">All items</button>
+    <button class="subnav-btn" routerLink="/wardrobe/favorites" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Favorites</button>
+      <button class="subnav-btn" routerLink="/wardrobe/add" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Add new item</button>
+  </nav>
+
+  <router-outlet></router-outlet>

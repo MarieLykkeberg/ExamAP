@@ -1,0 +1,23 @@
+ 
+.wardrobe-subnav {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex: 1;
+    margin-left: 60px;
+    margin-top: 30px;
+}
+  
+  .subnav-btn {
+    background: none;
+    border: none;
+    font-family: Didot;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+  }
+  
+  .subnav-btn:hover {
+    text-decoration: underline;
+  }
+  
