@@ -1,3 +1,4 @@
+Console.WriteLine("🔍 Program.cs is running");
 using ExamAP.Model.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,9 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<UserRepository>();
+builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+builder.Services.AddScoped<BottomRepository>();
+Console.WriteLine("✅ BottomRepository registered!");
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
