@@ -1,69 +1,66 @@
+// app.routes.ts
 import { Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
-import { FormsModule } from '@angular/forms';
-
 
 export const routes: Routes = [
+  // ── 1) Redirect root to login (or wherever you like) ───────────
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
 
+  // ── 2) Auth routes (no layout) ────────────────────────────────
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./auth/login/login.component').then(m => m.LoginComponent)
+  },
+  {
+    path: 'register',
+    loadComponent: () =>
+      import('./auth/register/register.component').then(m => m.RegisterComponent)
+  },
+
+  // ── 3) “App” routes wrapped in your LayoutComponent ────────────
+  {
+    path: '',
+    component: LayoutComponent,
+    children: [
       {
-        path: '',
-        component: LayoutComponent, 
+        path: 'home',
+        loadComponent: () =>
+          import('./pages/home/home.component').then(m => m.HomeComponent)
+      },
+      {
+        path: 'wardrobe',
         children: [
-
           {
             path: '',
-            redirectTo: 'login',
-            pathMatch: 'full'
-          },
-          {
-            path: 'login',
             loadComponent: () =>
-              import('./auth/login/login.component').then(m => m.LoginComponent)
+              import('./pages/wardrobe/wardrobe.component').then(m => m.WardrobeComponent)
           },
           {
-            path: 'register',
+            path: 'favorites',
             loadComponent: () =>
-              import('./auth/register/register.component').then(m => m.RegisterComponent)
+              import('./pages/favorites/favorites.component').then(m => m.FavoritesComponent)
           },
           {
-            path: 'home',
+            path: 'add',
             loadComponent: () =>
-              import('./pages/home/home.component').then(m => m.HomeComponent)
-          },
-
-          {
-            path: 'wardrobe',
-            children: [
-              {
-                path: '',
-                loadComponent: () =>
-                  import('./pages/wardrobe/wardrobe.component').then(m => m.WardrobeComponent)
-              },
-              {
-                path: 'favorites',
-                loadComponent: () =>
-                  import('./pages/favorites/favorites.component').then(m => m.FavoritesComponent)
-              },
-              {
-                path: 'add',
-                loadComponent: () =>
-                  import('./pages/add/add.component').then(m => m.AddComponent)
-              }
-            ]
-          },
-          
-          {
-            path: 'styling',
-            loadComponent: () =>
-              import('./pages/styling/styling.component').then(m => m.StylingComponent)
-          },
-
-          {
-            path: 'profile',
-            loadComponent: () =>
-              import('./pages/profile/profile.component').then(m => m.ProfileComponent)
-          },
-
-        ],
+              import('./pages/add/add.component').then(m => m.AddComponent)
+          }
+        ]
+      },
+      {
+        path: 'styling',
+        loadComponent: () =>
+          import('./pages/styling/styling.component').then(m => m.StylingComponent)
+      },
+      {
+        path: 'profile',
+        loadComponent: () =>
+          import('./pages/profile/profile.component').then(m => m.ProfileComponent)
       }
-    ];
+    ]
+  },
+
+  // ── 4) Fallback ─────────────────────────────────────────────────
+  { path: '**', redirectTo: 'login', pathMatch: 'full' }
+];
