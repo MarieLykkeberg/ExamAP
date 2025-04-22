@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using Npgsql;
+using System.Data;
 
 namespace ExamAP.Model.Repositories
 {
@@ -14,27 +15,32 @@ namespace ExamAP.Model.Repositories
 
         protected NpgsqlDataReader GetData(NpgsqlConnection conn, NpgsqlCommand cmd)
         {
-            conn.Open();
+            // Open only if not already open
+            if (conn.State != ConnectionState.Open)
+                conn.Open();
             return cmd.ExecuteReader();
         }
 
         protected bool InsertData(NpgsqlConnection conn, NpgsqlCommand cmd)
         {
-            conn.Open();
+            if (conn.State != ConnectionState.Open)
+                conn.Open();
             cmd.ExecuteNonQuery();
             return true;
         }
 
         protected bool UpdateData(NpgsqlConnection conn, NpgsqlCommand cmd)
         {
-            conn.Open();
+            if (conn.State != ConnectionState.Open)
+                conn.Open();
             cmd.ExecuteNonQuery();
             return true;
         }
 
         protected bool DeleteData(NpgsqlConnection conn, NpgsqlCommand cmd)
         {
-            conn.Open();
+            if (conn.State != ConnectionState.Open)
+                conn.Open();
             cmd.ExecuteNonQuery();
             return true;
         }

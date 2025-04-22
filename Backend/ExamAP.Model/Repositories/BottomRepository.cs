@@ -1,4 +1,4 @@
-using ExamAP.Model.Entities;
+/* using ExamAP.Model.Entities;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 using NpgsqlTypes;
@@ -115,4 +115,4 @@ namespace ExamAP.Model.Repositories
             return DeleteData(conn, cmd);
         }
     }
-}
+} */
