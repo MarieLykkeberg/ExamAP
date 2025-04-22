@@ -1,23 +1,35 @@
- 
-.wardrobe-subnav {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    flex: 1;
-    margin-left: 60px;
-    margin-top: 30px;
+.section-title {
+  font-family: Didot;
+  font-size: 22px;
+  margin-left: 45px;
+  font-weight: normal;
 }
-  
-  .subnav-btn {
-    background: none;
-    border: none;
-    font-family: Didot;
-    font-size: 14px;
-    color: #333;
-    cursor: pointer;
-  }
-  
-  .subnav-btn:hover {
-    text-decoration: underline;
-  }
-  
+
+.carousel-title {
+  font-family: Didot;
+  font-size: 22px;
+  margin-left: 45px;
+  font-weight: normal;
+}
+
+.carousel-row {
+  display: flex;
+  overflow-x: auto;
+  gap: 16px;
+  padding: 10px;
+  margin-left: 45px;
+}
+
+.gallery-item {
+  flex: 0 0 auto;
+  width: 140px;
+  font-family: Didot;
+  text-align: center;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+}

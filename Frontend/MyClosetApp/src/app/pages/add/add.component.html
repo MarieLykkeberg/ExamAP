@@ -1,1 +1,60 @@
-<p>add works!</p>
+
+<form class="add-item-form" (ngSubmit)="addItem()" #itemForm="ngForm" ngNativeValidate>
+
+    <div class="form-header">
+      <h2>Add a New Item</h2>
+      <p class="subtitle"><em>Style your wardrobe with intention</em></p>
+    </div>
+  
+    <div class="image-upload">
+      <input type="file" (change)="onFileSelected($event)" id="fileUpload" />
+      <label for="fileUpload">Upload Image</label>
+      <img *ngIf="itemData.imageUrl" [src]="itemData.imageUrl" alt="Preview" class="image-preview" />
+    </div>
+  
+    <select [(ngModel)]="itemData.categoryId" name="categoryId" required>
+        <option [ngValue]="null" disabled>Category</option>
+        <option *ngFor="let c of categories" [ngValue]="c.categoryId">
+          {{ c.categoryName }}
+        </option>
+      </select>
+    
+      <select [(ngModel)]="itemData.colorId" name="colorId" required>
+        <option [ngValue]="null" disabled>Color</option>
+        <option *ngFor="let c of colors" [ngValue]="c.colorId">
+          {{ c.colorName }}
+        </option>
+      </select>
+    
+      <select [(ngModel)]="itemData.materialId" name="materialId" required>
+        <option [ngValue]="null" disabled>Material</option>
+        <option *ngFor="let m of materials" [ngValue]="m.materialId">
+          {{ m.materialName }}
+        </option>
+      </select>
+    
+      <select [(ngModel)]="itemData.brandId" name="brandId" required>
+        <option [ngValue]="null" disabled>Brand</option>
+        <option *ngFor="let b of brands" [ngValue]="b.brandId">
+          {{ b.brandName }}
+        </option>
+      </select>
+    
+      <select [(ngModel)]="itemData.occasionId" name="occasionId" required>
+        <option [ngValue]="null" disabled>Occasion</option>
+        <option *ngFor="let o of occasions" [ngValue]="o.occasionId">
+          {{ o.occasionName }}
+        </option>
+      </select>
+  
+    <div class="checkbox-line">
+      <input type="checkbox" [(ngModel)]="itemData.isFavorite" name="isFavorite" id="favCheckbox" />
+      <label for="favCheckbox">Mark as favorite</label>
+    </div>
+  
+    <label class="date-label">Purchase Date
+      <input type="date" [(ngModel)]="itemData.purchaseDate" name="purchaseDate" />
+    </label>
+  
+    <button type="submit">Add Item</button>
+</form>
