@@ -3,3 +3,4 @@ ExamAP.API/obj
 ExamAP.Model/bin
 ExamAP.Model/obj
 appsettings.Development.json
+.DS_Store
