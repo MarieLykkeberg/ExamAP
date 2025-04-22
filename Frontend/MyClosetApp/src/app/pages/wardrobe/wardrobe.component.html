@@ -1,4 +1,14 @@
-<h3 your-header>Marie's wardrobe</h3>
+<h2 class="section-title">Your wardrobe</h2>
 
-
-
+<div *ngFor="let type of objectKeys(groupedItems)">
+    <h3 class="carousel-title">{{ type }}</h3>
+  
+    <div class="carousel-row">
+      <div class="gallery-item" *ngFor="let item of groupedItems[type]">
+        <img [src]="item.imageUrl" alt="Item" *ngIf="item.imageUrl; else noImage" />
+        <ng-template #noImage>
+          <p>No image available</p>
+        </ng-template>      </div>
+    </div>
+  </div>
+  
