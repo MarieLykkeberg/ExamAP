@@ -1,74 +1,74 @@
-using System.Collections.Generic;
-using ExamAP.Model.Entities;
-using ExamAP.Model.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using ExamAP.Model.Repositories;
+using ExamAP.Model.Entities;
 
 namespace ExamAP.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class TopController : ControllerBase
+    public class ItemController : ControllerBase
     {
-        private readonly TopRepository _repository;
+        private readonly ItemRepository _repository;
 
-        public TopController(TopRepository repository)
+        public ItemController(ItemRepository repository)
         {
             _repository = repository;
         }
 
+        // Change the method name to GetItems
         [HttpGet]
-        public ActionResult<IEnumerable<Top>> GetTops()
+        public ActionResult<IEnumerable<Item>> GetItems()  // <-- Fix method name here
         {
-            var tops = _repository.GetTops();
-            return Ok(tops);
+            var items = _repository.GetItems();  // <-- Call GetItems, not GetItem
+            return Ok(items);  // <-- Return the correct variable: items, not item
         }
 
-
         [HttpPost]
-        public IActionResult AddTop([FromBody] Top top)
+        public IActionResult AddItem([FromBody] Item item)
         {
-            if (top == null)
+            if (item == null)
             {
-                return BadRequest("Top data is missing.");
+                return BadRequest("Item data is missing.");
             }
 
-            bool success = _repository.InsertTop(top);
+            bool success = _repository.InsertItem(item);
             if (success)
             {
-                return Ok("Top added successfully.");
+                return Ok(new { message = "Item added successfully" });
             }
 
             return StatusCode(500, "Something went wrong.");
         }
 
+
         [HttpPut]
-        public IActionResult UpdateTop([FromBody] Top top)
+        public IActionResult UpdateItem([FromBody] Item item)
         {
-            if (top == null || top.TopId == 0)
+            if (item == null || item.ItemId == 0)
             {
-                return BadRequest("Invalid top data.");
+                return BadRequest("Invalid item data.");
             }
 
-            bool success = _repository.UpdateTop(top);
+            bool success = _repository.UpdateItem(item);
             if (success)
             {
-                return Ok("Top updated successfully.");
+                return Ok("Item updated successfully.");
             }
 
-            return StatusCode(500, "Something went wrong while updating the top.");
+            return StatusCode(500, "Something went wrong while updating the item.");
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteTop(int id)
+        public IActionResult DeleteItem(int id)
         {
-            bool success = _repository.DeleteTop(id);
+            bool success = _repository.DeleteItem(id);
 
             if (success)
             {
                 return NoContent(); // 204 success with no body
             }
 
-            return NotFound($"Top with id {id} not found.");
+            return NotFound($"Item with id {id} not found.");
         }
 
         [HttpPost("upload-image")]
@@ -93,6 +93,8 @@ namespace ExamAP.API.Controllers
             {
                 file.CopyTo(stream);
             }
+
+            Console.WriteLine("Upload path: " + filePath);
 
             // Return public URL (adjust based on your local setup)
             var imageUrl = $"http://localhost:5196/Uploads/{uniqueFileName}";

@@ -1,4 +1,4 @@
-namespace ExamAP.Model.Entities
+/* namespace ExamAP.Model.Entities
 {
     public class Bottom
     {
@@ -13,4 +13,4 @@ namespace ExamAP.Model.Entities
         public DateTime? PurchaseDate { get; set; }
         public bool? IsFavorite { get; set; }
     }
-}
+} */

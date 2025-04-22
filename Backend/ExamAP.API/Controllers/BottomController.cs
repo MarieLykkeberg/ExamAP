@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+/* using System.Collections.Generic;
 using ExamAP.Model.Entities;
 using ExamAP.Model.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -99,4 +99,4 @@ namespace ExamAP.API.Controllers
             return Ok(new { imageUrl });
         }
     }
-}
+} */
