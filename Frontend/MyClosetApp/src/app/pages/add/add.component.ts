@@ -19,11 +19,12 @@ export class AddComponent implements OnInit {
   occasions:  { occasionId: number, occasionName: string }[] = [];
 
   itemData = {
-    categoryId:   1,
-    colorId:      1,
-    materialId:   1,
-    brandId:      1,
-    occasionId:   1,
+    userId: 12,
+    categoryId:   null,
+    colorId:      null,
+    materialId:   null,
+    brandId:      null,
+    occasionId:   null,
     isFavorite:   false,
     purchaseDate: '',
     imageUrl:     ''
