@@ -1,0 +1,135 @@
+<!-- src/app/pages/wardrobe/item-details/item-details.component.html -->
+
+<!-- 1) Large image preview -->
+<div class="details-image" *ngIf="item.imageUrl">
+    <img
+      [src]="item.imageUrl"
+      alt="Item #{{ item.itemId }}"
+      class="large-image"
+    />
+  </div>
+  
+  <form #itemForm="ngForm" (ngSubmit)="save()">
+    <!-- ID (read-only) -->
+    <div>
+      <strong>Item #{{ item.itemId }}</strong>
+    </div>
+  
+    <!-- Category dropdown -->
+    <div class="form-group">
+      <label for="categoryId">Category</label>
+      <select
+        id="categoryId"
+        name="categoryId"
+        [(ngModel)]="item.categoryId"
+        #categoryField="ngModel"
+        required
+      >
+        <option
+          *ngFor="let c of categories"
+          [ngValue]="c.categoryId"
+        >
+          {{ c.categoryName }}
+        </option>
+      </select>
+      <div *ngIf="categoryField.invalid && categoryField.touched" class="error">
+        Category is required
+      </div>
+    </div>
+  
+    <!-- Color dropdown -->
+    <div class="form-group">
+      <label for="colorId">Color</label>
+      <select
+        id="colorId"
+        name="colorId"
+        [(ngModel)]="item.colorId"
+        #colorField="ngModel"
+        required
+      >
+        <option
+          *ngFor="let col of colors"
+          [ngValue]="col.colorId"
+        >
+          {{ col.colorName }}
+        </option>
+      </select>
+      <div *ngIf="colorField.invalid && colorField.touched" class="error">
+        Color is required
+      </div>
+    </div>
+  
+    <!-- Material dropdown -->
+    <div class="form-group">
+      <label for="materialId">Material</label>
+      <select
+        id="materialId"
+        name="materialId"
+        [(ngModel)]="item.materialId"
+      >
+        <option
+          *ngFor="let m of materials"
+          [ngValue]="m.materialId"
+        >
+          {{ m.materialName }}
+        </option>
+      </select>
+    </div>
+  
+    <!-- Brand dropdown -->
+    <div class="form-group">
+      <label for="brandId">Brand</label>
+      <select
+        id="brandId"
+        name="brandId"
+        [(ngModel)]="item.brandId"
+      >
+        <option
+          *ngFor="let b of brands"
+          [ngValue]="b.brandId"
+        >
+          {{ b.brandName }}
+        </option>
+      </select>
+    </div>
+  
+    <!-- Occasion dropdown -->
+    <div class="form-group">
+      <label for="occasionId">Occasion</label>
+      <select
+        id="occasionId"
+        name="occasionId"
+        [(ngModel)]="item.occasionId"
+      >
+        <option
+          *ngFor="let o of occasions"
+          [ngValue]="o.occasionId"
+        >
+          {{ o.occasionName }}
+        </option>
+      </select>
+    </div>
+  
+    <!-- Favorite checkbox -->
+    <div class="form-group">
+      <label>
+        <input
+          type="checkbox"
+          name="isFavorite"
+          [(ngModel)]="item.isFavorite"
+        />
+        Mark as favorite
+      </label>
+    </div>
+  
+    <!-- Actions -->
+    <div class="actions">
+      <button type="submit" [disabled]="itemForm.invalid">
+        Save
+      </button>
+      <button type="button" (click)="delete()">
+        Delete
+      </button>
+      <div *ngIf="errorMsg" class="error">{{ errorMsg }}</div>
+    </div>
+  </form>

@@ -1,0 +1,102 @@
+// src/app/pages/wardrobe/item-details/item-details.component.ts
+
+import { Component, OnInit }      from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CommonModule }           from '@angular/common';
+import { FormsModule }            from '@angular/forms';
+
+import {
+  WardrobeService,
+  Item,
+  Category,
+  Color,
+  Material,
+  Brand,
+  Occasion
+} from '../../../core/wardrobe.service';
+
+@Component({
+  selector: 'app-item-details',
+  standalone: true,
+  imports: [ CommonModule, FormsModule ],
+  templateUrl: './item-details.component.html',
+  styleUrls: ['./item-details.component.css']
+})
+export class ItemDetailsComponent implements OnInit {
+  // initialize to avoid undefined errors
+  item: Item = {
+    itemId:     0,
+    imageUrl:   '',
+    categoryId: 0,
+    colorId:    0,
+    materialId: 0,
+    brandId:    0,
+    occasionId: 0,
+    isFavorite: false
+  };
+  errorMsg?: string;
+
+  // lookup arrays for dropdowns
+  categories: Category[] = [];
+  colors:     Color[]    = [];
+  materials:  Material[] = [];
+  brands:     Brand[]    = [];
+  occasions:  Occasion[] = [];
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private ws: WardrobeService
+  ) {}
+
+  ngOnInit(): void {
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+
+    // load the item
+    this.ws.getItemById(id).subscribe({
+      next: data => this.item = data,
+      error: err => console.error('Could not load item', err)
+    });
+
+    // load each lookup list separately
+    this.ws.getCategories().subscribe({
+      next: list => this.categories = list,
+      error: err => console.error('Could not load categories', err)
+    });
+
+    this.ws.getColors().subscribe({
+      next: list => this.colors = list,
+      error: err => console.error('Could not load colors', err)
+    });
+
+    this.ws.getMaterials().subscribe({
+      next: list => this.materials = list,
+      error: err => console.error('Could not load materials', err)
+    });
+
+    this.ws.getBrands().subscribe({
+      next: list => this.brands = list,
+      error: err => console.error('Could not load brands', err)
+    });
+
+    this.ws.getOccasions().subscribe({
+      next: list => this.occasions = list,
+      error: err => console.error('Could not load occasions', err)
+    });
+  }
+
+  save(): void {
+    this.ws.updateItem(this.item).subscribe({
+      next: () => this.router.navigate(['/wardrobe']),
+      error: () => this.errorMsg = 'Save failed'
+    });
+  }
+
+  delete(): void {
+    if (!confirm('Delete this item?')) return;
+    this.ws.deleteItem(this.item.itemId).subscribe({
+      next: () => this.router.navigate(['/wardrobe']),
+      error: () => this.errorMsg = 'Delete failed'
+    });
+  }
+}

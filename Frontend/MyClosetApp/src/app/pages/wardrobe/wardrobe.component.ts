@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { WardrobeService } from '../../core/wardrobe.service';
 import { forkJoin } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-wardrobe',
@@ -13,7 +14,9 @@ export class WardrobeComponent implements OnInit {
   groupedItems: { [type: string]: any[] } = {};
   objectKeys = Object.keys;
 
-  constructor(private wardrobeService: WardrobeService) {}
+  constructor(
+    private wardrobeService: WardrobeService,     
+    private router: Router  ) {}
 
   allItems: any[] = [];
 
@@ -29,9 +32,34 @@ export class WardrobeComponent implements OnInit {
   accessoriesTitle: string = '';
   outerwearTitle: string = '';
 
+  showOnlyFavorites = false;
+
+  showAll() {
+    this.showOnlyFavorites = false;
+  }
+  showFavorites() {
+    this.showOnlyFavorites = true;
+  }
+
   ngOnInit(): void {
     this.loadWardrobe();
   }
+
+  toggleFavorites() {
+    this.showOnlyFavorites = !this.showOnlyFavorites;
+  }
+
+  // Helper to filter by category *and* favorite-flag
+  getFiltered(items: any[]) {
+    let list = items;
+    if (this.showOnlyFavorites) {
+      list = list.filter(i => i.isFavorite);
+    }
+    return list;
+  }
+
+  openDetails(itemId: number) {
+    this.router.navigate(['/wardrobe','details', itemId]);  }
 
   loadWardrobe() {
     forkJoin({

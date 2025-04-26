@@ -1,8 +1,25 @@
-.section-title {
-  font-family: Didot;
-  font-size: 22px;
+.filter-container {
   margin-left: 45px;
+  margin-top: 30px;
+}
+
+.filter-link {
+  display: inline-block;
+  cursor: pointer;
+  font-family: Didot;
+  font-size: 17px;
   font-weight: normal;
+  text-decoration: none;
+  color: inherit;      
+  margin-right: 1.5rem; 
+}
+
+.filter-link.active {
+  text-decoration: underline;
+}
+
+.filter-link:hover {
+  text-decoration: underline;
 }
 
 .carousel-title {
@@ -10,6 +27,7 @@
   font-size: 17px;
   margin-left: 45px;
   font-weight: normal;
+  margin-top: 30px;
 }
 
 .carousel-row {
@@ -32,4 +50,15 @@
   height: 160px;
   object-fit: contain;
   border-radius: 8px;
+}
+
+.details-button {
+  font-family: Didot;
+  font-size: 14px;
+  border: none;
+  background: none;
+}
+
+.details-button:hover {
+  text-decoration: underline;
 }

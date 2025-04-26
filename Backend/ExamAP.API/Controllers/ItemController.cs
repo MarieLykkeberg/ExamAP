@@ -15,7 +15,7 @@ namespace ExamAP.API.Controllers
             _repository = repository;
         }
 
-        // Change the method name to GetItems
+       
         [HttpGet]
         public ActionResult<IEnumerable<Item>> GetItems()  // <-- Fix method name here
         {
@@ -41,21 +41,24 @@ namespace ExamAP.API.Controllers
         }
 
 
-        [HttpPut]
-        public IActionResult UpdateItem([FromBody] Item item)
+        [HttpPut("{id}")]
+        public IActionResult UpdateItem(int id, [FromBody] Item item)
         {
-            if (item == null || item.ItemId == 0)
+            // Ensure the route ID matches the body ID
+            if (item == null || item.ItemId != id || id == 0)
             {
-                return BadRequest("Invalid item data.");
+                return BadRequest("Invalid item data or mismatched id.");
             }
 
+            // Call repository to perform the update
             bool success = _repository.UpdateItem(item);
-            if (success)
+            if (!success)
             {
-                return Ok("Item updated successfully.");
+                return NotFound($"Item with id {id} not found.");
             }
 
-            return StatusCode(500, "Something went wrong while updating the item.");
+            // Standard REST response for successful PUT
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
@@ -99,6 +102,15 @@ namespace ExamAP.API.Controllers
             // Return public URL (adjust based on your local setup)
             var imageUrl = $"http://localhost:5196/Uploads/{uniqueFileName}";
             return Ok(new { imageUrl });
+        }
+
+        [HttpGet("{id}")]
+        public ActionResult<Item> GetItemById(int id)
+        {
+            var item = _repository.GetItemById(id);
+            if (item == null)
+            return NotFound($"Item with id {id} not found.");
+            return Ok(item);
         }
     }
 }
