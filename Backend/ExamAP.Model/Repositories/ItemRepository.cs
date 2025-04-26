@@ -44,6 +44,36 @@ namespace ExamAP.Model.Repositories
             return items;
         }
 
+        public Item? GetItemById(int id)
+    {
+        using var conn = new NpgsqlConnection(ConnectionString);
+        using var cmd  = conn.CreateCommand();
+        cmd.CommandText = @"
+            SELECT
+                itemid, userid, colorid, materialid, categoryid,
+                brandid, occasionid, imageurl, purchasedate, isfavorite
+            FROM public.items
+            WHERE itemid = @itemid";
+        cmd.Parameters.AddWithValue("@itemid", NpgsqlDbType.Integer, id);
+
+        using var reader = GetData(conn, cmd);
+        if (!reader.Read()) return null;
+
+        return new Item
+        {
+            ItemId       = reader["itemid"]       is DBNull ? 0  : (int)reader["itemid"],
+            UserId       = reader["userid"]       is DBNull ? 0  : (int)reader["userid"],
+            ColorId      = reader["colorid"]      is DBNull ? 0  : (int)reader["colorid"],
+            MaterialId   = reader["materialid"]   is DBNull ? 0  : (int)reader["materialid"],
+            CategoryId   = reader["categoryid"]   is DBNull ? 0  : (int)reader["categoryid"],
+            BrandId      = reader["brandid"]      is DBNull ? 0  : (int)reader["brandid"],
+            OccasionId   = reader["occasionid"]   is DBNull ? 0  : (int)reader["occasionid"],
+            ImageUrl     = reader["imageurl"]     as string,
+            PurchaseDate = reader["purchasedate"] is DBNull ? null : (DateTime?)reader["purchasedate"],
+            IsFavorite   = reader["isfavorite"]   is DBNull ? null : (bool?)reader["isfavorite"]
+        };
+    }
+
         public bool InsertItem(Item item)
         {
             using var conn = new NpgsqlConnection(ConnectionString);

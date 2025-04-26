@@ -1,12 +1,12 @@
-// app.routes.ts
+// src/app/app.routes.ts
 import { Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
 
 export const routes: Routes = [
-  // ── 1) Redirect root to login (or wherever you like) ───────────
+  // 1) Redirect empty path → /login
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
-  // ── 2) Auth routes (no layout) ────────────────────────────────
+  // 2) Auth (no layout wrapper)
   {
     path: 'login',
     loadComponent: () =>
@@ -18,7 +18,7 @@ export const routes: Routes = [
       import('./auth/register/register.component').then(m => m.RegisterComponent)
   },
 
-  // ── 3) “App” routes wrapped in your LayoutComponent ────────────
+  // 3) App routes inside your LayoutComponent
   {
     path: '',
     component: LayoutComponent,
@@ -28,6 +28,8 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./pages/home/home.component').then(m => m.HomeComponent)
       },
+
+      // Wardrobe module
       {
         path: 'wardrobe',
         children: [
@@ -37,9 +39,11 @@ export const routes: Routes = [
               import('./pages/wardrobe/wardrobe.component').then(m => m.WardrobeComponent)
           },
           {
-            path: 'favorites',
+            path: 'details/:id',
             loadComponent: () =>
-              import('./pages/favorites/favorites.component').then(m => m.FavoritesComponent)
+              import(
+                './pages/wardrobe/item-details/item-details.component'
+              ).then(m => m.ItemDetailsComponent)
           },
           {
             path: 'add',
@@ -48,6 +52,7 @@ export const routes: Routes = [
           }
         ]
       },
+
       {
         path: 'styling',
         loadComponent: () =>
@@ -61,6 +66,6 @@ export const routes: Routes = [
     ]
   },
 
-  // ── 4) Fallback ─────────────────────────────────────────────────
+  // 4) Catch-all
   { path: '**', redirectTo: 'login', pathMatch: 'full' }
 ];
