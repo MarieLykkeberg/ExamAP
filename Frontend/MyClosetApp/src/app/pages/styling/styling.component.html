@@ -1,1 +1,83 @@
-<p>styling works!</p>
+<!-- src/app/pages/styling/styling.component.html -->
+<div class="styling-container">
+    <!-- ROW 1: Tops + Outerwear -->
+    <div class="row">
+      <div class="section">
+        <div class="carousel-single">
+          <button type="button" (click)="prevTop()">‹</button>
+          <img
+            *ngIf="topsItems.length"
+            [src]="topsItems[topIndex]?.imageUrl"
+            alt="{{ topsTitle }}"
+          />
+          <button type="button" (click)="nextTop()">›</button>
+        </div>
+      </div>
+  
+      <div class="section">
+        <div class="carousel-single">
+          <button type="button" (click)="prevOuter()">‹</button>
+          <img
+            *ngIf="outerwearItems.length"
+            [src]="outerwearItems[outerwearIndex]?.imageUrl"
+            alt="{{ outerwearTitle }}"
+          />
+          <button type="button" (click)="nextOuter()">›</button>
+        </div>
+      </div>
+    </div>
+  
+    <!-- ROW 2: Bottoms + Accessories (upper) -->
+    <div class="row">
+      <div class="section">
+        <div class="carousel-single">
+          <button type="button" (click)="prevBottom()">‹</button>
+          <img
+            *ngIf="bottomItems.length"
+            [src]="bottomItems[bottomIndex]?.imageUrl"
+            alt="{{ bottomsTitle }}"
+          />
+          <button type="button" (click)="nextBottom()">›</button>
+        </div>
+      </div>
+  
+      <div class="section">
+        <div class="carousel-single">
+          <button type="button" (click)="prevAccTop()">‹</button>
+          <img
+            *ngIf="accessoriesItems.length"
+            [src]="accessoriesItems[accessoriesIndexTop]?.imageUrl"
+            alt="{{ accessoriesTitle }}"
+          />
+          <button type="button" (click)="nextAccTop()">›</button>
+        </div>
+      </div>
+    </div>
+  
+    <!-- ROW 3: Footwear + Accessories (lower) -->
+    <div class="row">
+      <div class="section">
+        <div class="carousel-single">
+          <button type="button" (click)="prevFootwear()">‹</button>
+          <img
+            *ngIf="footwearItems.length"
+            [src]="footwearItems[footwearIndex]?.imageUrl"
+            alt="{{ footwearTitle }}"
+          />
+          <button type="button" (click)="nextFootwear()">›</button>
+        </div>
+      </div>
+  
+      <div class="section">
+        <div class="carousel-single">
+          <button type="button" (click)="prevAccBottom()">‹</button>
+          <img
+            *ngIf="accessoriesItems.length"
+            [src]="accessoriesItems[accessoriesIndexBottom]?.imageUrl"
+            alt="{{ accessoriesTitle }}"
+          />
+          <button type="button" (click)="nextAccBottom()">›</button>
+        </div>
+      </div>
+    </div>
+  </div>
