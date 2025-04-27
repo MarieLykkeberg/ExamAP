@@ -14,11 +14,12 @@ import {
   Brand,
   Occasion
 } from '../../../core/wardrobe.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-item-details',
   standalone: true,
-  imports: [ CommonModule, FormsModule ],
+  imports: [ CommonModule, FormsModule, MatIconModule],
   templateUrl: './item-details.component.html',
   styleUrls: ['./item-details.component.css']
 })

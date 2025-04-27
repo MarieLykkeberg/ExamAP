@@ -1,12 +1,13 @@
 // src/app/app.routes.ts
+
 import { Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
 
 export const routes: Routes = [
-  // 1) Redirect empty path → /login
+  // 1) Redirect root to login
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
-  // 2) Auth (no layout wrapper)
+  // 2) Auth (no layout)
   {
     path: 'login',
     loadComponent: () =>
@@ -18,7 +19,7 @@ export const routes: Routes = [
       import('./auth/register/register.component').then(m => m.RegisterComponent)
   },
 
-  // 3) App routes inside your LayoutComponent
+  // 3) App (with LayoutComponent wrapper)
   {
     path: '',
     component: LayoutComponent,
@@ -29,26 +30,30 @@ export const routes: Routes = [
           import('./pages/home/home.component').then(m => m.HomeComponent)
       },
 
-      // Wardrobe module
+      // ── Wardrobe module ───────────────────────────────
       {
         path: 'wardrobe',
         children: [
-          {
-            path: '',
-            loadComponent: () =>
-              import('./pages/wardrobe/wardrobe.component').then(m => m.WardrobeComponent)
-          },
+          // 1. DETAILS must come first
           {
             path: 'details/:id',
             loadComponent: () =>
-              import(
-                './pages/wardrobe/item-details/item-details.component'
-              ).then(m => m.ItemDetailsComponent)
+              import('./pages/wardrobe/item-details/item-details.component')
+                .then(m => m.ItemDetailsComponent)
           },
+          // 2. ADD
           {
             path: 'add',
             loadComponent: () =>
               import('./pages/add/add.component').then(m => m.AddComponent)
+          },
+          // 3. LIST (empty) — only match exactly "/wardrobe"
+          {
+            path: '',
+            pathMatch: 'full',
+            loadComponent: () =>
+              import('./pages/wardrobe/wardrobe.component')
+                .then(m => m.WardrobeComponent)
           }
         ]
       },
@@ -66,6 +71,6 @@ export const routes: Routes = [
     ]
   },
 
-  // 4) Catch-all
+  // 4) Catch-all → login
   { path: '**', redirectTo: 'login', pathMatch: 'full' }
 ];

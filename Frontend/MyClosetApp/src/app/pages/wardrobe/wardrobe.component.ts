@@ -1,94 +1,73 @@
-import { Component, OnInit } from '@angular/core';
-import { WardrobeService } from '../../core/wardrobe.service';
-import { forkJoin } from 'rxjs';
-import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+// src/app/pages/wardrobe/wardrobe.component.ts
+
+import { Component, OnInit }      from '@angular/core';
+import { CommonModule }            from '@angular/common';
+import { RouterModule }            from '@angular/router';
+import { forkJoin }                from 'rxjs';
+import { WardrobeService }         from '../../core/wardrobe.service';
 
 @Component({
   selector: 'app-wardrobe',
+  standalone: true,
+  imports: [ CommonModule, RouterModule ],
   templateUrl: './wardrobe.component.html',
   styleUrls: ['./wardrobe.component.css'],
-  imports: [CommonModule],
 })
 export class WardrobeComponent implements OnInit {
-  groupedItems: { [type: string]: any[] } = {};
-  objectKeys = Object.keys;
-
-  constructor(
-    private wardrobeService: WardrobeService,     
-    private router: Router  ) {}
-
-  allItems: any[] = [];
-
-  topsItems: any[] = [];
-  bottomItems: any[] = [];
-  footwearItems: any[] = [];
+  allItems: any[]         = [];
+  topsItems: any[]        = [];
+  bottomItems: any[]      = [];
+  footwearItems: any[]    = [];
   accessoriesItems: any[] = [];
-  outerwearItems: any[] = [];
+  outerwearItems: any[]   = [];
 
-  topsTitle: string = '';
-  bottomsTitle: string = '';
-  footwearTitle: string = '';
-  accessoriesTitle: string = '';
-  outerwearTitle: string = '';
+  topsTitle = '';
+  bottomsTitle = '';
+  footwearTitle = '';
+  accessoriesTitle = '';
+  outerwearTitle = '';
 
   showOnlyFavorites = false;
 
-  showAll() {
-    this.showOnlyFavorites = false;
-  }
-  showFavorites() {
-    this.showOnlyFavorites = true;
-  }
+  constructor(private wardrobeService: WardrobeService) {}
 
   ngOnInit(): void {
     this.loadWardrobe();
   }
 
-  toggleFavorites() {
-    this.showOnlyFavorites = !this.showOnlyFavorites;
-  }
+  showAll()       { this.showOnlyFavorites = false; }
+  showFavorites() { this.showOnlyFavorites = true; }
 
-  // Helper to filter by category *and* favorite-flag
   getFiltered(items: any[]) {
-    let list = items;
-    if (this.showOnlyFavorites) {
-      list = list.filter(i => i.isFavorite);
-    }
-    return list;
+    return this.showOnlyFavorites
+      ? items.filter(i => i.isFavorite)
+      : items;
   }
 
-  openDetails(itemId: number) {
-    this.router.navigate(['/wardrobe','details', itemId]);  }
-
-  loadWardrobe() {
+  private loadWardrobe() {
     forkJoin({
-      Items: this.wardrobeService.getItems(),
+      Items:      this.wardrobeService.getItems(),
       Categories: this.wardrobeService.getCategories()
     }).subscribe({
-      next: (data) => {
-        this.groupedItems = { Items: data.Items };
-        this.allItems = data.Items;
-        this.topsItems = this.allItems.filter(item => item.categoryId === 1);
-        this.bottomItems = this.allItems.filter(item => item.categoryId === 2);
-        this.footwearItems = this.allItems.filter(item => item.categoryId === 3);
-        this.accessoriesItems = this.allItems.filter(item => item.categoryId === 4);
-        this.outerwearItems = this.allItems.filter(item => item.categoryId === 5);
+      next: ({ Items, Categories }) => {
+        this.allItems        = Items;
+        this.topsItems       = Items.filter(i => i.categoryId === 1);
+        this.bottomItems     = Items.filter(i => i.categoryId === 2);
+        this.footwearItems   = Items.filter(i => i.categoryId === 3);
+        this.accessoriesItems= Items.filter(i => i.categoryId === 4);
+        this.outerwearItems  = Items.filter(i => i.categoryId === 5);
 
-        const categories = data.Categories;
-        this.topsTitle = categories.find(c => c.categoryId === 1)?.categoryName || 'Tops';
-        this.bottomsTitle = categories.find(c => c.categoryId === 2)?.categoryName || 'Bottoms';
-        this.footwearTitle = categories.find(c => c.categoryId === 3)?.categoryName || 'Footwear';
-        this.accessoriesTitle = categories.find(c => c.categoryId === 4)?.categoryName || 'Accessories';
-        this.outerwearTitle = categories.find(c => c.categoryId === 5)?.categoryName || 'Outerwear';
-
-
-  
-        const bottomsCategory = data.Categories.find((c: { categoryId: number, categoryName: string }) => c.categoryId === 2);        
-        this.bottomsTitle = bottomsCategory ? bottomsCategory.categoryName : 'Bottoms';
-        
+        this.topsTitle        = this.findName(Categories, 1, 'Tops');
+        this.bottomsTitle     = this.findName(Categories, 2, 'Bottoms');
+        this.footwearTitle    = this.findName(Categories, 3, 'Footwear');
+        this.accessoriesTitle = this.findName(Categories, 4, 'Accessories');
+        this.outerwearTitle   = this.findName(Categories, 5, 'Outerwear');
       },
-      error: (err) => console.error('❌ Failed to load wardrobe:', err)
+      error: err => console.error('Failed to load wardrobe', err)
     });
+  }
+
+  private findName(list: any[], id: number, fallback: string): string {
+    return list.find(x => x.categoryId === id)?.categoryName || fallback;
   }
 }
