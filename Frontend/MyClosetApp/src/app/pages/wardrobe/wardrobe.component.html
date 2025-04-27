@@ -1,110 +1,87 @@
-<!-- Filter links -->
+<!-- src/app/pages/wardrobe/wardrobe.component.html -->
+
+<!-- Filter links (unchanged) -->
 <div class="filter-container">
-    <span
-      class="filter-link"
-      [class.active]="!showOnlyFavorites"
-      (click)="showAll()">
+    <span class="filter-link" [class.active]="!showOnlyFavorites" (click)="showAll()">
       My wardrobe
     </span>
-    <span
-      class="filter-link"
-      [class.active]="showOnlyFavorites"
-      (click)="showFavorites()">
+    <span class="filter-link" [class.active]="showOnlyFavorites" (click)="showFavorites()">
       My favorites
     </span>
   </div>
   
-  <!-- Bottoms Carousel -->
+  <!-- BOTTOMS Carousel -->
   <h3 class="carousel-title">{{ bottomsTitle }}</h3>
   <div class="carousel-row">
     <div class="gallery-item" *ngFor="let item of getFiltered(bottomItems)">
-      <img
-        [src]="item.imageUrl"
-        alt="Item"
-        *ngIf="item.imageUrl; else noImage2" />
-      <ng-template #noImage2>
-        <p>No image available</p>
-      </ng-template>
+      <img [src]="item.imageUrl" *ngIf="item.imageUrl; else noImage2" alt="Item" />
+      <ng-template #noImage2><p>No image available</p></ng-template>
+  
+      <!-- absolute routerLink to /wardrobe/details/:id -->
       <button
         class="details-button"
-        (click)="openDetails(item.itemId)">
-        see details
+        [routerLink]="['/wardrobe', 'details', item.itemId]">
+        See details
       </button>
     </div>
   </div>
   
-  <!-- Tops Carousel -->
+  <!-- TOPS Carousel -->
   <h3 class="carousel-title">{{ topsTitle }}</h3>
   <div class="carousel-row">
     <div class="gallery-item" *ngFor="let item of getFiltered(topsItems)">
-      <img
-        [src]="item.imageUrl"
-        alt="Item"
-        *ngIf="item.imageUrl; else noImage3" />
-      <ng-template #noImage3>
-        <p>No image available</p>
-      </ng-template>
+      <img [src]="item.imageUrl" *ngIf="item.imageUrl; else noImage3" alt="Item" />
+      <ng-template #noImage3><p>No image available</p></ng-template>
+  
       <button
         class="details-button"
-        (click)="openDetails(item.itemId)">
-        see details
+        [routerLink]="['/wardrobe', 'details', item.itemId]">
+        See details
       </button>
     </div>
   </div>
   
-  <!-- Footwear Carousel -->
+  <!-- FOOTWEAR Carousel -->
   <h3 class="carousel-title">{{ footwearTitle }}</h3>
   <div class="carousel-row">
     <div class="gallery-item" *ngFor="let item of getFiltered(footwearItems)">
-      <img
-        [src]="item.imageUrl"
-        alt="Item"
-        *ngIf="item.imageUrl; else noImage4" />
-      <ng-template #noImage4>
-        <p>No image available</p>
-      </ng-template>
+      <img [src]="item.imageUrl" *ngIf="item.imageUrl; else noImage4" alt="Item" />
+      <ng-template #noImage4><p>No image available</p></ng-template>
+  
       <button
         class="details-button"
-        (click)="openDetails(item.itemId)">
-        see details
+        [routerLink]="['/wardrobe', 'details', item.itemId]">
+        See details
       </button>
     </div>
   </div>
   
-  <!-- Accessories Carousel -->
+  <!-- ACCESSORIES Carousel -->
   <h3 class="carousel-title">{{ accessoriesTitle }}</h3>
   <div class="carousel-row">
     <div class="gallery-item" *ngFor="let item of getFiltered(accessoriesItems)">
-      <img
-        [src]="item.imageUrl"
-        alt="Item"
-        *ngIf="item.imageUrl; else noImage5" />
-      <ng-template #noImage5>
-        <p>No image available</p>
-      </ng-template>
+      <img [src]="item.imageUrl" *ngIf="item.imageUrl; else noImage5" alt="Item" />
+      <ng-template #noImage5><p>No image available</p></ng-template>
+  
       <button
         class="details-button"
-        (click)="openDetails(item.itemId)">
-        see details
+        [routerLink]="['/wardrobe', 'details', item.itemId]">
+        See details
       </button>
     </div>
   </div>
   
-  <!-- Outerwear Carousel -->
+  <!-- OUTERWEAR Carousel -->
   <h3 class="carousel-title">{{ outerwearTitle }}</h3>
   <div class="carousel-row">
     <div class="gallery-item" *ngFor="let item of getFiltered(outerwearItems)">
-      <img
-        [src]="item.imageUrl"
-        alt="Item"
-        *ngIf="item.imageUrl; else noImage6" />
-      <ng-template #noImage6>
-        <p>No image available</p>
-      </ng-template>
+      <img [src]="item.imageUrl" *ngIf="item.imageUrl; else noImage6" alt="Item" />
+      <ng-template #noImage6><p>No image available</p></ng-template>
+  
       <button
         class="details-button"
-        (click)="openDetails(item.itemId)">
-        see details
+        [routerLink]="['/wardrobe', 'details', item.itemId]">
+        See details
       </button>
     </div>
   </div>

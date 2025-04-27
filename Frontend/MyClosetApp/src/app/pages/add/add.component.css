@@ -1,115 +1,126 @@
-.add-item-form {
-    max-width: 550px;
-    padding: 3rem 2.5rem;
+/* src/app/pages/add/add.component.css */
+
+/* 1) Host + overall container */
+:host {
+    display: block;
+    max-width: 800px;
+    margin: 4rem auto;
+    padding: 0 1rem;
+    font-family: Didot, serif;
+    color: #333;
+  }
+  
+  /* 2) Flex container: image-upload on left, form on right */
+  .add-main {
     display: flex;
-    flex-direction: column;
-    gap: 1.75rem;
-    font-family: didot;
-    color: #1a1a1a;
+    align-items: flex-start;
+    gap: 4rem;        /* space between upload area & form */
+    margin-bottom: 2rem;
+    margin-left: -75px;
   }
   
-  .form-header h2 {
-    font-size: 1.8rem;
-    margin-bottom: 0.3rem;
-    box-align: left;
-  }
-  
-  .subtitle {
-    font-size: 0.95rem;
-    color: #777;
-  }
-  
-  input[type="text"],
-  input[type="date"],
-  select {
-    padding: 0.85rem 1rem;
-    border-radius: 12px;
-    border: 1px solid #ddd;
-    background-color: #fafafa;
-    font-family: inherit;
-    font-size: 1rem;
-    transition: border-color 0.3s;
-  }
-  
-  input:focus,
-  select:focus {
-    border-color: #1a1a1a;
-    outline: none;
-  }
-  
+  /* 3) Image-upload panel */
   .image-upload {
+    flex: 0 0 200px;
     display: flex;
     flex-direction: column;
-    align-items: left;
-    gap: 0.7rem;
-    margin-left: 0px;
-    width: 200px;
-
-  }
-  
-  .image-upload input[type="file"] {
-    display: none;
-    
-  }
-  
-  .image-upload label {
-    padding: 0.6rem 1.2rem;
-    background-color: #1a1a1a;
-    color: #fff;
-    border-radius: 30px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .image-upload label:hover {
-    background-color: #333;
-  }
-  
-  .image-upload img {
-    width: 160px;
-    border-radius: 12px;
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
-  }
-  
-  .checkbox-line {
-    display: flex;
     align-items: center;
-    gap: 0.6rem;
-    font-size: 0.95rem;
   }
-  
-  .date-label {
-    display: flex;
-    flex-direction: column;
-    font-size: 0.95rem;
-    gap: 0.5rem;
-  }
-  
-  button[type="submit"] {
-    margin-top: 1rem;
-    padding: 0.85rem 2rem;
-    border: none;
-    background-color: #1a1a1a;
-    color: #fff;
-    font-family: inherit;
-    font-size: 0.95rem;
-    border-radius: 999px;
+  .image-upload label {
+    margin-top: 0.5rem;
     cursor: pointer;
-    transition: background-color 0.3s;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+  }
+  .image-upload .image-preview {
+    margin-top: 1rem;
+    width: 100%;
+    border-radius: 8px;
   }
   
-  button[type="submit"]:hover {
-    background-color: #333;
-  }
-
-/* Optional styling for the image preview */
-.file-upload{
-    max-width: 200px;
-    max-height: 200px;
-    margin-top: 10px;
-    border: 1px solid #ddd;
+  /* 4) The form itself becomes a 2-column grid */
+  .add-item-form {
+    flex: 1;
+    display: grid;
+    grid-template-columns: auto 1fr;  /* labels in col1, controls in col2 */
+    column-gap:       3rem;           /* space between label & select/input */
+    row-gap:          1.5rem;         /* vertical gap between rows */
   }
   
+  /* 5) Grid-aligned labels */
+  .add-item-form .form-group {
+    display: contents;  /* so the grid lays out our labels & fields */
+  }
+  .add-item-form .form-group label {
+    grid-column: 1;
+    align-self:  center;
+    white-space: nowrap;
+    font-weight:  normal;
+  }
+  
+  /* 6) Wrap each select in a .select-container (with <mat-icon> arrow) */
+  .select-container {
+    grid-column:      2;
+    position:         relative;
+    display:          inline-block;
+    width:            100%;
+  }
+  
+  /* 7) Strip out the select’s box */
+  .select-container select {
+    width:           100%;
+    padding:         0.5rem 1.5rem 0.5rem 0;
+    font:            inherit;
+    border:          none;
+    background:      transparent;
+    outline:         none;
+    appearance:      none;      /* kill native arrow */
+    cursor:          pointer;
+  }
+  
+  /* 8) Position our Material arrow icon */
+  .select-container .dropdown-icon {
+    position:        absolute;
+    top:             50%;
+    right:           0.5rem;    /* adjust to taste */
+    transform:       translateY(-50%);
+    pointer-events:  none;
+    font-size:       1.2rem;
+    color:           #333;
+  }
+  
+  /* 9) Simple checkbox styling */
+  .add-item-form input[type="checkbox"] {
+    grid-column: 2;
+    transform:   scale(1.2);
+    margin-right:0.5rem;
+    border:      1px solid #000;
+    accent-color:#000;
+  }
+  
+  /* 10) Date input styling (optional) */
+  .add-item-form input[type="date"] {
+    grid-column: 2;
+    padding:      0.5rem;
+    font:         inherit;
+    border:       1px solid #ccc;
+    border-radius:4px;
+  }
+  
+  /* 12) Submit button under the 2nd column only */
+  .add-item-form button[type="submit"] {
+    grid-column:      1 / -2; 
+    padding:          0.6rem 1.2rem;
+    font-size:        1rem;
+    border:           1px solid #000;
+    background:       transparent;
+    color:            #000;
+    cursor:           pointer;
+    font-family:      Didot, serif;
+    transition:       box-shadow .2s;
+  }
+  .add-item-form button[type="submit"]:hover {
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+  .add-item-form button[type="submit"]:disabled {
+    opacity: .5;
+    cursor:  not-allowed;
+  }

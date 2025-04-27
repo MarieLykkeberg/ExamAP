@@ -1,0 +1,107 @@
+/* 1) Host + layout */
+:host {
+    display: block;
+    max-width: 800px;
+    margin: 4rem auto;
+    padding: 0 1rem;
+    font-family: Didot, serif;
+    color: #333;
+  }
+  
+  .details-main {
+    display: flex;
+    gap: 15rem; /* adjust as needed */
+    margin-bottom: 2rem;
+  }
+  
+  .details-image {
+    flex: 0 0 200px;
+  }
+  .details-image img {
+    width: 100%;
+    border-radius: 8px;
+  }
+  
+  .item-details {
+    flex: 1;
+  }
+  
+  /* 2) Two-column form grid */
+  .item-details form {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 3rem;
+    row-gap:    1.5rem;
+  }
+  
+  /* 3) Align label + field */
+  .form-group {
+    display: contents;
+  }
+  .form-group label {
+    grid-column: 1;
+    align-self:  center;
+    white-space: nowrap;
+    font-weight:  normal;
+  }
+  
+  /* 4) Wrap the select + icon */
+  .select-container {
+    grid-column:      2; 
+    position:         relative;
+    display:          inline-block;
+    width:            100%;
+  }
+  
+  /* 5) Make select itself borderless & transparent */
+  .select-container select {
+    width:           100%;
+    padding:         0.5rem 1.5rem 0.5rem 0;
+    font:            inherit;
+    border:          none;
+    background:      transparent;
+    outline:         none;
+    appearance:      none;    /* remove native arrow */
+    cursor:          pointer;
+  }
+  
+  /* 6) Position the arrow */
+  .select-container .dropdown-icon {
+    position:        absolute;
+    top:             60%;
+    right:           28px;  /* tweak to move arrow */
+    transform:       translateY(-50%);
+    pointer-events:  none;     /* clicks go through to the select */
+    font-size:       1.2rem;
+    color:           #333;
+  }
+  
+  /* 7) Checkbox styling */
+  .form-group input[type="checkbox"] {
+    grid-column:    2;
+    transform:      scale(1.2);
+    margin-right:   0.5rem;
+    border:         1px solid #000;
+    accent-color:   #000;
+  }
+  
+  /* 9) Actions row */
+  .actions {
+    grid-column:     1 / -2;
+    display:         flex;
+    justify-content: flex-end;
+    gap:             1rem;
+    margin-top:      2rem;
+  }
+  .actions button {
+    padding:         0.6rem 1.2rem;
+    font-size:       1rem;
+    border:          black solid 1px;
+    cursor:          pointer;
+    font-family:     Didot, serif;
+    transition:      box-shadow .2s;
+  }
+  .actions button[type="submit"] { background: transparent; color: black; }
+  .actions button[type="delete"] { background: transparent; color: #222; }
+  .actions button:hover          { box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+  .actions button[disabled]     { opacity: 0.5; cursor: not-allowed; }
