@@ -11,27 +11,24 @@ import { forkJoin }          from 'rxjs';
   styleUrls: ['./styling.component.css']
 })
 export class StylingComponent implements OnInit {
-  // arrays for each category
-  topsItems: any[] = [];
-  bottomItems: any[] = [];
-  footwearItems: any[] = [];
+  topsItems: any[]        = [];
+  bottomItems: any[]      = [];
+  footwearItems: any[]    = [];
   accessoriesItems: any[] = [];
-  outerwearItems: any[] = [];
+  outerwearItems: any[]   = [];
 
-  // index pointers
-  topIndex = 0;
-  bottomIndex = 0;
-  footwearIndex = 0;
+  topIndex              = 0;
+  bottomIndex           = 0;
+  footwearIndex         = 0;
   accessoriesIndexTop    = 0;
   accessoriesIndexBottom = 0;
-  outerwearIndex = 0;
+  outerwearIndex        = 0;
 
-  // titles
-  topsTitle = '';
-  bottomsTitle = '';
-  footwearTitle = '';
+  topsTitle        = '';
+  bottomsTitle     = '';
+  footwearTitle    = '';
   accessoriesTitle = '';
-  outerwearTitle = '';
+  outerwearTitle   = '';
 
   constructor(private wardrobeService: WardrobeService) {}
 
@@ -51,27 +48,42 @@ export class StylingComponent implements OnInit {
       this.footwearTitle    = cats.find(c => c.categoryId === 3)?.categoryName || 'Footwear';
       this.accessoriesTitle = cats.find(c => c.categoryId === 4)?.categoryName || 'Accessories';
       this.outerwearTitle   = cats.find(c => c.categoryId === 5)?.categoryName || 'Outerwear';
+
+      // ─── START RANDOM INDEX SETUP ──────────────────────────────────────────
+      this.topIndex              = this.randomIndex(this.topsItems);
+      this.bottomIndex           = this.randomIndex(this.bottomItems);
+      this.footwearIndex         = this.randomIndex(this.footwearItems);
+      this.accessoriesIndexTop    = this.randomIndex(this.accessoriesItems);
+      this.accessoriesIndexBottom = this.randomIndex(this.accessoriesItems);
+      this.outerwearIndex        = this.randomIndex(this.outerwearItems);
+      // ─── END RANDOM INDEX SETUP ───────────────────────────────────────────
     });
   }
 
-  prev(arr: any[], idx: number) {
+  private prev(arr: any[], idx: number) {
     return idx > 0 ? idx - 1 : arr.length - 1;
   }
-  next(arr: any[], idx: number) {
+  private next(arr: any[], idx: number) {
     return idx < arr.length - 1 ? idx + 1 : 0;
   }
 
-  // helpers bound from template:
-  prevTop()      { this.topIndex      = this.prev(this.topsItems,        this.topIndex); }
-  nextTop()      { this.topIndex      = this.next(this.topsItems,        this.topIndex); }
-  prevBottom()   { this.bottomIndex   = this.prev(this.bottomItems,      this.bottomIndex); }
-  nextBottom()   { this.bottomIndex   = this.next(this.bottomItems,      this.bottomIndex); }
-  prevFootwear() { this.footwearIndex = this.prev(this.footwearItems,    this.footwearIndex); }
-  nextFootwear() { this.footwearIndex = this.next(this.footwearItems,    this.footwearIndex); }
+  prevTop()      { this.topIndex           = this.prev(this.topsItems,        this.topIndex); }
+  nextTop()      { this.topIndex           = this.next(this.topsItems,        this.topIndex); }
+  prevBottom()   { this.bottomIndex        = this.prev(this.bottomItems,     this.bottomIndex); }
+  nextBottom()   { this.bottomIndex        = this.next(this.bottomItems,     this.bottomIndex); }
+  prevFootwear() { this.footwearIndex      = this.prev(this.footwearItems,   this.footwearIndex); }
+  nextFootwear() { this.footwearIndex      = this.next(this.footwearItems,   this.footwearIndex); }
   prevAccTop()    { this.accessoriesIndexTop    = this.prev(this.accessoriesItems, this.accessoriesIndexTop); }
   nextAccTop()    { this.accessoriesIndexTop    = this.next(this.accessoriesItems, this.accessoriesIndexTop); }
   prevAccBottom() { this.accessoriesIndexBottom = this.prev(this.accessoriesItems, this.accessoriesIndexBottom); }
   nextAccBottom() { this.accessoriesIndexBottom = this.next(this.accessoriesItems, this.accessoriesIndexBottom); }
-  prevOuter()    { this.outerwearIndex   = this.prev(this.outerwearItems,   this.outerwearIndex); }
-  nextOuter()    { this.outerwearIndex   = this.next(this.outerwearItems,   this.outerwearIndex); }
+  prevOuter()    { this.outerwearIndex        = this.prev(this.outerwearItems,   this.outerwearIndex); }
+  nextOuter()    { this.outerwearIndex        = this.next(this.outerwearItems,   this.outerwearIndex); }
+
+  // ─── HELPER TO CHOOSE A RANDOM START ────────────────────────────────────
+  private randomIndex(arr: any[]): number {
+    return arr.length
+      ? Math.floor(Math.random() * arr.length)
+      : 0;
+  }
 }
