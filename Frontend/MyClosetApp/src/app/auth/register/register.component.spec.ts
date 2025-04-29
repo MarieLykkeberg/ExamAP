@@ -20,4 +20,8 @@ describe('RegisterComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should have initial name empty', () => {
+    expect(component.name).toBe('');
+  });
 });

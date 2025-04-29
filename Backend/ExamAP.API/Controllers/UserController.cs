@@ -1,6 +1,7 @@
 using ExamAP.Model.Entities;
 using ExamAP.Model.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using ExamAP.API.Dtos;
 
 namespace ExamAP.API.Controllers
 {
@@ -15,19 +16,28 @@ namespace ExamAP.API.Controllers
             Repository = repository;
         }
 
-       [HttpPost]
-        public IActionResult RegisterUser([FromBody] User user)
+       [HttpPost("register")]
+        public IActionResult RegisterUser([FromBody] RegisterDto dto)
         {
-            Console.WriteLine("Received registration for: " + user.Email);
+        Console.WriteLine($"Received registration for: Name={dto.Name}, Email={dto.Email}");
+        if (dto == null
+            || string.IsNullOrWhiteSpace(dto.Name)
+            || string.IsNullOrWhiteSpace(dto.Email)
+            || string.IsNullOrWhiteSpace(dto.Password))
+        {
+            Console.WriteLine("Bad user data");
+            return BadRequest("Name, Email and Password are all required.");
+        }
 
-            if (user == null || string.IsNullOrWhiteSpace(user.Email) || string.IsNullOrWhiteSpace(user.Password))
-                {
-                    Console.WriteLine("Bad user data");
-                    return BadRequest("Invalid user data");
-                }
+        
+        var user = new User
+        {
+            Name     = dto.Name,
+            Email    = dto.Email,
+            Password = dto.Password
+        };
 
         bool status = Repository.InsertUser(user);
-
             if (status)
             {
                 Console.WriteLine("User registration successful");
@@ -39,13 +49,20 @@ namespace ExamAP.API.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] User user)
+        public IActionResult Login([FromBody] LoginDto dto)
         {
             Console.WriteLine($"Login attempt:");
-            Console.WriteLine($"Email: {user.Email}");
-            Console.WriteLine($"Password: {user.Password}");
+            Console.WriteLine($"Email: {dto.Email}");
+            Console.WriteLine($"Password: {dto.Password}");
 
-            var existingUser = Repository.GetUserByCredentials(user.Email, user.Password);
+            if (dto == null
+            || string.IsNullOrWhiteSpace(dto.Email)
+            || string.IsNullOrWhiteSpace(dto.Password))
+        {
+            return BadRequest("Email and Password are required.");
+        }
+
+            var existingUser = Repository.GetUserByCredentials(dto.Email, dto.Password);
             
             if (existingUser == null)
             {

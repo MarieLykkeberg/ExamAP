@@ -15,7 +15,8 @@ namespace ExamAP.Model.Repositories
                 using var conn = new NpgsqlConnection(ConnectionString);
 
                 var cmd = conn.CreateCommand();
-                cmd.CommandText = "INSERT INTO users (email, passwordhash) VALUES (@Email, @Password)";
+                cmd.CommandText = "INSERT INTO users (name, email, passwordhash) VALUES (@Name, @Email, @Password)";
+                cmd.Parameters.AddWithValue("@Name", user.Name);
                 cmd.Parameters.AddWithValue("@Email", user.Email);
                 cmd.Parameters.AddWithValue("@Password", user.Password);
 
@@ -39,6 +40,7 @@ namespace ExamAP.Model.Repositories
 
             var cmd = conn.CreateCommand();
             cmd.CommandText = "SELECT * FROM users WHERE email = @Email AND passwordhash = @Password";
+            //cmd.CommandText = @"SELECT userid, name, email, passwordhash FROM users WHERE email = @Email AND passwordhash = @Password";
             cmd.Parameters.AddWithValue("@Email", email);
             cmd.Parameters.AddWithValue("@Password", password);
 
@@ -50,6 +52,7 @@ namespace ExamAP.Model.Repositories
                 return new User
                 {
                     UserId = (int)reader["userid"],
+                    Name     = reader["name"].ToString(),
                     Email = reader["email"].ToString(),
                     Password = reader["passwordhash"].ToString()
                 };
