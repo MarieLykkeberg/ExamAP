@@ -1,17 +1,33 @@
+.generateOutfit {
+    display: block;        /* takes full line so auto-margin works */
+    margin: 1rem auto;     /* vertical 1rem, horizontal auto */
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    border: 1px solid #000;
+    background: transparent;
+    cursor: pointer;
+    font-family: Didot, serif;
+    transition: box-shadow .2s;
+  }
+  .generateOutfit:hover {
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+
+
 /* Container holds three rows, stacked vertically */
 .styling-container {
     display: flex;
     flex-direction: column;
     gap: 0px;     /* space between each row */
     padding: 1rem;
-    margin-left: 15rem;
+    margin-left: 20rem;
     margin-top: -2rem;
   }
   
   /* Each row is two cells side by side */
   .row {
     display: flex;
-    gap: -40rem;     /* gutter between left & right cell */
+    gap: -35rem;     /* space between left & right cell */
     align-items: center;
   }
   

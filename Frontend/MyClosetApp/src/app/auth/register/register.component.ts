@@ -22,7 +22,7 @@ export class RegisterComponent {
     this.authService.register(this.email, this.password).subscribe({
       next: (res: any) => {
         console.log('Backend response:', res);
-        this.router.navigate(['/home']);
+        this.router.navigate(['/wardrobe']);
       },
       error: (err) => {
         console.error('Registration failed:', err);
