@@ -12,6 +12,7 @@ import { AuthService } from '../../core/auth.service';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
+  name = '';
   email = '';
   password = '';
 
@@ -19,7 +20,7 @@ export class RegisterComponent {
 
   register() {
     console.log('Register function called');
-    this.authService.register(this.email, this.password).subscribe({
+    this.authService.register(this.name, this.email, this.password).subscribe({
       next: (res: any) => {
         console.log('Backend response:', res);
         this.router.navigate(['/wardrobe']);
