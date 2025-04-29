@@ -28,7 +28,7 @@ export class LoginComponent {
     this.authService.login(this.email, this.password).subscribe({
       next: (res: any) => {
         console.log('Backend response:', res);
-        this.router.navigate(['/home']);
+        this.router.navigate(['/wardrobe']);
       },
       error: (err) => {
         console.error('Login failed:', err);
