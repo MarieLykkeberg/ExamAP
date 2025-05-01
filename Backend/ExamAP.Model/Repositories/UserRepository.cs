@@ -40,7 +40,6 @@ namespace ExamAP.Model.Repositories
 
             var cmd = conn.CreateCommand();
             cmd.CommandText = "SELECT * FROM users WHERE email = @Email AND passwordhash = @Password";
-            //cmd.CommandText = @"SELECT userid, name, email, passwordhash FROM users WHERE email = @Email AND passwordhash = @Password";
             cmd.Parameters.AddWithValue("@Email", email);
             cmd.Parameters.AddWithValue("@Password", password);
 
