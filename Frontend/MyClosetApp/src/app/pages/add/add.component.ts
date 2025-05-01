@@ -20,7 +20,7 @@ export class AddComponent implements OnInit {
   occasions:  { occasionId: number, occasionName: string }[] = [];
 
   itemData = {
-    userId: 12,
+    //userId: 12,
     categoryId:   null,
     colorId:      null,
     materialId:   null,

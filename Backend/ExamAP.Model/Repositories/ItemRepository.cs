@@ -9,21 +9,18 @@ namespace ExamAP.Model.Repositories
     {
         public ItemRepository(IConfiguration configuration) : base(configuration) { }
 
-        public List<Item> GetItems()
+        public List<Item> GetItemsByUserId(int userId)
         {
             var items = new List<Item>();
             using var conn = new NpgsqlConnection(ConnectionString);
             var cmd = conn.CreateCommand();
-            cmd.CommandText = "SELECT * FROM public.items";
-
-            Console.WriteLine("Connecting to DB: " + conn.ConnectionString);
+            cmd.CommandText = "SELECT * FROM public.items WHERE userid = @userId";
+            cmd.Parameters.AddWithValue("@userId", NpgsqlDbType.Integer, userId);
 
             var reader = GetData(conn, cmd);
 
             while (reader.Read())
             {
-                Console.WriteLine("Found a row!");
-
                 var item = new Item
                 {
                     ItemId = reader["itemid"] is DBNull ? 0 : (int)reader["itemid"],
