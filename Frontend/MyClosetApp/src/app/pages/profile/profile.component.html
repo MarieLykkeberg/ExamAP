@@ -1,1 +1,48 @@
-<p>profile works!</p>
+<!-- src/app/pages/profile/profile.component.html -->
+<form #profileForm="ngForm" (ngSubmit)="saveProfile()">
+    <div>
+      <label>
+        Name:
+        <input type="text"
+               name="name"
+               [(ngModel)]="user.name"
+               required
+               #nameField="ngModel" />
+      </label>
+      <div *ngIf="nameField.invalid && nameField.touched">
+        Name is required
+      </div>
+    </div>
+  
+    <div>
+      <label>
+        Email:
+        <input type="email"
+               name="email"
+               [(ngModel)]="user.email"
+               required
+               #emailField="ngModel" />
+      </label>
+      <div *ngIf="emailField.invalid && emailField.touched">
+        Valid email is required
+      </div>
+    </div>
+  
+    <div>
+      <label>
+        Password:
+        <input type="password"
+               name="password"
+               [(ngModel)]="user.password"
+               required
+               #pwField="ngModel" />
+      </label>
+      <div *ngIf="pwField.invalid && pwField.touched">
+        Password is required
+      </div>
+    </div>
+  
+    <button type="submit" [disabled]="profileForm.invalid">
+      Save Profile
+    </button>
+  </form>
