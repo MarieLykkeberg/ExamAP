@@ -62,5 +62,29 @@ namespace ExamAP.Model.Repositories
             return null;
         }
 
-    }
+
+    public User GetUserById(int id)
+{
+    using var conn = new NpgsqlConnection(ConnectionString);
+    var cmd  = conn.CreateCommand();
+    cmd.CommandText = @"
+        SELECT userid, name, email, passwordhash 
+          FROM users 
+         WHERE userid = @UserId
+    ";
+    cmd.Parameters.AddWithValue("@UserId", id);
+
+    using var reader = GetData(conn, cmd);
+    if (!reader.Read())
+        return null;
+
+    return new User
+    {
+        UserId   = (int)   reader["userid"],
+        Name     = reader["name"]     as string,
+        Email    = reader["email"]    as string,
+        Password = reader["passwordhash"] as string
+    };
+}
+}
 }

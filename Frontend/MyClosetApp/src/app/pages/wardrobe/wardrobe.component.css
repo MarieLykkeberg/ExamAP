@@ -3,15 +3,6 @@
   margin-top: 30px;
 }
 
-.itemDetails {
-  font-family: Didot;
-  font-size: 17px;
-  margin-left: auto; 
-  margin-top: 10px;
-  margin-right: 0px; 
-  justify-content: center;
-}
-
 .filter-link {
   display: inline-block;
   cursor: pointer;
