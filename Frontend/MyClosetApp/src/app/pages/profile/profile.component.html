@@ -1,48 +1,66 @@
-<!-- src/app/pages/profile/profile.component.html -->
 <form #profileForm="ngForm" (ngSubmit)="saveProfile()">
+    <!-- ID -->
     <div>
+      <strong>User #{{ user.userId }}</strong>
+    </div>
+  
+    <!-- Name -->
+    <div class="form-group">
       <label>
         Name:
-        <input type="text"
-               name="name"
-               [(ngModel)]="user.name"
-               required
-               #nameField="ngModel" />
+        <input
+          name="name"
+          type="text"
+          [(ngModel)]="user.name"
+          required
+          #nameField="ngModel" />
       </label>
-      <div *ngIf="nameField.invalid && nameField.touched">
+      <div *ngIf="nameField.invalid && nameField.touched" class="error">
         Name is required
       </div>
     </div>
   
-    <div>
+    <!-- Email -->
+    <div class="form-group">
       <label>
         Email:
-        <input type="email"
-               name="email"
-               [(ngModel)]="user.email"
-               required
-               #emailField="ngModel" />
+        <input
+          name="email"
+          type="email"
+          [(ngModel)]="user.email"
+          required
+          #emailField="ngModel" />
       </label>
-      <div *ngIf="emailField.invalid && emailField.touched">
+      <div *ngIf="emailField.invalid && emailField.touched" class="error">
         Valid email is required
       </div>
     </div>
   
-    <div>
+    <!-- Password -->
+    <div class="form-group">
       <label>
         Password:
-        <input type="password"
-               name="password"
-               [(ngModel)]="user.password"
-               required
-               #pwField="ngModel" />
+        <input
+          name="password"
+          type="password"
+          [(ngModel)]="user.password"
+          required
+          #pwField="ngModel" />
       </label>
-      <div *ngIf="pwField.invalid && pwField.touched">
+      <div *ngIf="pwField.invalid && pwField.touched" class="error">
         Password is required
       </div>
     </div>
   
-    <button type="submit" [disabled]="profileForm.invalid">
-      Save Profile
-    </button>
+    <!-- Save button -->
+    <div class="actions">
+      <button type="submit" [disabled]="profileForm.invalid">
+        Save Profile
+      </button>
+    </div>
+  
+    <!-- Error message -->
+    <div *ngIf="errorMsg" class="error">
+      {{ errorMsg }}
+    </div>
   </form>
