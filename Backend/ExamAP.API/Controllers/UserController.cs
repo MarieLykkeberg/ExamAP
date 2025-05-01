@@ -19,7 +19,7 @@ namespace ExamAP.API.Controllers
             Repository = repository;
         }
 
-       [HttpPost("register")]
+        [HttpPost("register")]
         public IActionResult RegisterUser([FromBody] RegisterDto dto)
         {
             Console.WriteLine($"Received registration for: Name={dto.Name}, Email={dto.Email}");
@@ -34,8 +34,8 @@ namespace ExamAP.API.Controllers
 
             var user = new User
             {
-                Name     = dto.Name,
-                Email    = dto.Email,
+                Name = dto.Name,
+                Email = dto.Email,
                 Password = dto.Password
             };
 
@@ -94,4 +94,13 @@ namespace ExamAP.API.Controllers
             return Ok(user);
         }
     }
-}
+
+    [HttpGet("{id}")]
+        public ActionResult<User> GetUserById(int id)
+        {
+            var user = Repository.GetUserById(id);
+            if (user == null)
+                return NotFound($"User {id} not found.");
+            return Ok(user);
+        }
+    }

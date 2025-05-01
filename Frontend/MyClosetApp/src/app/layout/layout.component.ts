@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router, NavigationEnd, RouterModule } from '@angular/router';
 import { filter } from 'rxjs';
+import { AuthService } from '../core/auth.service';
 
 @Component({
   selector: 'app-layout',
@@ -13,7 +14,10 @@ import { filter } from 'rxjs';
 export class LayoutComponent {
   showWardrobeSubnav: boolean = false;
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    public auth: AuthService
+  ) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {

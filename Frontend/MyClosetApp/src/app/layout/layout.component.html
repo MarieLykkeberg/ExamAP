@@ -9,8 +9,13 @@
     </div>
   
     <div class="header-section right">
-      <button class="profile-btn" routerLink="/profile">My Profile</button>
-    </div>
+      <button
+      class="profile-btn"
+      [routerLink]="['/profile', auth.getCurrentUser()?.userId]"
+      routerLinkActive="active">
+      My Profile
+    </button>    
+  </div>
   </div>
 
   <nav *ngIf="showWardrobeSubnav" class="wardrobe-subnav">
