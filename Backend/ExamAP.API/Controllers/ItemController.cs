@@ -15,12 +15,19 @@ namespace ExamAP.API.Controllers
             _repository = repository;
         }
 
-       
+
         [HttpGet]
-        public ActionResult<IEnumerable<Item>> GetItems()  // <-- Fix method name here
+        public ActionResult<IEnumerable<Item>> GetItems()
         {
-            var items = _repository.GetItems();  // <-- Call GetItems, not GetItem
-            return Ok(items);  // <-- Return the correct variable: items, not item
+            int currentUserId = GetCurrentUserId(); // Implement this method below
+            var items = _repository.GetItemsByUserId(currentUserId);
+            return Ok(items);
+        }
+
+        private int GetCurrentUserId()
+        {
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+            return int.Parse(userIdClaim.Value);
         }
 
         [HttpPost]
@@ -30,6 +37,9 @@ namespace ExamAP.API.Controllers
             {
                 return BadRequest("Item data is missing.");
             }
+
+            //Set the correct user ID from the authenticated user
+            item.UserId = GetCurrentUserId();
 
             bool success = _repository.InsertItem(item);
             if (success)
@@ -50,8 +60,18 @@ namespace ExamAP.API.Controllers
                 return BadRequest("Invalid item data or mismatched id.");
             }
 
+            int currentUserId = GetCurrentUserId();
+            var existingItem = _repository.GetItemById(id);
+
+            if (existingItem == null || existingItem.UserId != currentUserId)
+            {
+                return NotFound($"Item with id {id} not found or not owned by user.");
+            }
+
+            item.UserId = currentUserId;
             // Call repository to perform the update
             bool success = _repository.UpdateItem(item);
+
             if (!success)
             {
                 return NotFound($"Item with id {id} not found.");
@@ -64,11 +84,18 @@ namespace ExamAP.API.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteItem(int id)
         {
-            bool success = _repository.DeleteItem(id);
+            int currentUserId = GetCurrentUserId();
+            var existingItem = _repository.GetItemById(id);
 
+            if (existingItem == null || existingItem.UserId != currentUserId)
+            {
+                return NotFound($"Item with id {id} not found or not owned by user.");
+            }
+
+            bool success = _repository.DeleteItem(id);
             if (success)
             {
-                return NoContent(); // 204 success with no body
+                return NoContent();
             }
 
             return NotFound($"Item with id {id} not found.");
@@ -107,9 +134,10 @@ namespace ExamAP.API.Controllers
         [HttpGet("{id}")]
         public ActionResult<Item> GetItemById(int id)
         {
+            int currentUserId = GetCurrentUserId();
             var item = _repository.GetItemById(id);
             if (item == null)
-            return NotFound($"Item with id {id} not found.");
+                return NotFound($"Item with id {id} not found.");
             return Ok(item);
         }
     }

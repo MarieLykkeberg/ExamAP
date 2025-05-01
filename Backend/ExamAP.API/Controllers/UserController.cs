@@ -16,7 +16,7 @@ namespace ExamAP.API.Controllers
             Repository = repository;
         }
 
-       [HttpPost("register")]
+       [HttpPost("register")] 
         public IActionResult RegisterUser([FromBody] RegisterDto dto)
         {
         Console.WriteLine($"Received registration for: Name={dto.Name}, Email={dto.Email}");
