@@ -63,11 +63,7 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./pages/styling/styling.component').then(m => m.StylingComponent)
       },
-      {
-        path: 'profile',
-        loadComponent: () =>
-          import('./pages/profile/profile.component').then(m => m.ProfileComponent)
-      }
+      { path: 'profile/:id', loadComponent: () => import('./pages/profile/profile.component').then(m => m.ProfileComponent) },
     ]
   },
 

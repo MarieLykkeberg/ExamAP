@@ -40,4 +40,10 @@ export class AuthService {
   register(name: string, email: string, password: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, { name, email, password });
   }
+
+
+/** Fetch one user by their id */
+getUserById(id: number): Observable<User> {
+  return this.http.get<User>(`${this.apiUrl}/${id}`);
+}
 }

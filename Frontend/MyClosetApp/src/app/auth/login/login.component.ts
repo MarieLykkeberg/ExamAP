@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../core/auth.service';
+import { AuthService, User } from '../../core/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +21,22 @@ export class LoginComponent {
   ) { }
 
   login() {
-    console.log('Login function called');
+
+    console.log('Login called', this.email, this.password);
+
+    this.authService.login(this.email, this.password).subscribe({
+      next: (user: User) => {
+        console.log('Logged in user:', user);
+        // AuthService has stored `currentUser = user` for you
+        // you can still go straight to the wardrobe
+        this.router.navigate(['/wardrobe']);
+      },
+      error: err => {
+        console.error('Login failed:', err);
+        alert('Invalid email or password');
+
+
+    /* console.log('Login function called');
     console.log('Email:', this.email);
     console.log('Password:', this.password);
 
@@ -32,7 +47,7 @@ export class LoginComponent {
       },
       error: (err) => {
         console.error('Login failed:', err);
-        alert('Invalid email or password');
+        alert('Invalid email or password'); */
       }
     });
   }
