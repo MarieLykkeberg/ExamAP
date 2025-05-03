@@ -8,21 +8,28 @@ import { ColorService, Color }       from '../../core/color.service';
 import { MaterialService, Material } from '../../core/material.service';
 import { BrandService, Brand }       from '../../core/brand.service';
 import { OccasionService, Occasion } from '../../core/occasion.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   standalone: true,
   selector: 'app-add-item',
   templateUrl: './add.component.html',
   styleUrls: ['./add.component.css'],
-  imports: [FormsModule, CommonModule, MatIconModule],
+  imports: [FormsModule, CommonModule, MatIconModule, MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,],
 })
 export class AddComponent implements OnInit {
   // Explicitly typed arrays
   /*categories: { categoryId: number, categoryName: string }[] = [];
-  colors:     { colorId: number, colorName: string }[]       = [];
-  materials:  { materialId: number, materialName: string }[] = [];
-  brands:     { brandId: number, brandName: string }[]       = [];
-  occasions:  { occasionId: number, occasionName: string }[] = []; */ //<-- slet det her
+  colors: { colorId: number, colorName: string }[] = [];
+  materials: { materialId: number, materialName: string }[] = [];
+  brands: { brandId: number, brandName: string }[] = [];
+  occasions: { occasionId: number, occasionName: string }[] = []; */ //<-- slet det her
 
   categories: Category[] = [];
   colors: Color[] = [];
@@ -32,17 +39,17 @@ export class AddComponent implements OnInit {
 
   itemData = {
     //userId: 12,
-    categoryId:   null,
-    colorId:      null,
-    materialId:   null,
-    brandId:      null,
-    occasionId:   null,
-    isFavorite:   false,
-    purchaseDate: '',
-    imageUrl:     ''
+    categoryId: null,
+    colorId: null,
+    materialId: null,
+    brandId: null,
+    occasionId: null,
+    isFavorite: false,
+    purchaseDate: new Date(),
+    imageUrl: ''
   };
 
-  //constructor(private http: HttpClient) {} <-- delete this?
+  //constructor(private http: HttpClient) { } <-- delete this?
   constructor(
     private categoryService: CategoryService,
     private colorService: ColorService,
@@ -68,39 +75,45 @@ export class AddComponent implements OnInit {
   }
 
  /* fetchCategories() {
-        this.http.get<{ categoryId: number, categoryName: string }[]>('http://localhost:5196/api/category')
-          .subscribe(data => this.categories = data);
-      }
+    this.http.get<{ categoryId: number, categoryName: string }[]>('http://localhost:5196/api/category')
+      .subscribe(data => this.categories = data);
+  }
 
   fetchColors() {
-        this.http.get<{ colorId: number, colorName: string }[]>('http://localhost:5196/api/color')
-          .subscribe(data => this.colors = data);
-          }
+    this.http.get<{ colorId: number, colorName: string }[]>('http://localhost:5196/api/color')
+      .subscribe(data => this.colors = data);
+  }
 
-fetchMaterials() {
-        this.http.get<{ materialId: number, materialName: string }[]>('http://localhost:5196/api/material')
-          .subscribe(data => this.materials = data);
-          }
+  fetchMaterials() {
+    this.http.get<{ materialId: number, materialName: string }[]>('http://localhost:5196/api/material')
+      .subscribe(data => this.materials = data);
+  }
 
   fetchBrands() {
-        this.http.get<{ brandId: number, brandName: string }[]>('http://localhost:5196/api/brand')
-          .subscribe(data => this.brands = data);
-              }
+    this.http.get<{ brandId: number, brandName: string }[]>('http://localhost:5196/api/brand')
+      .subscribe(data => this.brands = data);
+  }
 
   fetchOccasions() {
-        this.http.get<{ occasionId: number, occasionName: string }[]>('http://localhost:5196/api/occasion')
-          .subscribe(data => this.occasions = data);
-              } */
+    this.http.get<{ occasionId: number, occasionName: string }[]>('http://localhost:5196/api/occasion')
+      .subscribe(data => this.occasions = data);
+  } */
 
-  onFileSelected(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.itemData.imageUrl = reader.result as string;
-      };
-      reader.readAsDataURL(file);
-    }
+  onFileSelected(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    this.wardrobeService.uploadImage(formData).subscribe({
+      next: (imageUrl: string) => {
+        this.itemData.imageUrl = imageUrl; // ✅ Save the short URL
+      },
+      error: err => {
+        console.error('Image upload failed', err);
+      }
+    });
   }
 
   addItem(): void {

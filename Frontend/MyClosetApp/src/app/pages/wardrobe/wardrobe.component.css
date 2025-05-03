@@ -1,4 +1,4 @@
-.filter-container {
+.filter-favorites {
   margin-left: 45px;
   margin-top: 30px;
 }
@@ -22,6 +22,19 @@
   text-decoration: underline;
 }
 
+.filter-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+  justify-content: center;
+}
+
+mat-chip {
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+}
+
 .carousel-title {
   font-family: Didot;
   font-size: 17px;
@@ -36,7 +49,9 @@
   gap: 16px;
   padding: 10px;
   margin-left: 45px;
+  scroll-snap-type: x mandatory;
 }
+
 
 .gallery-item {
   flex: 0 0 auto;
@@ -61,4 +76,29 @@
 
 .details-button:hover {
   text-decoration: underline;
+}
+
+/* ensuring margins shrink on smaller devices, filters stack vertically + images to adapt to screen
+ */
+
+@media (max-width: 768px) {
+  .filter-favorites,
+  .carousel-title,
+  .carousel-row {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  .gallery-item {
+    width: 120px;
+  }
+
+  .gallery-item img {
+    height: 140px;
+  }
+
+  .filter-section {
+    flex-direction: column;
+    align-items: center;
+  }
 }

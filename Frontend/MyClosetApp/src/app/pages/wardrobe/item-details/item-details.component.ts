@@ -15,11 +15,18 @@ import {
   Occasion
 } from '../../../core/wardrobe.service';
 import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-item-details',
   standalone: true,
-  imports: [ CommonModule, FormsModule, MatIconModule],
+  imports: [ CommonModule, FormsModule, MatIconModule, MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,],
   templateUrl: './item-details.component.html',
   styleUrls: ['./item-details.component.css']
 })
@@ -33,7 +40,8 @@ export class ItemDetailsComponent implements OnInit {
     materialId: 0,
     brandId:    0,
     occasionId: 0,
-    isFavorite: false
+    isFavorite: false,
+    purchaseDate: ''
   };
   errorMsg?: string;
 

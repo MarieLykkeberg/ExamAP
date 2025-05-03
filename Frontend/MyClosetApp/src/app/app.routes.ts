@@ -24,11 +24,6 @@ export const routes: Routes = [
     path: '',
     component: LayoutComponent,
     children: [
-      {
-        path: 'home',
-        loadComponent: () =>
-          import('./pages/home/home.component').then(m => m.HomeComponent)
-      },
 
       // ── Wardrobe module ───────────────────────────────
       {
