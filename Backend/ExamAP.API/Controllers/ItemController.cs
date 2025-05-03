@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using ExamAP.Model.Repositories;
 using ExamAP.Model.Entities;
 
 namespace ExamAP.API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ItemController : ControllerBase
