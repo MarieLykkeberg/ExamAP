@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+//import { HttpClient } from '@angular/common/http'; <-- slet denne?
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { CategoryService, Category } from '../../core/category.service';
+import { ColorService, Color }       from '../../core/color.service';
+import { MaterialService, Material } from '../../core/material.service';
+import { BrandService, Brand }       from '../../core/brand.service';
+import { OccasionService, Occasion } from '../../core/occasion.service';
 
 @Component({
   standalone: true,
@@ -13,11 +18,17 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class AddComponent implements OnInit {
   // Explicitly typed arrays
-  categories: { categoryId: number, categoryName: string }[] = [];
+  /*categories: { categoryId: number, categoryName: string }[] = [];
   colors:     { colorId: number, colorName: string }[]       = [];
   materials:  { materialId: number, materialName: string }[] = [];
   brands:     { brandId: number, brandName: string }[]       = [];
-  occasions:  { occasionId: number, occasionName: string }[] = [];
+  occasions:  { occasionId: number, occasionName: string }[] = []; */ //<-- slet det her
+
+  categories: Category[] = [];
+  colors: Color[] = [];
+  materials: Material[] = [];
+  brands: Brand[] = [];
+  occasions: Occasion[] = [];
 
   itemData = {
     //userId: 12,
@@ -31,17 +42,32 @@ export class AddComponent implements OnInit {
     imageUrl:     ''
   };
 
-  constructor(private http: HttpClient) {}
+  //constructor(private http: HttpClient) {} <-- delete this?
+  constructor(
+    private categoryService: CategoryService,
+    private colorService: ColorService,
+    private materialService: MaterialService,
+    private brandService: BrandService,
+    private occasionService: OccasionService
+  ) {}
 
-  ngOnInit(): void {
+ /* ngOnInit(): void {
     this.fetchCategories();
     this.fetchColors();
     this.fetchMaterials();
     this.fetchBrands();
     this.fetchOccasions();
+  } */
+
+  async ngOnInit(): Promise<void> {
+    this.categories = await this.categoryService.getCategories();
+    this.colors     = await this.colorService.getColors();
+    this.materials  = await this.materialService.getMaterials();
+    this.brands     = await this.brandService.getBrands();
+    this.occasions  = await this.occasionService.getOccasions();
   }
 
-  fetchCategories() {
+ /* fetchCategories() {
         this.http.get<{ categoryId: number, categoryName: string }[]>('http://localhost:5196/api/category')
           .subscribe(data => this.categories = data);
       }
@@ -64,7 +90,7 @@ fetchMaterials() {
   fetchOccasions() {
         this.http.get<{ occasionId: number, occasionName: string }[]>('http://localhost:5196/api/occasion')
           .subscribe(data => this.occasions = data);
-              }
+              } */
 
   onFileSelected(event: any): void {
     const file = event.target.files[0];
