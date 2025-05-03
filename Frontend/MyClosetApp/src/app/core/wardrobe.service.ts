@@ -6,6 +6,7 @@ import { Observable }   from 'rxjs';
 
 // ——— Your data models ———
 export interface Item {
+purchaseDate: any;
   itemId:     number;
   imageUrl:   string;
   colorId:    number;
@@ -70,5 +71,9 @@ export class WardrobeService {
 
   getOccasions(): Observable<Occasion[]> {
     return this.http.get<Occasion[]>(`${this.apiUrl}/occasion`);
+  }
+
+  uploadImage(formData: FormData): Observable<string> {
+    return this.http.post<string>('http://localhost:5196/api/upload-image', formData);
   }
 }

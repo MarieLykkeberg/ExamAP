@@ -1,7 +1,7 @@
 <!-- src/app/pages/wardrobe/wardrobe.component.html -->
 
 <!-- Filter links (unchanged) -->
-<div class="filter-container">
+<div class="filter-favorites">
     <span class="filter-link" [class.active]="!showOnlyFavorites" (click)="showAll()">
       My wardrobe
     </span>
@@ -10,7 +10,42 @@
       </span> 
     </div>
 
-
+    <div class="filter-section">
+        <!-- Colors Filter -->
+        <mat-chip-listbox multiple>
+            <mat-chip-option *ngFor="let color of availableColors"
+                             [selected]="isSelected('color', color.colorId)"
+                             (click)="toggleSelection('color', color.colorId)">
+              {{ color.colorName }}
+            </mat-chip-option>
+          </mat-chip-listbox>
+      
+        <!-- Materials Filter -->
+        <mat-chip-listbox multiple>
+            <mat-chip-option *ngFor="let material of availableMaterials"
+                             [selected]="isSelected('material', material.materialId)"
+                             (click)="toggleSelection('material', material.materialId)">
+              {{ material.materialName }}
+            </mat-chip-option>
+          </mat-chip-listbox>
+      
+        <!-- Brands Filter -->
+        <mat-chip-listbox multiple>
+            <mat-chip-option *ngFor="let brand of availableBrands"
+                             [selected]="isSelected('brand', brand.brandId)"
+                             (click)="toggleSelection('brand', brand.brandId)">
+              {{ brand.brandName }}
+            </mat-chip-option>
+          </mat-chip-listbox>
+      
+        <!-- Occasions Filter -->
+        <mat-chip-listbox multiple>
+            <mat-chip-option *ngFor="let occasion of availableOccasions"
+                             [selected]="isSelected('occasion', occasion.occasionId)"
+                             (click)="toggleSelection('occasion', occasion.occasionId)">
+              {{ occasion.occasionName }}
+            </mat-chip-option>
+          </mat-chip-listbox>
 
   
   <!-- BOTTOMS Carousel -->
