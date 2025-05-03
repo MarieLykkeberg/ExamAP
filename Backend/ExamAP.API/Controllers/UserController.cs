@@ -19,6 +19,7 @@ namespace ExamAP.API.Controllers
             Repository = repository;
         }
 
+        [AllowAnonymous]
         [HttpPost("register")]
         public IActionResult RegisterUser([FromBody] RegisterDto dto)
         {
@@ -50,6 +51,7 @@ namespace ExamAP.API.Controllers
             return BadRequest("Something went wrong while registering the user.");
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public ActionResult<User> Login([FromBody] LoginDto dto)
         {
@@ -93,7 +95,7 @@ namespace ExamAP.API.Controllers
 
             return Ok(user);
         }
-    }
+    
 
     [HttpGet("{id}")]
         public ActionResult<User> GetUserById(int id)
@@ -104,3 +106,4 @@ namespace ExamAP.API.Controllers
             return Ok(user);
         }
     }
+}

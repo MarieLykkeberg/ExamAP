@@ -1,6 +1,8 @@
 using ExamAP.Model.Repositories;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.OpenApi.Models;
+using ExamAP.API.Middleware;
+using Microsoft.AspNetCore.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,12 +42,17 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+builder.Services.AddAuthentication("Basic") // 👈 Set "Basic" as default
+    .AddScheme<AuthenticationSchemeOptions, DummyHandler>("Basic", null);
+
 var app = builder.Build();
 
 // Enable middleware
 app.UseHttpsRedirection();
 app.UseCors(MyAllowSpecificOrigins);
 
+app.UseBasicAuthenticationMiddleware();
+app.UseAuthentication();
 app.UseAuthorization();
 
 // Swagger UI
