@@ -3,6 +3,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient }   from '@angular/common/http';
 import { Observable }   from 'rxjs';
+import { map } from 'rxjs/operators';
 
 // ——— Your data models ———
 export interface Item {
@@ -74,6 +75,7 @@ export class WardrobeService {
   }
 
   uploadImage(formData: FormData): Observable<string> {
-    return this.http.post<string>('http://localhost:5196/api/upload-image', formData);
+    return this.http.post<{ imageUrl: string }>('http://localhost:5196/api/upload-image', formData)
+      .pipe(map(res => res.imageUrl));
   }
 }
