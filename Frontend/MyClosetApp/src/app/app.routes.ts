@@ -53,12 +53,19 @@ export const routes: Routes = [
         ]
       },
 
+      // ── Styling page ───────────────────────────────────
       {
         path: 'styling',
         loadComponent: () =>
           import('./pages/styling/styling.component').then(m => m.StylingComponent)
       },
-      { path: 'profile/:id', loadComponent: () => import('./pages/profile/profile.component').then(m => m.ProfileComponent) },
+
+      // ── Profile (no ":id" any more) ─────────────────────
+      {
+        path: 'profile',
+        loadComponent: () =>
+          import('./pages/profile/profile.component').then(m => m.ProfileComponent)
+      }
     ]
   },
 

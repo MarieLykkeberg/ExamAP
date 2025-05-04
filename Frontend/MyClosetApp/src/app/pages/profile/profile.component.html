@@ -1,66 +1,38 @@
-<form #profileForm="ngForm" (ngSubmit)="saveProfile()">
-    <!-- ID -->
-    <div>
-      <strong>User #{{ user.userId }}</strong>
-    </div>
+<form #profileForm="ngForm" (ngSubmit)="saveProfile(profileForm)">
   
-    <!-- Name -->
-    <div class="form-group">
-      <label>
-        Name:
-        <input
-          name="name"
-          type="text"
-          [(ngModel)]="user.name"
-          required
-          #nameField="ngModel" />
-      </label>
-      <div *ngIf="nameField.invalid && nameField.touched" class="error">
+    <div class="form-row">
+      <label for="name">Name</label>
+      <input id="name" name="name" type="text"
+        [(ngModel)]="user.name" required #nameField="ngModel" />
+      <div class="error" *ngIf="nameField.invalid && nameField.touched">
         Name is required
       </div>
     </div>
   
-    <!-- Email -->
-    <div class="form-group">
-      <label>
-        Email:
-        <input
-          name="email"
-          type="email"
-          [(ngModel)]="user.email"
-          required
-          #emailField="ngModel" />
-      </label>
-      <div *ngIf="emailField.invalid && emailField.touched" class="error">
+    <div class="form-row">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email"
+        [(ngModel)]="user.email" required #emailField="ngModel" />
+      <div class="error" *ngIf="emailField.invalid && emailField.touched">
         Valid email is required
       </div>
     </div>
   
-    <!-- Password -->
-    <div class="form-group">
-      <label>
-        Password:
-        <input
-          name="password"
-          type="password"
-          [(ngModel)]="user.password"
-          required
-          #pwField="ngModel" />
-      </label>
-      <div *ngIf="pwField.invalid && pwField.touched" class="error">
+    <div class="form-row">
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password"
+        [(ngModel)]="user.password" required #pwField="ngModel" />
+      <div class="error" *ngIf="pwField.invalid && pwField.touched">
         Password is required
       </div>
     </div>
   
-    <!-- Save button -->
     <div class="actions">
-      <button type="submit" [disabled]="profileForm.invalid">
-        Save Profile
+      <button type="submit" [disabled]="profileForm.invalid">Save</button>
+      <button type="button" class="delete" (click)="deleteAccount()">
+        Delete Account
       </button>
     </div>
   
-    <!-- Error message -->
-    <div *ngIf="errorMsg" class="error">
-      {{ errorMsg }}
-    </div>
+    <div class="error" *ngIf="errorMsg">{{ errorMsg }}</div>
   </form>

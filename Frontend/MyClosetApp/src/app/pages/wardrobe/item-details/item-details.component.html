@@ -109,24 +109,33 @@
         </div>
         </div>
   
-        <!-- Favorite checkbox -->
-        <div class="form-group">
-          <label>
-            <input
-              type="checkbox"
-              name="isFavorite"
-              [(ngModel)]="item.isFavorite"
-            />
-            Mark as favorite
-          </label>
-        </div>
-
-        <mat-form-field appearance="outline" class="full-width">
+        <!-- Purchase Date on its own row under the dropdowns -->
+   <div class="form-group">
+          <label></label>
+          <mat-form-field appearance="outline" class="date-field">
             <mat-label>Purchase Date</mat-label>
-            <input matInput [matDatepicker]="picker" [(ngModel)]="item.purchaseDate" name="purchaseDate">
+            <input
+              matInput
+              [matDatepicker]="picker"
+              [(ngModel)]="item.purchaseDate"
+              name="purchaseDate"
+            />
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
+        </div>
+    
+        <!-- Favorite checkbox on the line under the datepicker -->
+         <div class="form-group">
+           <label>
+             <input
+               type="checkbox"
+               name="isFavorite"
+               [(ngModel)]="item.isFavorite"
+             />
+             Mark as favorite
+           </label>
+         </div>
   
         <!-- Actions -->
         <div class="actions">

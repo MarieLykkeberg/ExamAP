@@ -19,17 +19,16 @@ namespace ExamAP.API.Controllers
             Repository = repository;
         }
 
+        // ── Registration ────────────────────────────────────────
         [AllowAnonymous]
         [HttpPost("register")]
         public IActionResult RegisterUser([FromBody] RegisterDto dto)
         {
-            Console.WriteLine($"Received registration for: Name={dto.Name}, Email={dto.Email}");
             if (dto == null
                 || string.IsNullOrWhiteSpace(dto.Name)
                 || string.IsNullOrWhiteSpace(dto.Email)
                 || string.IsNullOrWhiteSpace(dto.Password))
             {
-                Console.WriteLine("Bad user data");
                 return BadRequest("Name, Email and Password are all required.");
             }
 
@@ -41,24 +40,15 @@ namespace ExamAP.API.Controllers
             };
 
             bool status = Repository.InsertUser(user);
-            if (status)
-            {
-                Console.WriteLine("User registration successful");
-                return Ok(new { message = "User registered successfully" });
-            }
-
-            Console.WriteLine("User registration failed");
+            if (status) return Ok(new { message = "User registered successfully" });
             return BadRequest("Something went wrong while registering the user.");
         }
 
+        // ── Login ────────────────────────────────────────────────
         [AllowAnonymous]
         [HttpPost("login")]
         public ActionResult<User> Login([FromBody] LoginDto dto)
         {
-            Console.WriteLine("Login attempt:");
-            Console.WriteLine($"Email: {dto.Email}");
-            Console.WriteLine($"Password: {dto.Password}");
-
             if (dto == null
                 || string.IsNullOrWhiteSpace(dto.Email)
                 || string.IsNullOrWhiteSpace(dto.Password))
@@ -67,43 +57,75 @@ namespace ExamAP.API.Controllers
             }
 
             var existingUser = Repository.GetUserByCredentials(dto.Email, dto.Password);
-            if (existingUser == null)
-            {
-                Console.WriteLine("No matching user found.");
-                return Unauthorized("Invalid email or password");
-            }
+            if (existingUser == null) return Unauthorized("Invalid email or password");
 
-            Console.WriteLine("Login successful!");
-            // ← return the full User object
             return Ok(existingUser);
         }
 
+        // ── Get current user (from token) ───────────────────────
         [Authorize]
         [HttpGet("me")]
         public ActionResult<User> GetCurrentUser()
         {
             var sub = User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
-            if (sub == null)
-                return Unauthorized();
-
+            if (sub == null) return Unauthorized();
             if (!Int32.TryParse(sub, out var userId))
                 return BadRequest("Invalid user id in token");
 
             var user = Repository.GetUserById(userId);
-            if (user == null)
-                return NotFound($"User {userId} not found");
+            if (user == null) return NotFound($"User {userId} not found");
 
             return Ok(user);
         }
-    
 
-    [HttpGet("{id}")]
+        // ── Get any user by id ───────────────────────────────────
+        [HttpGet("{id}")]
         public ActionResult<User> GetUserById(int id)
         {
             var user = Repository.GetUserById(id);
-            if (user == null)
-                return NotFound($"User {id} not found.");
+            if (user == null) return NotFound($"User {id} not found.");
             return Ok(user);
         }
-    }
-}
+
+        // ── UPDATE user (PUT /api/user/{id}) ─────────────────────
+        [Authorize]
+        [HttpPut("{id}")]
+        public IActionResult UpdateUser(int id, [FromBody] RegisterDto dto)
+        {
+            if (dto == null
+                || string.IsNullOrWhiteSpace(dto.Name)
+                || string.IsNullOrWhiteSpace(dto.Email)
+                || string.IsNullOrWhiteSpace(dto.Password))
+            {
+                return BadRequest("Name, Email and Password are all required.");
+            }
+
+            var existing = Repository.GetUserById(id);
+            if (existing == null) return NotFound($"User {id} not found.");
+
+            existing.Name     = dto.Name;
+            existing.Email    = dto.Email;
+            existing.Password = dto.Password;
+
+            bool success = Repository.UpdateUser(existing);
+            if (!success) return StatusCode(500, "Failed to update user.");
+
+            return NoContent();  // HTTP 204
+        }
+
+        // ── DELETE user (DELETE /api/user/{id}) ──────────────────
+        [Authorize]
+        [HttpDelete("{id}")]
+        public IActionResult DeleteUser(int id)
+        {
+            var existing = Repository.GetUserById(id);
+            if (existing == null) return NotFound($"User {id} not found.");
+
+            bool success = Repository.DeleteUser(id);
+            if (!success) return StatusCode(500, "Failed to delete user.");
+
+            return NoContent();  // HTTP 204
+        }
+
+    } // class UserController
+} // namespace ExamAP.API.Controllers

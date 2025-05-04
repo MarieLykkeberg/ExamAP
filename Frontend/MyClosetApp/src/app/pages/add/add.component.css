@@ -14,9 +14,8 @@
   .add-main {
     display: flex;
     align-items: flex-start;
-    gap: 4rem;        /* space between upload area & form */
+    gap: 2rem;        /* space between upload area & form */
     margin-bottom: 2rem;
-    margin-left: -75px;
   }
   
   /* 3) Image-upload panel */
@@ -41,13 +40,13 @@
     flex: 1;
     display: grid;
     grid-template-columns: auto 1fr;  /* labels in col1, controls in col2 */
-    column-gap:       3rem;           /* space between label & select/input */
+    column-gap:       0rem;           /* tightened space between label & field */
     row-gap:          1.5rem;         /* vertical gap between rows */
   }
   
   /* 5) Grid-aligned labels */
   .add-item-form .form-group {
-    display: contents;  /* so the grid lays out our labels & fields */
+    display: contents;
   }
   .add-item-form .form-group label {
     grid-column: 1;
@@ -57,52 +56,53 @@
   }
   
   /* 6) Wrap each select in a .select-container (with <mat-icon> arrow) */
-  .select-container {
+  .add-item-form .select-container {
     grid-column:      2;
     position:         relative;
     display:          inline-block;
     width:            100%;
+    padding:          0;              /* ensure no container padding */
   }
   
-  /* 7) Strip out the select’s box */
-  .select-container select {
+  /* 7) Style the select itself */
+  .add-item-form .select-container select {
     width:           100%;
-    padding:         0.5rem 1.5rem 0.5rem 0;
+    padding:         0.5rem 3rem 0.5rem 0;  /* plenty of right padding for arrow */
     font:            inherit;
     border:          none;
     background:      transparent;
     outline:         none;
-    appearance:      none;      /* kill native arrow */
+    appearance:      none;
     cursor:          pointer;
   }
   
   /* 8) Position our Material arrow icon */
-  .select-container .dropdown-icon {
-    position:        absolute;
-    top:             50%;
-    right:           0.5rem;    /* adjust to taste */
-    transform:       translateY(-50%);
-    pointer-events:  none;
-    font-size:       1.2rem;
-    color:           #333;
+  .add-item-form .select-container .dropdown-icon {
+    position:       absolute;
+    top:            50%;
+    right:          0rem;    /* move arrow 1.5rem in from the right edge */
+    transform:      translateY(-50%);
+    pointer-events: none;
+    font-size:      1.2rem;
+    color:          #333;
   }
   
   /* 9) Simple checkbox styling */
   .add-item-form input[type="checkbox"] {
-    grid-column: 2;
-    transform:   scale(1.2);
-    margin-right:0.5rem;
-    border:      1px solid #000;
-    accent-color:#000;
+    grid-column:     2;
+    transform:       scale(1.2);
+    margin-right:    0.5rem;
+    border:          1px solid #000;
+    accent-color:    #000;
   }
   
   /* 10) Date input styling (optional) */
   .add-item-form input[type="date"] {
-    grid-column: 2;
-    padding:      0.5rem;
-    font:         inherit;
-    border:       1px solid #ccc;
-    border-radius:4px;
+    grid-column:     2;
+    padding:         0.5rem;
+    font:            inherit;
+    border:          1px solid #ccc;
+    border-radius:   4px;
   }
   
   /* 12) Submit button under the 2nd column only */
