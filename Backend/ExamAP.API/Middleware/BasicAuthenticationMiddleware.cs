@@ -57,13 +57,22 @@ public class BasicAuthenticationMiddleware
 
             if (user == null)
             {
-                Console.WriteLine("🚫 User not found or password incorrect.");
+                Console.WriteLine("User not found or password incorrect.");
                 context.Response.StatusCode = 401;
                 await context.Response.WriteAsync("Incorrect credentials.");
                 return;
             }
 
-            Console.WriteLine("✅ User authenticated successfully.");
+            Console.WriteLine("User authenticated successfully.");
+
+            // Add claims so controller can access them
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                new Claim(ClaimTypes.Name, user.Email)
+            };
+            var identity = new ClaimsIdentity(claims, "Basic");
+            context.User = new ClaimsPrincipal(identity);  // Now available via `User.FindFirst(...)`
 
             await _next(context);
         }
@@ -78,23 +87,3 @@ public static class BasicAuthenticationMiddlewareExtensions
     }
 }
 
-public class DummyHandler : AuthenticationHandler<AuthenticationSchemeOptions>
-{
-    public DummyHandler(
-        IOptionsMonitor<AuthenticationSchemeOptions> options,
-        ILoggerFactory logger,
-        UrlEncoder encoder,
-        ISystemClock clock)
-        : base(options, logger, encoder, clock)
-    {}
-
-    protected override Task<AuthenticateResult> HandleAuthenticateAsync()
-    {
-        // We already authenticate in custom middleware
-        var identity = new ClaimsIdentity("Basic");
-        var principal = new ClaimsPrincipal(identity);
-        var ticket = new AuthenticationTicket(principal, "Basic");
-
-        return Task.FromResult(AuthenticateResult.Success(ticket));
-    }
-}

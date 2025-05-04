@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 export interface Color {
   colorId: number;
-  name: string;
+  colorName: string;
 }
 
 @Injectable({

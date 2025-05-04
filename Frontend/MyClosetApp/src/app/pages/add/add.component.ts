@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-//import { HttpClient } from '@angular/common/http'; <-- slet denne?
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { CategoryService, Category } from '../../core/category.service';
 import { ColorService, Color }       from '../../core/color.service';
 import { MaterialService, Material } from '../../core/material.service';
 import { BrandService, Brand }       from '../../core/brand.service';
 import { OccasionService, Occasion } from '../../core/occasion.service';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { ItemService, Item } from '../../core/item.service';
 
 @Component({
   standalone: true,
@@ -24,12 +24,6 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatNativeDateModule,],
 })
 export class AddComponent implements OnInit {
-  // Explicitly typed arrays
-  /*categories: { categoryId: number, categoryName: string }[] = [];
-  colors: { colorId: number, colorName: string }[] = [];
-  materials: { materialId: number, materialName: string }[] = [];
-  brands: { brandId: number, brandName: string }[] = [];
-  occasions: { occasionId: number, occasionName: string }[] = []; */ //<-- slet det her
 
   categories: Category[] = [];
   colors: Color[] = [];
@@ -38,7 +32,6 @@ export class AddComponent implements OnInit {
   occasions: Occasion[] = [];
 
   itemData = {
-    //userId: 12,
     categoryId: null,
     colorId: null,
     materialId: null,
@@ -49,85 +42,49 @@ export class AddComponent implements OnInit {
     imageUrl: ''
   };
 
-  //constructor(private http: HttpClient) { } <-- delete this?
   constructor(
     private categoryService: CategoryService,
     private colorService: ColorService,
     private materialService: MaterialService,
     private brandService: BrandService,
-    private occasionService: OccasionService
+    private occasionService: OccasionService,
+    private itemService: ItemService
   ) {}
-
- /* ngOnInit(): void {
-    this.fetchCategories();
-    this.fetchColors();
-    this.fetchMaterials();
-    this.fetchBrands();
-    this.fetchOccasions();
-  } */
 
   async ngOnInit(): Promise<void> {
     this.categories = await this.categoryService.getCategories();
+    console.log("Categories in component:", this.categories);
     this.colors     = await this.colorService.getColors();
     this.materials  = await this.materialService.getMaterials();
     this.brands     = await this.brandService.getBrands();
     this.occasions  = await this.occasionService.getOccasions();
   }
 
- /* fetchCategories() {
-    this.http.get<{ categoryId: number, categoryName: string }[]>('http://localhost:5196/api/category')
-      .subscribe(data => this.categories = data);
-  }
-
-  fetchColors() {
-    this.http.get<{ colorId: number, colorName: string }[]>('http://localhost:5196/api/color')
-      .subscribe(data => this.colors = data);
-  }
-
-  fetchMaterials() {
-    this.http.get<{ materialId: number, materialName: string }[]>('http://localhost:5196/api/material')
-      .subscribe(data => this.materials = data);
-  }
-
-  fetchBrands() {
-    this.http.get<{ brandId: number, brandName: string }[]>('http://localhost:5196/api/brand')
-      .subscribe(data => this.brands = data);
-  }
-
-  fetchOccasions() {
-    this.http.get<{ occasionId: number, occasionName: string }[]>('http://localhost:5196/api/occasion')
-      .subscribe(data => this.occasions = data);
-  } */
-
   onFileSelected(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (!file) return;
 
-    const formData = new FormData();
-    formData.append('image', file);
-
-    this.wardrobeService.uploadImage(formData).subscribe({
-      next: (imageUrl: string) => {
-        this.itemData.imageUrl = imageUrl; // ✅ Save the short URL
-      },
-      error: err => {
-        console.error('Image upload failed', err);
-      }
-    });
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.itemData.imageUrl = reader.result as string;
+    };
+    reader.readAsDataURL(file);
   }
 
-  addItem(): void {
-    console.log("Form Data: ", this.itemData);
-    this.http.post('http://localhost:5196/api/item', this.itemData)
-      .subscribe({
-        next: (response) => {
-          console.log('Item added successfully', response);
-          alert('Item added successfully!');
-        },
-        error: (err) => {
-          console.error('Error adding item:', err);
-          alert('Error adding item');
-        }
-      });
+  async addItem(): Promise<void> {
+    try {
+      // ✅ Convert the Date object to a string before sending
+      const itemToSend = {
+        ...this.itemData,
+        purchaseDate: this.itemData.purchaseDate.toISOString().split('T')[0]
+      };
+  
+      console.log("Sending Form Data: ", itemToSend);
+      await this.itemService.addItem(itemToSend);
+      alert('Item added successfully!');
+    } catch (err) {
+      console.error('Error adding item:', err);
+      alert('Error adding item');
+    }
   }
 }

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 
 export interface Occasion {
-  occasionId: number;
-  name: string;
-}
+    occasionId: number;
+    occasionName: string;
+  }
 
 @Injectable({
   providedIn: 'root'

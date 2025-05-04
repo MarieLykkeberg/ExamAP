@@ -18,11 +18,17 @@ export class AuthService {
 
   /* Call after successful login, and stores the returned User in memory */
   login(email: string, password: string): Observable<User> {
+    const authHeader = 'Basic ' + btoa(`${email}:${password}`); //generate header
+  
     return this.http
       .post<User>(`${this.apiUrl}/login`, { email, password })
       .pipe(
-        tap(u => console.log('AuthService got user:', u)),
-        tap(u => this.currentUser = u)
+        tap(u => {
+          console.log('AuthService got user:', u);
+          this.currentUser = u;
+  
+          localStorage.setItem('authHeader', authHeader); //store it for future fetch() calls
+        })
       );
   }
 

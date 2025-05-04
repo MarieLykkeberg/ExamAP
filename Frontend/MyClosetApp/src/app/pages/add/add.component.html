@@ -14,8 +14,8 @@
         <div class="form-group">
             <label for="categoryId">Category</label>
             <div class="select-container">
-                <select id="categoryId" name="categoryId" [(ngModel)]="itemData.categoryId" #categoryId="ngModel"
-                    required>
+                <select *ngIf="categories.length" id="categoryId" name="categoryId" [(ngModel)]="itemData.categoryId"
+                #categoryId="ngModel" required>
                     <option [ngValue]="null" disabled selected>
                         Select category
                     </option>
@@ -27,7 +27,7 @@
                     arrow_drop_down
                 </mat-icon>
             </div>
-            <div *ngIf="categoryId.invalid && categoryId.touched" class="error">
+            <div *ngIf="itemForm.controls['categoryId']?.invalid && itemForm.controls['categoryId']?.touched" class="error">
                 Category is required
             </div>
         </div>
@@ -48,7 +48,7 @@
                     arrow_drop_down
                 </mat-icon>
             </div>
-            <div *ngIf="colorId.invalid && colorId.touched" class="error">
+            <div *ngIf="itemForm.controls['colorId']?.invalid && itemForm.controls['colorId']?.touched" class="error">
                 Color is required
             </div>
         </div>
@@ -70,7 +70,7 @@
                     arrow_drop_down
                 </mat-icon>
             </div>
-            <div *ngIf="materialId.invalid && materialId.touched" class="error">
+            <div *ngIf="itemForm.controls['materialId']?.invalid && itemForm.controls['materialId']?.touched" class="error">
                 Material is required
             </div>
         </div>
@@ -91,7 +91,7 @@
                     arrow_drop_down
                 </mat-icon>
             </div>
-            <div *ngIf="brandId.invalid && brandId.touched" class="error">
+            <div *ngIf="itemForm.controls['brandId']?.invalid && itemForm.controls['brandId']?.touched" class="error">
                 Brand is required
             </div>
         </div>
@@ -113,22 +113,17 @@
                     arrow_drop_down
                 </mat-icon>
             </div>
-            <div *ngIf="occasionId.invalid && occasionId.touched" class="error">
+            <div *ngIf="itemForm.controls['occasionId']?.invalid && itemForm.controls['occasionId']?.touched" class="error">
                 Occasion is required
             </div>
         </div>
 
         <mat-form-field appearance="outline" class="full-width">
             <mat-label>Purchase Date</mat-label>
-            <input
-              matInput
-              [matDatepicker]="picker"
-              [(ngModel)]="itemData.purchaseDate"
-              name="purchaseDate"
-            />
+            <input matInput [matDatepicker]="picker" [(ngModel)]="itemData.purchaseDate" name="purchaseDate" />
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
+        </mat-form-field>
 
         <!-- Favorite Checkbox -->
         <div class="form-group">

@@ -1,32 +1,36 @@
 import { Injectable } from '@angular/core';
 
 export interface Category {
-  categoryId: number;  
-  name: string;
+    categoryId: number;
+    categoryName: string;
 }
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class CategoryService {
-  private apiUrl = 'http://localhost:5196/api/category'; 
+    private apiUrl = 'http://localhost:5196/api/category';
 
-  constructor() {}
+    constructor() { }
 
-  async getCategories(): Promise<Category[]> {
-    const authHeader = localStorage.getItem('authHeader');
+    async getCategories(): Promise<Category[]> {
+        const authHeader = localStorage.getItem('authHeader');
 
-    const response = await fetch(this.apiUrl, {
-      method: 'GET',
-      headers: {
-        'Authorization': authHeader || ''
-      }
-    });
+        const response = await fetch(this.apiUrl, {
+            method: 'GET',
+            headers: {
+                'Authorization': authHeader || ''
+            }
+        });
 
-    if (!response.ok) {
-      throw new Error('Failed to fetch: ' + response.statusText);
+        /*const data = await response.json();
+        console.log('Categories from backend:', data); //ADD THIS LINE
+        return data; */
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch: ' + response.statusText);
+        }
+
+        return await response.json();
     }
-
-    return await response.json();
-  }
 }
