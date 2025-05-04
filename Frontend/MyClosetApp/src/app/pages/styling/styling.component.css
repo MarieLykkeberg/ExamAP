@@ -1,6 +1,8 @@
 .generateOutfit {
-    display: block;        /* takes full line so auto-margin works */
-    margin: 1rem auto;     /* vertical 1rem, horizontal auto */
+    display: block;
+    /* takes full line so auto-margin works */
+    margin: 1rem 0;     
+    /* vertical 1rem, horizontal auto */
     padding: 0.6rem 1.2rem;
     font-size: 1rem;
     border: 1px solid #000;
@@ -8,54 +10,58 @@
     cursor: pointer;
     font-family: Didot, serif;
     transition: box-shadow .2s;
-  }
-  .generateOutfit:hover {
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  }
+    margin-left: 13px;
+}
+
+.generateOutfit:hover {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
 
 
 /* Container holds three rows, stacked vertically */
 .styling-container {
+  display: flex;
+  flex-direction: column;
+  /* only horizontal + bottom padding now, no top */
+  padding: 0 1rem 1rem;
+  align-items: center;
+  margin-top: 0;          /* drop that negative tweak */
+
+/* Each row is two cells side by side */
+.row {
     display: flex;
-    flex-direction: column;
-    gap: 0px;     /* space between each row */
-    padding: 1rem;
-    margin-left: 20rem;
-    margin-top: -2rem;
-  }
-  
-  /* Each row is two cells side by side */
-  .row {
-    display: flex;
-    gap: -35rem;     /* space between left & right cell */
+    gap: 15rem;
+    /* space between left & right cell */
     align-items: center;
-  }
-  
-  /* Each cell takes equal width */
-  .section {
+}
+
+/* Each cell takes equal width */
+.section {
     flex: 1;
-  }
-  
-  /* Carousel that shows exactly one image + nav buttons */
-  .carousel-single {
+}
+
+/* Carousel that shows exactly one image + nav buttons */
+.carousel-single {
     display: flex;
     align-items: center;
     gap: 1rem;
-  }
-  
-  /* Image styling */
-  .carousel-single img {
-    width: 160px;    /* or whatever size you prefer */
+}
+
+/* Image styling */
+.carousel-single img {
+    width: 160px;
+    /* or whatever size you prefer */
     height: auto;
     border-radius: 8px;
-  }
-  
-  /* Prev/Next buttons */
-  .carousel-single button {
+}
+
+/* Prev/Next buttons */
+.carousel-single button {
     background: none;
     border: none;
     font-size: 1.5rem;
     cursor: pointer;
     user-select: none;
     line-height: 1;
-  }
+}
+}

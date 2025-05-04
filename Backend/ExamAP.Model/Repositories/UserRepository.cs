@@ -20,22 +20,16 @@ namespace ExamAP.Model.Repositories
                 cmd.Parameters.AddWithValue("@Email", user.Email);
                 cmd.Parameters.AddWithValue("@Password", user.Password);
 
-                Console.WriteLine("Attempting to insert user...");
-                bool success = InsertData(conn, cmd);
-                Console.WriteLine("Insert success: " + success);
-                return success;
+                return ExecuteNonQuery(conn, cmd);
             }
-            catch (Exception ex)
+            catch
             {
-                Console.WriteLine("Insert failed: " + ex.Message);
                 return false;
             }
         }
 
         public User GetUserByCredentials(string email, string password)
         {
-            Console.WriteLine($"Searching for user with email: {email} and password: {password}");
-
             using var conn = new NpgsqlConnection(ConnectionString);
 
             var cmd = conn.CreateCommand();
@@ -43,47 +37,104 @@ namespace ExamAP.Model.Repositories
             cmd.Parameters.AddWithValue("@Email", email);
             cmd.Parameters.AddWithValue("@Password", password);
 
-            var reader = GetData(conn, cmd);
-
+            using var reader = GetData(conn, cmd);
             if (reader.Read())
             {
-                Console.WriteLine("Match found in database.");
                 return new User
                 {
-                    UserId = (int)reader["userid"],
+                    UserId   = (int)reader["userid"],
                     Name     = reader["name"].ToString(),
-                    Email = reader["email"].ToString(),
+                    Email    = reader["email"].ToString(),
                     Password = reader["passwordhash"].ToString()
                 };
             }
 
-            Console.WriteLine("No match found.");
             return null;
         }
 
+        public User GetUserById(int id)
+        {
+            using var conn = new NpgsqlConnection(ConnectionString);
+            var cmd  = conn.CreateCommand();
+            cmd.CommandText = @"
+                SELECT userid, name, email, passwordhash 
+                  FROM users 
+                 WHERE userid = @UserId
+            ";
+            cmd.Parameters.AddWithValue("@UserId", id);
 
-    public User GetUserById(int id)
-{
-    using var conn = new NpgsqlConnection(ConnectionString);
-    var cmd  = conn.CreateCommand();
-    cmd.CommandText = @"
-        SELECT userid, name, email, passwordhash 
-          FROM users 
-         WHERE userid = @UserId
-    ";
-    cmd.Parameters.AddWithValue("@UserId", id);
+            using var reader = GetData(conn, cmd);
+            if (!reader.Read())
+                return null;
 
-    using var reader = GetData(conn, cmd);
-    if (!reader.Read())
-        return null;
+            return new User
+            {
+                UserId   = (int)reader["userid"],
+                Name     = reader["name"] as string,
+                Email    = reader["email"] as string,
+                Password = reader["passwordhash"] as string
+            };
+        }
 
-    return new User
-    {
-        UserId   = (int)   reader["userid"],
-        Name     = reader["name"]     as string,
-        Email    = reader["email"]    as string,
-        Password = reader["passwordhash"] as string
-    };
-}
-}
+        // ── Add UpdateUser ───────────────────────────────────────
+        /// <summary>
+        /// Updates an existing user in the database.
+        /// </summary>
+        public bool UpdateUser(User user)
+        {
+            try
+            {
+                using var conn = new NpgsqlConnection(ConnectionString);
+                var cmd = conn.CreateCommand();
+                cmd.CommandText = @"
+                    UPDATE users
+                       SET name = @Name,
+                           email = @Email,
+                           passwordhash = @Password
+                     WHERE userid = @UserId
+                ";
+                cmd.Parameters.AddWithValue("@Name", user.Name);
+                cmd.Parameters.AddWithValue("@Email", user.Email);
+                cmd.Parameters.AddWithValue("@Password", user.Password);
+                cmd.Parameters.AddWithValue("@UserId", user.UserId);
+
+                return ExecuteNonQuery(conn, cmd);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        // ── Add DeleteUser ───────────────────────────────────────
+        /// <summary>
+        /// Deletes the user with the specified ID.
+        /// </summary>
+        public bool DeleteUser(int id)
+        {
+            try
+            {
+                using var conn = new NpgsqlConnection(ConnectionString);
+                var cmd = conn.CreateCommand();
+                cmd.CommandText = "DELETE FROM users WHERE userid = @UserId";
+                cmd.Parameters.AddWithValue("@UserId", id);
+
+                return ExecuteNonQuery(conn, cmd);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Helper to open connection and execute a non-query command, returning true if at least one row was affected.
+        /// </summary>
+        private bool ExecuteNonQuery(NpgsqlConnection conn, NpgsqlCommand cmd)
+        {
+            conn.Open();
+            int affected = cmd.ExecuteNonQuery();
+            return affected > 0;
+        }
+    }
 }

@@ -1,55 +1,61 @@
-<!-- src/app/pages/wardrobe/wardrobe.component.html -->
-
-<!-- Filter links (unchanged) -->
 <div class="filter-favorites">
     <span class="filter-link" [class.active]="!showOnlyFavorites" (click)="showAll()">
       My wardrobe
     </span>
     <span class="filter-link" [class.active]="showOnlyFavorites" (click)="showFavorites()">
       My favorites
-      </span> 
-    </div>
-
+    </span>
+  
+    <!-- move this whole block inside filter-favorites -->
     <div class="filter-section">
-        <!-- Colors Filter -->
-        <mat-chip-listbox multiple>
-            <mat-chip-option *ngFor="let color of availableColors"
-                             [selected]="isSelected('color', color.colorId)"
-                             (click)="toggleSelection('color', color.colorId)">
-              {{ color.colorName }}
-            </mat-chip-option>
-          </mat-chip-listbox>
-      
-        <!-- Materials Filter -->
-        <mat-chip-listbox multiple>
-            <mat-chip-option *ngFor="let material of availableMaterials"
-                             [selected]="isSelected('material', material.materialId)"
-                             (click)="toggleSelection('material', material.materialId)">
-              {{ material.materialName }}
-            </mat-chip-option>
-          </mat-chip-listbox>
-      
-        <!-- Brands Filter -->
-        <mat-chip-listbox multiple>
-            <mat-chip-option *ngFor="let brand of availableBrands"
-                             [selected]="isSelected('brand', brand.brandId)"
-                             (click)="toggleSelection('brand', brand.brandId)">
-              {{ brand.brandName }}
-            </mat-chip-option>
-          </mat-chip-listbox>
-      
-        <!-- Occasions Filter -->
-        <mat-chip-listbox multiple>
-            <mat-chip-option *ngFor="let occasion of availableOccasions"
-                             [selected]="isSelected('occasion', occasion.occasionId)"
-                             (click)="toggleSelection('occasion', occasion.occasionId)">
-              {{ occasion.occasionName }}
-            </mat-chip-option>
-          </mat-chip-listbox>
+      <!-- Color dropdown -->
+      <div class="select-container filter-dropdown">
+        <select [(ngModel)]="selectedColor" (change)="filterWardrobe()">
+          <option [ngValue]="null">All Colors</option>
+          <option *ngFor="let c of availableColors" [ngValue]="c.colorId">
+            {{ c.colorName }}
+          </option>
+        </select>
+        <mat-icon class="dropdown-icon">arrow_drop_down</mat-icon>
+      </div>
+  
+      <!-- Material dropdown -->
+      <div class="select-container filter-dropdown">
+        <select [(ngModel)]="selectedMaterial" (change)="filterWardrobe()">
+          <option [ngValue]="null">All Materials</option>
+          <option *ngFor="let m of availableMaterials" [ngValue]="m.materialId">
+            {{ m.materialName }}
+          </option>
+        </select>
+        <mat-icon class="dropdown-icon">arrow_drop_down</mat-icon>
+      </div>
+  
+      <!-- Brand dropdown -->
+      <div class="select-container filter-dropdown">
+        <select [(ngModel)]="selectedBrand" (change)="filterWardrobe()">
+          <option [ngValue]="null">All Brands</option>
+          <option *ngFor="let b of availableBrands" [ngValue]="b.brandId">
+            {{ b.brandName }}
+          </option>
+        </select>
+        <mat-icon class="dropdown-icon">arrow_drop_down</mat-icon>
+      </div>
+  
+      <!-- Occasion dropdown -->
+      <div class="select-container filter-dropdown">
+        <select [(ngModel)]="selectedOccasion" (change)="filterWardrobe()">
+          <option [ngValue]="null">All Occasions</option>
+          <option *ngFor="let o of availableOccasions" [ngValue]="o.occasionId">
+            {{ o.occasionName }}
+          </option>
+        </select>
+        <mat-icon class="dropdown-icon">arrow_drop_down</mat-icon>
+      </div>
+    </div>
+  </div>
 
   
   <!-- BOTTOMS Carousel -->
-  <div class="carousel-section">
   <h3 class="carousel-title">{{ bottomsTitle }}</h3>
   <div class="carousel-row">
     <div class="gallery-item" *ngFor="let item of getFiltered(bottomItems)">
@@ -64,10 +70,8 @@
       </button>
     </div>
   </div>
-</div>
   
   <!-- TOPS Carousel -->
-  <div class="carousel-section">
   <h3 class="carousel-title">{{ topsTitle }}</h3>
   <div class="carousel-row">
     <div class="gallery-item" *ngFor="let item of getFiltered(topsItems)">
@@ -81,10 +85,8 @@
       </button>
     </div>
   </div>
-</div>
   
   <!-- FOOTWEAR Carousel -->
-  <div class="carousel-section">
   <h3 class="carousel-title">{{ footwearTitle }}</h3>
   <div class="carousel-row">
     <div class="gallery-item" *ngFor="let item of getFiltered(footwearItems)">
@@ -98,10 +100,8 @@
       </button>
     </div>
   </div>
-</div>
   
   <!-- ACCESSORIES Carousel -->
-  <div class="carousel-section">
   <h3 class="carousel-title">{{ accessoriesTitle }}</h3>
   <div class="carousel-row">
     <div class="gallery-item" *ngFor="let item of getFiltered(accessoriesItems)">
@@ -115,10 +115,8 @@
       </button>
     </div>
   </div>
-</div>
-
+  
   <!-- OUTERWEAR Carousel -->
-  <div class="carousel-section">
   <h3 class="carousel-title">{{ outerwearTitle }}</h3>
   <div class="carousel-row">
     <div class="gallery-item" *ngFor="let item of getFiltered(outerwearItems)">
@@ -132,4 +130,3 @@
       </button>
     </div>
   </div>
-</div>
