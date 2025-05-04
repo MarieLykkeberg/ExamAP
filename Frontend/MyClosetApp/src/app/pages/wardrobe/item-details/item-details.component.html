@@ -120,6 +120,13 @@
             Mark as favorite
           </label>
         </div>
+
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Purchase Date</mat-label>
+            <input matInput [matDatepicker]="picker" [(ngModel)]="item.purchaseDate" name="purchaseDate">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
   
         <!-- Actions -->
         <div class="actions">
