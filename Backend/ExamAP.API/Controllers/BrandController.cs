@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using ExamAP.Model.Repositories;
 using ExamAP.Model.Entities;
 
@@ -15,6 +16,7 @@ namespace ExamAP.API.Controllers
             _repository = repository;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult<IEnumerable<Brand>> GetBrands()
         {

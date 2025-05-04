@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 
 export interface Brand {
-  brandId: number;
-  name: string;
-}
+    brandId: number;
+    brandName: string;
+  }
 
 @Injectable({
   providedIn: 'root'

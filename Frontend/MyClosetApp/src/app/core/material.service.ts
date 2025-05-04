@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 
 export interface Material {
-  materialId: number;
-  name: string;
-}
+    materialId: number;
+    materialName: string;
+  }
 
 @Injectable({
   providedIn: 'root'

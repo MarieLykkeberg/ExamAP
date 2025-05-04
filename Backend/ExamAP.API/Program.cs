@@ -42,8 +42,7 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-builder.Services.AddAuthentication("Basic") // 👈 Set "Basic" as default
-    .AddScheme<AuthenticationSchemeOptions, DummyHandler>("Basic", null);
+builder.Services.AddAuthentication("Basic"); 
 
 var app = builder.Build();
 
