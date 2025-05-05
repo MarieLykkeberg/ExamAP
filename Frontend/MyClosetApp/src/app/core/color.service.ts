@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 export interface Color {
   colorId: number;
@@ -11,41 +13,16 @@ export interface Color {
 export class ColorService {
   private apiUrl = 'http://localhost:5196/api/color';
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
   // GET: Fetch all colors
-  async getColors(): Promise<Color[]> {
-    const authHeader = localStorage.getItem('authHeader');
+  getColors(): Observable<Color[]> {
+    const authHeader = localStorage.getItem('authHeader') || '';
 
-    const response = await fetch(this.apiUrl, {
-      method: 'GET',
-      headers: {
-        'Authorization': authHeader || ''
-      }
+    const headers = new HttpHeaders({
+      'Authorization': authHeader
     });
 
-    if (!response.ok) {
-      throw new Error('Failed to fetch colors');
-    }
-
-    return await response.json();
-  }
-
-  // POST: Add a new color
-  async addColor(name: string): Promise<void> {
-    const authHeader = localStorage.getItem('authHeader');
-
-    const response = await fetch(this.apiUrl, {
-      method: 'POST',
-      headers: {
-        'Authorization': authHeader || '',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ name })
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to add color: ' + response.statusText);
-    }
-  }
+    return this.http.get<Color[]>(this.apiUrl, { headers });
+}
 }
