@@ -96,7 +96,7 @@ export class ItemDetailsComponent implements OnInit {
 
   save(): void {
     this.ws.updateItem(this.item).subscribe({
-      next: () => this.router.navigate(['/wardrobe']),
+      next: () => this.router.navigate(['/item-details']),
       error: () => this.errorMsg = 'Save failed'
     });
   }

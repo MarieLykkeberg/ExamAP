@@ -18,24 +18,20 @@ namespace ExamAP.Model.Repositories
             cmd.Parameters.AddWithValue("@userId", NpgsqlDbType.Integer, userId);
 
             var reader = GetData(conn, cmd);
-
             while (reader.Read())
             {
-                var item = new Item
+                items.Add(new Item
                 {
-                    ItemId = reader["itemid"] is DBNull ? 0 : (int)reader["itemid"],
-                    UserId = reader["userid"] is DBNull ? 0 : (int)reader["userid"],
-                    ColorId = reader["colorid"] is DBNull ? 0 : (int)reader["colorid"],
-                    MaterialId = reader["materialid"] is DBNull ? 0 : (int)reader["materialid"],
-                    CategoryId = reader["categoryid"] is DBNull ? 0 : (int)reader["categoryid"],
-                    BrandId = reader["brandid"] is DBNull ? 0 : (int)reader["brandid"],
-                    OccasionId = reader["occasionid"] is DBNull ? 0 : (int)reader["occasionid"],
-                    ImageUrl = reader["imageurl"]?.ToString(),
-                    PurchaseDate = reader["purchasedate"] is DBNull ? null : (DateTime?)reader["purchasedate"],
-                    IsFavorite = reader["isfavorite"] is DBNull ? null : (bool?)reader["isfavorite"]
-                };
-
-                items.Add(item);
+                    ItemId       = reader["itemid"]       as int?    ?? 0,
+                    UserId       = reader["userid"]       as int?    ?? 0,
+                    ColorId      = reader["colorid"]      as int?    ?? 0,
+                    MaterialId   = reader["materialid"]   as int?    ?? 0,
+                    CategoryId   = reader["categoryid"]   as int?    ?? 0,
+                    BrandName    = reader["brandname"] as string ?? string.Empty,                    OccasionId   = reader["occasionid"]   as int?    ?? 0,
+                    ImageUrl     = reader["imageurl"]     as string,
+                    PurchaseDate = reader["purchasedate"] as DateTime?,
+                    IsFavorite   = reader["isfavorite"]   as bool?   ?? false
+                });
             }
 
             return items;
@@ -46,29 +42,27 @@ namespace ExamAP.Model.Repositories
             using var conn = new NpgsqlConnection(ConnectionString);
             var cmd = conn.CreateCommand();
             cmd.CommandText = @"
-        SELECT itemid, userid, colorid, materialid, categoryid,
-               brandid, occasionid, imageurl, purchasedate, isfavorite
-        FROM public.items
-        WHERE itemid = @id
-    ";
+                SELECT itemid, userid, colorid, materialid, categoryid,
+                       brandname, occasionid, imageurl, purchasedate, isfavorite
+                  FROM public.items
+                 WHERE itemid = @id";
             cmd.Parameters.AddWithValue("@id", NpgsqlDbType.Integer, itemId);
 
             using var reader = GetData(conn, cmd);
-            if (!reader.Read())
-                return null;
+            if (!reader.Read()) return null;
 
             return new Item
             {
-                ItemId = reader.GetInt32(reader.GetOrdinal("itemid")),
-                UserId = reader.GetInt32(reader.GetOrdinal("userid")),
-                ColorId = reader.GetInt32(reader.GetOrdinal("colorid")),
-                MaterialId = reader.GetInt32(reader.GetOrdinal("materialid")),
-                CategoryId = reader.GetInt32(reader.GetOrdinal("categoryid")),
-                BrandId = reader.GetInt32(reader.GetOrdinal("brandid")),
-                OccasionId = reader.GetInt32(reader.GetOrdinal("occasionid")),
-                ImageUrl = reader["imageurl"] as string,
+                ItemId       = reader.GetInt32(reader.GetOrdinal("itemid")),
+                UserId       = reader.GetInt32(reader.GetOrdinal("userid")),
+                ColorId      = reader.GetInt32(reader.GetOrdinal("colorid")),
+                MaterialId   = reader.GetInt32(reader.GetOrdinal("materialid")),
+                CategoryId   = reader.GetInt32(reader.GetOrdinal("categoryid")),
+                BrandName    = reader["brandname"]    as string ?? string.Empty,
+                OccasionId   = reader.GetInt32(reader.GetOrdinal("occasionid")),
+                ImageUrl     = reader["imageurl"]     as string,
                 PurchaseDate = reader["purchasedate"] as DateTime?,
-                IsFavorite = reader["isfavorite"] as bool?
+                IsFavorite   = reader["isfavorite"]   as bool?
             };
         }
 
@@ -76,56 +70,53 @@ namespace ExamAP.Model.Repositories
         {
             using var conn = new NpgsqlConnection(ConnectionString);
             var cmd = conn.CreateCommand();
-
             cmd.CommandText = @"
                 INSERT INTO public.items
-                (userid, colorid, materialid, categoryid, brandid, occasionid, imageurl, purchasedate, isfavorite)
+                   (userid, colorid, materialid, categoryid,
+                    brandname, occasionid, imageurl, purchasedate, isfavorite)
                 VALUES
-                (@userid, @colorid, @materialid, @categoryid, @brandid, @occasionid, @imageurl, @purchasedate, @isfavorite)
-            ";
-
-            cmd.Parameters.AddWithValue("@userid", NpgsqlDbType.Integer, item.UserId);
-            cmd.Parameters.AddWithValue("@colorid", NpgsqlDbType.Integer, item.ColorId);
+                   (@userid, @colorid, @materialid, @categoryid,
+                    @brandname, @occasionid, @imageurl, @purchasedate, @isfavorite)";
+            cmd.Parameters.AddWithValue("@userid",     NpgsqlDbType.Integer, item.UserId);
+            cmd.Parameters.AddWithValue("@colorid",    NpgsqlDbType.Integer, item.ColorId);
             cmd.Parameters.AddWithValue("@materialid", NpgsqlDbType.Integer, item.MaterialId);
             cmd.Parameters.AddWithValue("@categoryid", NpgsqlDbType.Integer, item.CategoryId);
-            cmd.Parameters.AddWithValue("@brandid", NpgsqlDbType.Integer, item.BrandId);
+            cmd.Parameters.AddWithValue("@brandname",  NpgsqlDbType.Text,    item.BrandName ?? string.Empty);
             cmd.Parameters.AddWithValue("@occasionid", NpgsqlDbType.Integer, item.OccasionId);
-            cmd.Parameters.AddWithValue("@imageurl", NpgsqlDbType.Text, (object?)item.ImageUrl ?? DBNull.Value);
-            cmd.Parameters.AddWithValue("@purchasedate", NpgsqlDbType.Date, (object?)item.PurchaseDate ?? DBNull.Value);
-            cmd.Parameters.AddWithValue("@isfavorite", NpgsqlDbType.Boolean, (object?)item.IsFavorite ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@imageurl",   NpgsqlDbType.Text,    (object?)item.ImageUrl   ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@purchasedate",NpgsqlDbType.Date,    (object?)item.PurchaseDate ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@isfavorite", NpgsqlDbType.Boolean, (object?)item.IsFavorite   ?? DBNull.Value);
 
-            return InsertData(conn, cmd);  // This method should execute the query and insert the data
+            return InsertData(conn, cmd);
         }
 
         public bool UpdateItem(Item item)
         {
             using var conn = new NpgsqlConnection(ConnectionString);
             var cmd = conn.CreateCommand();
-
             cmd.CommandText = @"
-            UPDATE public.items SET
-                userid = @userid,
-                colorid = @colorid,
-                materialid = @materialid,
-                categoryid = @categoryid,
-                brandid = @brandid,
-                occasionid = @occasionid,
-                imageurl = @imageurl,
-                purchasedate = @purchasedate,
-                isfavorite = @isfavorite
-            WHERE itemid = @itemid
-            ";
+                UPDATE public.items SET
+                  userid       = @userid,
+                  colorid      = @colorid,
+                  materialid   = @materialid,
+                  categoryid   = @categoryid,
+                  brandname    = @brandname,
+                  occasionid   = @occasionid,
+                  imageurl     = @imageurl,
+                  purchasedate = @purchasedate,
+                  isfavorite   = @isfavorite
+                WHERE itemid = @itemid";
 
-            cmd.Parameters.AddWithValue("@itemid", NpgsqlDbType.Integer, item.ItemId);
-            cmd.Parameters.AddWithValue("@userid", NpgsqlDbType.Integer, item.UserId);
-            cmd.Parameters.AddWithValue("@colorid", NpgsqlDbType.Integer, item.ColorId);
-            cmd.Parameters.AddWithValue("@materialid", NpgsqlDbType.Integer, item.MaterialId);
-            cmd.Parameters.AddWithValue("@categoryid", NpgsqlDbType.Integer, item.CategoryId);
-            cmd.Parameters.AddWithValue("@brandid", NpgsqlDbType.Integer, item.BrandId);
-            cmd.Parameters.AddWithValue("@occasionid", NpgsqlDbType.Integer, item.OccasionId);
-            cmd.Parameters.AddWithValue("@imageurl", NpgsqlDbType.Text, (object?)item.ImageUrl ?? DBNull.Value);
-            cmd.Parameters.AddWithValue("@purchasedate", NpgsqlDbType.Date, (object?)item.PurchaseDate ?? DBNull.Value);
-            cmd.Parameters.AddWithValue("@isfavorite", NpgsqlDbType.Boolean, (object?)item.IsFavorite ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@itemid",      NpgsqlDbType.Integer, item.ItemId);
+            cmd.Parameters.AddWithValue("@userid",      NpgsqlDbType.Integer, item.UserId);
+            cmd.Parameters.AddWithValue("@colorid",     NpgsqlDbType.Integer, item.ColorId);
+            cmd.Parameters.AddWithValue("@materialid",  NpgsqlDbType.Integer, item.MaterialId);
+            cmd.Parameters.AddWithValue("@categoryid",  NpgsqlDbType.Integer, item.CategoryId);
+            cmd.Parameters.AddWithValue("@brandname",   NpgsqlDbType.Text,    item.BrandName ?? string.Empty);
+            cmd.Parameters.AddWithValue("@occasionid",  NpgsqlDbType.Integer, item.OccasionId);
+            cmd.Parameters.AddWithValue("@imageurl",    NpgsqlDbType.Text,    (object?)item.ImageUrl   ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@purchasedate",NpgsqlDbType.Date,    (object?)item.PurchaseDate ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@isfavorite",  NpgsqlDbType.Boolean, (object?)item.IsFavorite   ?? DBNull.Value);
 
             return UpdateData(conn, cmd);
         }
@@ -134,10 +125,8 @@ namespace ExamAP.Model.Repositories
         {
             using var conn = new NpgsqlConnection(ConnectionString);
             var cmd = conn.CreateCommand();
-
             cmd.CommandText = "DELETE FROM public.items WHERE itemid = @itemid";
             cmd.Parameters.AddWithValue("@itemid", NpgsqlDbType.Integer, itemId);
-
             return DeleteData(conn, cmd);
         }
     }

@@ -110,37 +110,6 @@
         </div>
       </div>
   
-      <!-- Brand -->
-      <div class="form-group">
-        <label for="brandId">Brand</label>
-        <div class="select-container">
-          <select
-            id="brandId"
-            name="brandId"
-            [(ngModel)]="itemData.brandId"
-            #brandId="ngModel"
-            required
-          >
-            <option [ngValue]="null" disabled selected>
-              Select brand
-            </option>
-            <option *ngFor="let b of brands" [ngValue]="b.brandId">
-              {{ b.brandName }}
-            </option>
-          </select>
-          <mat-icon class="dropdown-icon">arrow_drop_down</mat-icon>
-        </div>
-        <div
-          *ngIf="
-            itemForm.controls['brandId']?.invalid &&
-            itemForm.controls['brandId']?.touched
-          "
-          class="error"
-        >
-          Brand is required
-        </div>
-      </div>
-  
       <!-- Occasion -->
       <div class="form-group">
         <label for="occasionId">Occasion</label>
@@ -170,6 +139,22 @@
         >
           Occasion is required
         </div>
+      </div>
+
+      <!-- Brand -->
+      <div class="form-group">
+        <label for="brandName">Brand</label>
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Brand</mat-label>
+          <input
+            matInput
+            id="brandName"
+            name="brandName"
+            [(ngModel)]="itemData.brandName"
+            placeholder="Enter brand"
+            required
+          />
+        </mat-form-field>
       </div>
   
       <!-- Purchase Date -->
