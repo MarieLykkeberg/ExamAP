@@ -10,7 +10,6 @@ import {
   WardrobeService,
   Color,
   Material,
-  Brand,
   Occasion
 } from '../../core/wardrobe.service';
 
@@ -48,12 +47,10 @@ export class WardrobeComponent implements OnInit {
 
   availableColors   : Color[]    = [];
   availableMaterials: Material[] = [];
-  availableBrands   : Brand[]    = [];
   availableOccasions: Occasion[] = [];
 
   selectedColor    : number | null = null;
   selectedMaterial : number | null = null;
-  selectedBrand    : number | null = null;
   selectedOccasion : number | null = null;
 
   constructor(private wardrobeService: WardrobeService) {}
@@ -78,7 +75,6 @@ export class WardrobeComponent implements OnInit {
       (!this.showOnlyFavorites || item.isFavorite) &&
       (this.selectedColor    == null || item.colorId    === this.selectedColor) &&
       (this.selectedMaterial == null || item.materialId === this.selectedMaterial) &&
-      (this.selectedBrand    == null || item.brandId    === this.selectedBrand) &&
       (this.selectedOccasion == null || item.occasionId === this.selectedOccasion)
     );
 
@@ -102,14 +98,12 @@ export class WardrobeComponent implements OnInit {
       Categories: this.wardrobeService.getCategories(),
       Colors:     this.wardrobeService.getColors(),
       Materials:  this.wardrobeService.getMaterials(),
-      Brands:     this.wardrobeService.getBrands(),
       Occasions:  this.wardrobeService.getOccasions()
     }).subscribe({
-      next: ({ Items, Categories, Colors, Materials, Brands, Occasions }) => {
+      next: ({ Items, Categories, Colors, Materials, Occasions }) => {
         this.allItems           = Items;
         this.availableColors    = Colors;
         this.availableMaterials = Materials;
-        this.availableBrands    = Brands;
         this.availableOccasions = Occasions;
 
         this.topsItems         = Items.filter(i => i.categoryId === 1);

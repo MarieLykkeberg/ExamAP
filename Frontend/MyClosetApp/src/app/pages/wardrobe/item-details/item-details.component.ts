@@ -38,7 +38,7 @@ export class ItemDetailsComponent implements OnInit {
     categoryId: 0,
     colorId:    0,
     materialId: 0,
-    brandId:    0,
+    brandName:  '',
     occasionId: 0,
     isFavorite: false,
     purchaseDate: ''
@@ -49,7 +49,6 @@ export class ItemDetailsComponent implements OnInit {
   categories: Category[] = [];
   colors:     Color[]    = [];
   materials:  Material[] = [];
-  brands:     Brand[]    = [];
   occasions:  Occasion[] = [];
 
   constructor(
@@ -81,11 +80,6 @@ export class ItemDetailsComponent implements OnInit {
     this.ws.getMaterials().subscribe({
       next: list => this.materials = list,
       error: err => console.error('Could not load materials', err)
-    });
-
-    this.ws.getBrands().subscribe({
-      next: list => this.brands = list,
-      error: err => console.error('Could not load brands', err)
     });
 
     this.ws.getOccasions().subscribe({
