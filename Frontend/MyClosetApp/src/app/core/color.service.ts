@@ -15,7 +15,7 @@ export class ColorService {
 
   constructor(private http: HttpClient) {}
 
-  // GET: Fetch all colors
+  // GET: all colors
   getColors(): Observable<Color[]> {
     const authHeader = localStorage.getItem('authHeader') || '';
 

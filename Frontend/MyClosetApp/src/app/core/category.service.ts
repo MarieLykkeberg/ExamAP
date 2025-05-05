@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 export interface Category {
     categoryId: number;
@@ -14,25 +15,14 @@ export class CategoryService {
 
     constructor(private http: HttpClient) { }
 
-    async getCategories(): Promise<Category[]> {
-        const authHeader = localStorage.getItem('authHeader');
+  // GET: all categories
+  getCategories(): Observable<Category[]> {
+    const authHeader = localStorage.getItem('authHeader') || '';
 
-        const response = await fetch(this.apiUrl, {
-            method: 'GET',
-            headers: {
-                'Authorization': authHeader || ''
-            }
-        });
+    const headers = new HttpHeaders({
+      'Authorization': authHeader
+    });
 
-        /*const data = await response.json();
-        console.log('Categories from backend:', data); //ADD THIS LINE
-        return data; */
-
-        if (!response.ok) {
-            throw new Error('Failed to fetch: ' + response.statusText);
-        }
-
-        return await response.json();
-    }
-
+    return this.http.get<Category[]>(this.apiUrl, { headers });
+}
 }
