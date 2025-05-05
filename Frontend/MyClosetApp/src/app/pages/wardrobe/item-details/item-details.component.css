@@ -10,7 +10,7 @@
   
   .back-button {
     position: absolute;
-    top:    -3rem;   /* lift it up by the host’s top margin */
+    top:    -3rem;   /* lift it up by the host's top margin */
     left:   -14rem;   /* nudge it left if you want it closer to the edge */
     background: transparent;
     border: none;
@@ -57,6 +57,7 @@
   /* 3) Align label + field */
   .form-group {
     display: contents;
+    margin-bottom: 8px;
   }
   .form-group label {
     grid-column: 1;
@@ -65,7 +66,7 @@
     font-weight:  normal;
   }
   
-  /* 4) Wrap the select + icon */
+  /* 4) Wrap the select & icon */
   .select-container {
     grid-column:      2; 
     position:         relative;
@@ -104,9 +105,6 @@
     border:         1px solid #000;
     accent-color:   #000;
   }
-  
-  .date-field {
-    grid-column: 1;}
 
   /* 9) Actions row */
   .actions {
@@ -114,7 +112,7 @@
     display:         flex;
     justify-content: flex-start;
     gap:             1rem;
-    margin-top:      2rem;
+    margin-top:      1rem;
   }
   .actions button {
     padding:         0.6rem 1.2rem;
@@ -128,3 +126,13 @@
   .actions button[type="delete"] { background: transparent; color: #222; }
   .actions button:hover          { box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
   .actions button[disabled]     { opacity: 0.5; cursor: not-allowed; }
+
+  
+  .brand-field,
+  .date-field {
+    grid-column: 1;
+  } 
+
+  .date-field{
+    margin-top:      -2rem;
+  }

@@ -12,7 +12,6 @@ import { MatNativeDateModule }       from '@angular/material/core';
 import { CategoryService, Category } from '../../core/category.service';
 import { ColorService, Color }       from '../../core/color.service';
 import { MaterialService, Material } from '../../core/material.service';
-import { BrandService }              from '../../core/brand.service';
 import { OccasionService, Occasion } from '../../core/occasion.service';
 import { ItemService, Item }         from '../../core/item.service';
 
@@ -54,7 +53,6 @@ export class AddComponent implements OnInit {
     private categoryService: CategoryService,
     private colorService:    ColorService,
     private materialService: MaterialService,
-    private brandService:    BrandService,
     private occasionService: OccasionService,
     private itemService:     ItemService
   ) {}
@@ -70,10 +68,6 @@ export class AddComponent implements OnInit {
   
     this.materialService.getMaterials().subscribe(data => {
       this.materials = data;
-    });
-  
-    this.brandService.getBrands().subscribe(data => {
-      this.brands = data;
     });
   
     this.occasionService.getOccasions().subscribe(data => {

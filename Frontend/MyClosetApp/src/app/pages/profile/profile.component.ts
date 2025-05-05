@@ -32,7 +32,11 @@ export class ProfileComponent implements OnInit {
   saveProfile(form: NgForm): void {
     if (form.invalid) return;
     this.auth.updateUser(this.user).subscribe({
-      next: () => this.router.navigate(['/wardrobe']),
+      next: () => {
+        // Force logout and redirect to login so user can re-authenticate
+        this.auth.logout();
+        this.router.navigate(['/login']);
+      },
       error: () => (this.errorMsg = 'Save failed. Please try again.')
     });
   }

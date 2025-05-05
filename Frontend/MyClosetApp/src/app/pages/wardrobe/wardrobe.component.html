@@ -30,16 +30,6 @@
         <mat-icon class="dropdown-icon">arrow_drop_down</mat-icon>
       </div>
   
-      <!-- Brand dropdown -->
-      <div class="select-container filter-dropdown">
-        <select [(ngModel)]="selectedBrand" (change)="filterWardrobe()">
-          <option [ngValue]="null">All Brands</option>
-          <option *ngFor="let b of availableBrands" [ngValue]="b.brandId">
-            {{ b.brandName }}
-          </option>
-        </select>
-        <mat-icon class="dropdown-icon">arrow_drop_down</mat-icon>
-      </div>
   
       <!-- Occasion dropdown -->
       <div class="select-container filter-dropdown">
