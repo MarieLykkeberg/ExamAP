@@ -14,7 +14,7 @@ export interface Item {
   colorId: number;
   categoryId: number;
   materialId: number;
-  brandId: number;
+  brandName: string;
   occasionId: number;
   isFavorite: boolean;
   // (…plus any other fields you use…)

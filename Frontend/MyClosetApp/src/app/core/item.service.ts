@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 export interface Item {
     itemId?: number;
@@ -18,56 +19,48 @@ export interface Item {
 export class ItemService {
   private apiUrl = 'http://localhost:5196/api/item';
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
   //Add new item for logged-in user
   async addItem(item: Item): Promise<void> {
     const authHeader = localStorage.getItem('authHeader');
 
-    const response = await fetch(this.apiUrl, {
-      method: 'POST',
-      headers: {
-        'Authorization': authHeader || '',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(item)
+    const headers = new HttpHeaders({
+      'Authorization': authHeader || '',
+      /* 'Content-Type': 'application/json' */
     });
-
-    if (!response.ok) {
-      throw new Error('Failed to add item: ' + response.statusText);
-    }
+    this.http.post(this.apiUrl, item, { headers }).subscribe(
+      // handle response
+      // handle error
+    );
   }
 
   // Get items for current user
   async getItems(): Promise<Item[]> {
     const authHeader = localStorage.getItem('authHeader');
 
-    const response = await fetch(this.apiUrl, {
-      method: 'GET',
-      headers: {
-        'Authorization': authHeader || ''
-      }
+    const headers = new HttpHeaders({
+      'Authorization': authHeader || ''
     });
+    const response = await this.http.get<Item[]>(this.apiUrl, { headers }).toPromise();
 
-    if (!response.ok) {
-      throw new Error('Failed to fetch items: ' + response.statusText);
+    if (!response) {
+      throw new Error('Failed to fetch items');
     }
 
-    return await response.json();
+    return response;
   }
 
   // delete item
   async deleteItem(itemId: number): Promise<void> {
     const authHeader = localStorage.getItem('authHeader');
 
-    const response = await fetch(`${this.apiUrl}/${itemId}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': authHeader || ''
-      }
+    const headers = new HttpHeaders({
+      'Authorization': authHeader || ''
     });
+    const response = await this.http.delete(`${this.apiUrl}/${itemId}`, { headers }).toPromise();
 
-    if (!response.ok) {
+    if (!response) {
       throw new Error('Failed to delete item');
     }
   }
