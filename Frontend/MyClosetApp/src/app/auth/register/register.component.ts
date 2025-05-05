@@ -1,14 +1,15 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { AuthService } from '../../core/auth.service';
+import { Component }       from '@angular/core';
+import { Router }          from '@angular/router';
+import { FormsModule }     from '@angular/forms';
+import { CommonModule }    from '@angular/common';
+import { switchMap }       from 'rxjs/operators';
+import { AuthService, User } from '../../core/auth.service';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  templateUrl: './register.component.html',
   imports: [CommonModule, FormsModule],
+  templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
@@ -16,19 +17,31 @@ export class RegisterComponent {
   email = '';
   password = '';
 
-  constructor(private router: Router, private authService: AuthService) { }
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) { }
 
   register() {
-    console.log('Register function called');
-    this.authService.register(this.name, this.email, this.password).subscribe({
-      next: (res: any) => {
-        console.log('Backend response:', res);
-        this.router.navigate(['/wardrobe']);
-      },
-      error: (err) => {
-        console.error('Registration failed:', err);
-      }
-    });
+    // Clear any stale credentials
+    this.authService.logout();
+
+    this.authService
+      .register(this.name, this.email, this.password)
+      .pipe(
+        // After registering, immediately log in
+        switchMap(() => this.authService.login(this.email, this.password))
+      )
+      .subscribe({
+        next: (user: User) => {
+          console.log('Registered and logged in as:', user);
+          // Now go directly to profile
+          this.router.navigate(['/wardrobe']);
+        },
+        error: (err) => {
+          console.error('Registration or login failed:', err);
+        }
+      });
   }
 
   goToLogin() {

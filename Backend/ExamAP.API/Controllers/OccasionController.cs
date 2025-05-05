@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using ExamAP.Model.Repositories;
 using ExamAP.Model.Entities;
+using ExamAP.API.Dtos;
 
 namespace ExamAP.API.Controllers
 {
@@ -22,6 +23,20 @@ namespace ExamAP.API.Controllers
         {
             var occasions = _repository.GetAllOccasions();  // Fetch all colors from the repository
             return Ok(occasions);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult AddOccasion([FromBody] NameDto dto)
+        {
+            if (dto == null || string.IsNullOrWhiteSpace(dto.Name))
+                return BadRequest("Name is required.");
+
+            var success = _repository.InsertOccasion(dto.Name);
+            if (!success)
+                return StatusCode(500, "Failed to insert occasion.");
+
+            return Ok();
         }
     }
 }

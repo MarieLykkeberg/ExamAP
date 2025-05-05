@@ -30,5 +30,25 @@ namespace ExamAP.Model.Repositories
 
             return materials;
         }
+
+        public bool InsertMaterial(string name)
+        {
+            try
+            {
+                using var conn = new NpgsqlConnection(ConnectionString);
+                var cmd = conn.CreateCommand();
+                cmd.CommandText = @"
+                    INSERT INTO material (materialname) 
+                    VALUES (@Name)
+                ";
+                cmd.Parameters.AddWithValue("@Name", name);
+                return InsertData(conn, cmd);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("InsertMaterial failed: " + ex.Message);
+                return false;
+            }
+        }
     }
 }

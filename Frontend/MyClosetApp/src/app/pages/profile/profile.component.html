@@ -29,9 +29,8 @@
   
     <div class="actions">
       <button type="submit" [disabled]="profileForm.invalid">Save</button>
-      <button type="button" class="delete" (click)="deleteAccount()">
-        Delete Account
-      </button>
+      <button type="button" class="delete" (click)="deleteAccount()">Delete Account</button>
+      <button type="button" (click)="logout()">Logout</button>
     </div>
   
     <div class="error" *ngIf="errorMsg">{{ errorMsg }}</div>

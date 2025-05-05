@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 export interface Category {
     categoryId: number;
@@ -11,7 +12,7 @@ export interface Category {
 export class CategoryService {
     private apiUrl = 'http://localhost:5196/api/category';
 
-    constructor() { }
+    constructor(private http: HttpClient) { }
 
     async getCategories(): Promise<Category[]> {
         const authHeader = localStorage.getItem('authHeader');
@@ -33,4 +34,5 @@ export class CategoryService {
 
         return await response.json();
     }
+
 }

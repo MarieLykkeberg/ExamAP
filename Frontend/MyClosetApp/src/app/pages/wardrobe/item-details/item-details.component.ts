@@ -1,7 +1,7 @@
 // src/app/pages/wardrobe/item-details/item-details.component.ts
 
 import { Component, OnInit }      from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule }           from '@angular/common';
 import { FormsModule }            from '@angular/forms';
 
@@ -23,7 +23,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 @Component({
   selector: 'app-item-details',
   standalone: true,
-  imports: [ CommonModule, FormsModule, MatIconModule, MatFormFieldModule,
+  imports: [ CommonModule, RouterModule, FormsModule, MatIconModule, MatFormFieldModule,
     MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,],

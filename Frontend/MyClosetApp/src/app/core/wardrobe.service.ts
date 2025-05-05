@@ -88,4 +88,7 @@ export class WardrobeService {
     return this.http.post<{ imageUrl: string }>('http://localhost:5196/api/upload-image', formData)
       .pipe(map(res => res.imageUrl));
   }
+  addLookup(kind: 'category'|'color'|'material'|'brand'|'occasion', name: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${kind}`, { name });
+}
 }
