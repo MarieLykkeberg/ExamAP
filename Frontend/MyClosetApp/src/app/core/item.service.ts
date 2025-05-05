@@ -5,7 +5,7 @@ export interface Item {
     categoryId: number | null;
     colorId: number | null;
     materialId: number | null;
-    brandId: number | null;
+    brandName: string;
     occasionId: number | null;
     isFavorite: boolean;
     purchaseDate: string;
@@ -56,7 +56,7 @@ export class ItemService {
     return await response.json();
   }
 
-  // Optionally: delete item
+  // delete item
   async deleteItem(itemId: number): Promise<void> {
     const authHeader = localStorage.getItem('authHeader');
 

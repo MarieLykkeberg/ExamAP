@@ -26,7 +26,6 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<ItemRepository>();
 builder.Services.AddScoped<ColorRepository>();
-builder.Services.AddScoped<BrandRepository>();
 builder.Services.AddScoped<CategoryRepository>();
 builder.Services.AddScoped<MaterialRepository>();
 builder.Services.AddScoped<OccasionRepository>();
