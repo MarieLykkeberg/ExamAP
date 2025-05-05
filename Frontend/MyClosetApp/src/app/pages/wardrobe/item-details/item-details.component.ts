@@ -11,7 +11,6 @@ import {
   Category,
   Color,
   Material,
-  Brand,
   Occasion
 } from '../../../core/wardrobe.service';
 import { MatIconModule } from '@angular/material/icon';
@@ -90,7 +89,9 @@ export class ItemDetailsComponent implements OnInit {
 
   save(): void {
     this.ws.updateItem(this.item).subscribe({
-      next: () => this.router.navigate(['/item-details']),
+      next: () => {
+        alert('Item saved successfully');
+      },
       error: () => this.errorMsg = 'Save failed'
     });
   }
