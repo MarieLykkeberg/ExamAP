@@ -47,4 +47,8 @@ export class ProfileComponent implements OnInit {
       error: () => (this.errorMsg = 'Delete failed. Please try again.')
     });
   }
+  logout(): void {
+    this.auth.logout();
+    this.router.navigate(['/login']);
+  }
 }

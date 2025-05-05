@@ -1,8 +1,9 @@
+/* src/app/pages/styling/styling.component.css */
+
+/* ── Generate Outfit button (unchanged) ───────────── */
 .generateOutfit {
     display: block;
-    /* takes full line so auto-margin works */
-    margin: 1rem 0;     
-    /* vertical 1rem, horizontal auto */
+    margin: 2rem 0 0 2rem;
     padding: 0.6rem 1.2rem;
     font-size: 1rem;
     border: 1px solid #000;
@@ -10,58 +11,61 @@
     cursor: pointer;
     font-family: Didot, serif;
     transition: box-shadow .2s;
-    margin-left: 13px;
-}
-
-.generateOutfit:hover {
+  }
+  .generateOutfit:hover {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
-
-
-/* Container holds three rows, stacked vertically */
-.styling-container {
-  display: flex;
-  flex-direction: column;
-  /* only horizontal + bottom padding now, no top */
-  padding: 0 1rem 1rem;
-  align-items: center;
-  margin-top: 0;          /* drop that negative tweak */
-
-/* Each row is two cells side by side */
-.row {
+  }
+  
+  /* ── Wrapper that holds the styling rows ───────────── */
+  .generate-and-styling {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    /* centered by default via surrounding layout */
+  }
+  
+  /* ── Pull the styling columns up to level with the button ─ */
+  .styling-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  
+    /* lift it up to sit on the same horizontal line as the button */
+    margin-top: 0rem;   /* adjust this value until they align */
+    margin-left: 5rem;
+    padding: 0;            /* no extra padding */
+  }
+  
+ 
+  
+  /* ── The rest of your styling rows CSS ──────────────── */
+  .row {
     display: flex;
     gap: 15rem;
-    /* space between left & right cell */
     align-items: center;
-}
-
-/* Each cell takes equal width */
-.section {
+  }
+  
+  .section {
     flex: 1;
-}
-
-/* Carousel that shows exactly one image + nav buttons */
-.carousel-single {
+  }
+  
+  .carousel-single {
     display: flex;
     align-items: center;
     gap: 1rem;
-}
-
-/* Image styling */
-.carousel-single img {
+  }
+  
+  .carousel-single img {
     width: 160px;
-    /* or whatever size you prefer */
     height: auto;
     border-radius: 8px;
-}
-
-/* Prev/Next buttons */
-.carousel-single button {
+  }
+  
+  .carousel-single button {
     background: none;
     border: none;
     font-size: 1.5rem;
     cursor: pointer;
     user-select: none;
     line-height: 1;
-}
-}
+  }

@@ -14,7 +14,7 @@
   .add-main {
     display: flex;
     align-items: flex-start;
-    gap: 2rem;        /* space between upload area & form */
+    gap: 2rem;
     margin-bottom: 2rem;
   }
   
@@ -39,9 +39,9 @@
   .add-item-form {
     flex: 1;
     display: grid;
-    grid-template-columns: auto 1fr;  /* labels in col1, controls in col2 */
-    column-gap:       0rem;           /* tightened space between label & field */
-    row-gap:          1.5rem;         /* vertical gap between rows */
+    grid-template-columns: auto 1fr;
+    column-gap: 0rem;
+    row-gap:    1.5rem;
   }
   
   /* 5) Grid-aligned labels */
@@ -55,39 +55,55 @@
     font-weight:  normal;
   }
   
-  /* 6) Wrap each select in a .select-container (with <mat-icon> arrow) */
+  /* 6) Select + arrow + plus all in one inline-flex container */
   .add-item-form .select-container {
-    grid-column:      2;
-    position:         relative;
-    display:          inline-block;
-    width:            100%;
-    padding:          0;              /* ensure no container padding */
+    grid-column: 2;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
   }
   
-  /* 7) Style the select itself */
+  /* 7) The select itself needs big right padding for both icons */
   .add-item-form .select-container select {
-    width:           100%;
-    padding:         0.5rem 3rem 0.5rem 0;  /* plenty of right padding for arrow */
-    font:            inherit;
-    border:          none;
-    background:      transparent;
-    outline:         none;
-    appearance:      none;
-    cursor:          pointer;
+    flex: 1;
+    padding: 0.5rem 4rem 0.5rem 0; /* 4rem covers arrow+plus */
+    font: inherit;
+    border: none;
+    background: transparent;
+    outline: none;
+    appearance: none;
+    cursor: pointer;
   }
   
-  /* 8) Position our Material arrow icon */
+  /* 8) Arrow sits at 2.5rem from right */
   .add-item-form .select-container .dropdown-icon {
-    position:       absolute;
-    top:            50%;
-    right:          0rem;    /* move arrow 1.5rem in from the right edge */
-    transform:      translateY(-50%);
+    position: absolute;
+    right: 1.5rem;
     pointer-events: none;
-    font-size:      1.2rem;
-    color:          #333;
+    font-size: 1.2rem;
+    color: #333;
   }
   
-  /* 9) Simple checkbox styling */
+  /* 9) Plus sits at 0.5rem from right */
+  .add-item-form .select-container .add-btn {
+    position: absolute;
+    right: -2rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .add-item-form .select-container .add-btn mat-icon {
+    font-size: 1rem;     /* smaller than default 1.2rem */
+    line-height: 1;
+  }
+  
+  /* 10) Checkbox styling */
   .add-item-form input[type="checkbox"] {
     grid-column:     2;
     transform:       scale(1.2);
@@ -96,7 +112,7 @@
     accent-color:    #000;
   }
   
-  /* 10) Date input styling (optional) */
+  /* 11) Date input styling */
   .add-item-form input[type="date"] {
     grid-column:     2;
     padding:         0.5rem;
@@ -107,20 +123,42 @@
   
   /* 12) Submit button under the 2nd column only */
   .add-item-form button[type="submit"] {
-    grid-column:      1 / -2; 
-    padding:          0.6rem 1.2rem;
-    font-size:        1rem;
-    border:           1px solid #000;
-    background:       transparent;
-    color:            #000;
-    cursor:           pointer;
-    font-family:      Didot, serif;
-    transition:       box-shadow .2s;
+    grid-column: 1 / -2;
+    padding:      0.6rem 1.2rem;
+    font-size:    1rem;
+    border:       1px solid #000;
+    background:   transparent;
+    color:        #000;
+    cursor:       pointer;
+    transition:   box-shadow .2s;
   }
   .add-item-form button[type="submit"]:hover {
     box-shadow: 0 2px 6px rgba(0,0,0,0.2);
   }
   .add-item-form button[type="submit"]:disabled {
     opacity: .5;
-    cursor:  not-allowed;
+    cursor: not-allowed;
+  }
+  
+  /* 13) Inline-add input row */
+  .inline-add {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+  }
+  .inline-add input {
+    flex: 1;
+    padding: 0.4rem;
+    font: inherit;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  .inline-add button {
+    padding: 0.4rem 0.8rem;
+    font: inherit;
+    cursor: pointer;
+    border: 1px solid #000;
+    background: transparent;
   }

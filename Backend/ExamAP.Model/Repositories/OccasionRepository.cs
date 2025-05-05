@@ -30,5 +30,25 @@ namespace ExamAP.Model.Repositories
 
             return Occasions;  // Return the list with uppercase 'O'
         }
+
+        public bool InsertOccasion(string name)
+        {
+            try
+            {
+                using var conn = new NpgsqlConnection(ConnectionString);
+                var cmd = conn.CreateCommand();
+                cmd.CommandText = @"
+                    INSERT INTO occasion (occasionname) 
+                    VALUES (@Name)
+                ";
+                cmd.Parameters.AddWithValue("@Name", name);
+                return InsertData(conn, cmd);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("InsertOccasion failed: " + ex.Message);
+                return false;
+            }
+        }
     }
 }
