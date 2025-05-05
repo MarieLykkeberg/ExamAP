@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 export interface Brand {
     brandId: number;
@@ -11,41 +13,16 @@ export interface Brand {
 export class BrandService {
   private apiUrl = 'http://localhost:5196/api/brand';
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
-  // GET: Fetch all brands
-  async getBrands(): Promise<Brand[]> {
-    const authHeader = localStorage.getItem('authHeader');
+  // GET: all brands
+  getBrands(): Observable<Brand[]> {
+    const authHeader = localStorage.getItem('authHeader') || '';
 
-    const response = await fetch(this.apiUrl, {
-      method: 'GET',
-      headers: {
-        'Authorization': authHeader || ''
-      }
+    const headers = new HttpHeaders({
+      'Authorization': authHeader
     });
 
-    if (!response.ok) {
-      throw new Error('Failed to fetch brands');
-    }
-
-    return await response.json();
-  }
-
-  // POST: Add a new brand
-  async addBrand(name: string): Promise<void> {
-    const authHeader = localStorage.getItem('authHeader');
-
-    const response = await fetch(this.apiUrl, {
-      method: 'POST',
-      headers: {
-        'Authorization': authHeader || '',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ name })
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to add brand: ' + response.statusText);
-    }
-  }
+    return this.http.get<Brand []>(this.apiUrl, { headers });
+}
 }

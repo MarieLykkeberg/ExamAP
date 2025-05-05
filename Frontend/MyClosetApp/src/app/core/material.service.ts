@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 export interface Material {
     materialId: number;
@@ -11,41 +13,16 @@ export interface Material {
 export class MaterialService {
   private apiUrl = 'http://localhost:5196/api/material';
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
-  // GET: Fetch all materials
-  async getMaterials(): Promise<Material[]> {
-    const authHeader = localStorage.getItem('authHeader');
+  // GET: all material
+  getMaterials(): Observable<Material[]> {
+    const authHeader = localStorage.getItem('authHeader') || '';
 
-    const response = await fetch(this.apiUrl, {
-      method: 'GET',
-      headers: {
-        'Authorization': authHeader || ''
-      }
+    const headers = new HttpHeaders({
+      'Authorization': authHeader
     });
 
-    if (!response.ok) {
-      throw new Error('Failed to fetch materials');
-    }
-
-    return await response.json();
-  }
-
-  // POST: Add a new material
-  async addMaterial(name: string): Promise<void> {
-    const authHeader = localStorage.getItem('authHeader');
-
-    const response = await fetch(this.apiUrl, {
-      method: 'POST',
-      headers: {
-        'Authorization': authHeader || '',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ name })
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to add material: ' + response.statusText);
-    }
-  }
+    return this.http.get<Material []>(this.apiUrl, { headers });
+}
 }

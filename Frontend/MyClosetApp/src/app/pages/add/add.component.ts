@@ -3,14 +3,12 @@
 import { Component, OnInit }         from '@angular/core';
 import { CommonModule }              from '@angular/common';
 import { FormsModule }               from '@angular/forms';
-
 import { MatFormFieldModule }        from '@angular/material/form-field';
 import { MatInputModule }            from '@angular/material/input';
 import { MatSelectModule }           from '@angular/material/select';
 import { MatIconModule }             from '@angular/material/icon';
 import { MatDatepickerModule }       from '@angular/material/datepicker';
 import { MatNativeDateModule }       from '@angular/material/core';
-
 import { CategoryService, Category } from '../../core/category.service';
 import { ColorService, Color }       from '../../core/color.service';
 import { MaterialService, Material } from '../../core/material.service';
@@ -61,11 +59,26 @@ export class AddComponent implements OnInit {
     private itemService:     ItemService
   ) {}
 
-  async ngOnInit(): Promise<void> {
-    this.categories = await this.categoryService.getCategories();
-    this.colors     = await this.colorService.getColors();
-    this.materials  = await this.materialService.getMaterials();
-    this.occasions  = await this.occasionService.getOccasions();
+  ngOnInit(): void {
+    this.categoryService.getCategories().subscribe(data => {
+      this.categories = data;
+    });
+  
+    this.colorService.getColors().subscribe(data => {
+      this.colors = data;
+    });
+  
+    this.materialService.getMaterials().subscribe(data => {
+      this.materials = data;
+    });
+  
+    this.brandService.getBrands().subscribe(data => {
+      this.brands = data;
+    });
+  
+    this.occasionService.getOccasions().subscribe(data => {
+      this.occasions = data;
+    });
   }
 
   onFileSelected(evt: Event) {
