@@ -5,6 +5,7 @@ using ExamAP.Model.Repositories;
 using ExamAP.API.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ExamAP.API.Helpers;
 
 namespace ExamAP.API.Controllers
 {
@@ -58,6 +59,10 @@ namespace ExamAP.API.Controllers
 
             var existingUser = Repository.GetUserByCredentials(dto.Email, dto.Password);
             if (existingUser == null) return Unauthorized("Invalid email or password");
+
+            // Generate auth header using AuthenticationHelper
+            var authHeader = AuthenticationHelper.Encrypt(dto.Email, dto.Password);
+            Response.Headers.Add("Authorization", authHeader);
 
             return Ok(existingUser);
         }

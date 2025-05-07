@@ -5,7 +5,7 @@ using NpgsqlTypes;
 
 namespace ExamAP.Model.Repositories
 {
-    public class ItemRepository : BaseRepository
+    public class ItemRepository : BaseRepository, IItemRepository
     {
         public ItemRepository(IConfiguration configuration) : base(configuration) { }
 

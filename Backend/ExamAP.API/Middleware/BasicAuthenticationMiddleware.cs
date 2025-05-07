@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using Microsoft.Extensions.Options;
+using ExamAP.API.Helpers;
 
 namespace ExamAP.API.Middleware;
 
@@ -36,45 +37,44 @@ public class BasicAuthenticationMiddleware
             return;
         }
 
-        var encoded = authHeader.Substring("Basic ".Length).Trim();
-        var decoded = Encoding.UTF8.GetString(Convert.FromBase64String(encoded));
-        var parts = decoded.Split(':');
+        try
+        {
+            string username;
+            string password;
+            AuthenticationHelper.Decrypt(authHeader, out username, out password);
 
-        if (parts.Length != 2)
+            using (var scope = _scopeFactory.CreateScope())
+            {
+                var userRepository = scope.ServiceProvider.GetRequiredService<UserRepository>();
+                var user = userRepository.GetUserByCredentials(username, password);
+
+                if (user == null)
+                {
+                    Console.WriteLine("User not found or password incorrect.");
+                    context.Response.StatusCode = 401;
+                    await context.Response.WriteAsync("Incorrect credentials.");
+                    return;
+                }
+
+                Console.WriteLine("User authenticated successfully.");
+
+                // Add claims so controller can access them
+                var claims = new[]
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                    new Claim(ClaimTypes.Name, user.Email)
+                };
+                var identity = new ClaimsIdentity(claims, "Basic");
+                context.User = new ClaimsPrincipal(identity);  // Now available via `User.FindFirst(...)`
+
+                await _next(context);
+            }
+        }
+        catch (Exception ex)
         {
             context.Response.StatusCode = 401;
             await context.Response.WriteAsync("Invalid authorization header format.");
             return;
-        }
-
-        var username = parts[0];
-        var password = parts[1];
-
-        using (var scope = _scopeFactory.CreateScope())
-        {
-            var userRepository = scope.ServiceProvider.GetRequiredService<UserRepository>();
-            var user = userRepository.GetUserByCredentials(username, password);
-
-            if (user == null)
-            {
-                Console.WriteLine("User not found or password incorrect.");
-                context.Response.StatusCode = 401;
-                await context.Response.WriteAsync("Incorrect credentials.");
-                return;
-            }
-
-            Console.WriteLine("User authenticated successfully.");
-
-            // Add claims so controller can access them
-            var claims = new[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                new Claim(ClaimTypes.Name, user.Email)
-            };
-            var identity = new ClaimsIdentity(claims, "Basic");
-            context.User = new ClaimsPrincipal(identity);  // Now available via `User.FindFirst(...)`
-
-            await _next(context);
         }
     }
 }
