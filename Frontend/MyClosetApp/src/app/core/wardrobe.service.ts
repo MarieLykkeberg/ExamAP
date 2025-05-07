@@ -23,7 +23,6 @@ export interface Item {
 export interface Category { categoryId: number; categoryName: string; }
 export interface Color { colorId: number; colorName: string; }
 export interface Material { materialId: number; materialName: string; }
-export interface Brand { brandId: number; brandName: string; }
 export interface Occasion { occasionId: number; occasionName: string; }
 
 @Injectable({
@@ -76,9 +75,6 @@ export class WardrobeService {
     return this.http.get<Material[]>(`${this.apiUrl}/material`);
   }
 
-  getBrands(): Observable<Brand[]> {
-    return this.http.get<Brand[]>(`${this.apiUrl}/brand`);
-  }
 
   getOccasions(): Observable<Occasion[]> {
     return this.http.get<Occasion[]>(`${this.apiUrl}/occasion`);

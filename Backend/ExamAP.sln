@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExamAP.API", "ExamAP.API\Ex
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExamAP.Model", "ExamAP.Model\ExamAP.Model.csproj", "{FD0726F8-B8EB-4A2A-A601-DF99D1747CFE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExamAP.Tests", "..\ExamAP.Tests\ExamAP.Tests.csproj", "{24C79A34-367A-4AB5-B426-B08718962590}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{FD0726F8-B8EB-4A2A-A601-DF99D1747CFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD0726F8-B8EB-4A2A-A601-DF99D1747CFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD0726F8-B8EB-4A2A-A601-DF99D1747CFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24C79A34-367A-4AB5-B426-B08718962590}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24C79A34-367A-4AB5-B426-B08718962590}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24C79A34-367A-4AB5-B426-B08718962590}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24C79A34-367A-4AB5-B426-B08718962590}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
