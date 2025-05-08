@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // CORS for Angular
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 builder.Services.AddCors(options =>
@@ -29,6 +30,7 @@ builder.Services.AddScoped<ColorRepository>();
 builder.Services.AddScoped<CategoryRepository>();
 builder.Services.AddScoped<MaterialRepository>();
 builder.Services.AddScoped<OccasionRepository>();
+builder.Services.AddScoped<IItemRepository, ItemRepository>();
 
 // Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
