@@ -16,14 +16,15 @@ builder.Services.AddCors(options =>
         policy
           .WithOrigins("http://localhost:4200")
           .AllowAnyHeader()
-          .AllowAnyMethod();
+          .AllowAnyMethod()
+          .AllowCredentials();
     });
 });
 
 // MVC Controllers
 builder.Services.AddControllers();
 
-// Your repositories
+//repositories
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<ItemRepository>();
 builder.Services.AddScoped<ColorRepository>();

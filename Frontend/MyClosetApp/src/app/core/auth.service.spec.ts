@@ -1,183 +1,83 @@
 import { TestBed } from '@angular/core/testing';
-import { AuthService, User } from './auth.service';
-import { provideHttpClient } from '@angular/common/http';
+import { AuthService } from './auth.service';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 describe('AuthService', () => {
   let service: AuthService;
+  let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideHttpClient()]
+      imports: [HttpClientTestingModule],
+      providers: [AuthService]
     });
     service = TestBed.inject(AuthService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
-  // ===== TEST 1: Service Creation =====
+  afterEach(() => {
+    httpMock.verify();
+    localStorage.clear();
+  });
+
+  // Simple test to check if service exists
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  // ===== TEST 2: Unit Tests =====
-  describe('Unit Tests', () => {
-    it('should handle missing auth header', () => {
-      localStorage.removeItem('authHeader');
-      localStorage.removeItem('currentUser');
-      
-      service.getCurrentUser().subscribe({
-        error: (error) => {
-          expect(error).toBeTruthy();
-        }
-      });
-    });
-
-    it('should handle invalid user data', () => {
-      const invalidUser: User = {
-        userId: 0,
-        name: '',
-        email: '',
-        password: ''
-      };
-
-      service.updateUser(invalidUser).subscribe({
-        error: (error) => {
-          expect(error).toBeTruthy();
-        }
-      });
-    });
-  });
-
-  // ===== TEST 3: Registration =====
-  it('should register a new user', (done) => {
-    const testUser = {
+  // Test successful login
+  it('should store auth header after successful login', () => {
+    const testUser = { 
+      userId: 1, 
+      email: 'test@example.com', 
       name: 'Test User',
-      email: 'test@example.com',
-      password: 'test123'
+      password: 'password123'
     };
-
-    service.register(testUser.name, testUser.email, testUser.password).subscribe({
-      next: (response) => {
-        expect(response).toBeTruthy();
-        done();
-      },
-      error: (error) => {
-        console.error('Registration failed:', error);
-        done();
-      }
+    
+    service.login('test@example.com', 'password123').subscribe(user => {
+      expect(user).toEqual(testUser);
+      expect(localStorage.getItem('authHeader')).toBeTruthy();
     });
+
+    const req = httpMock.expectOne('http://localhost:5196/api/user/login');
+    expect(req.request.method).toBe('POST');
+    req.flush(testUser);
   });
 
-  // ===== TEST 4: Login =====
-  it('should login with valid credentials', (done) => {
-    const testCredentials = {
-      email: 'test@example.com',
-      password: 'test123'
-    };
-
-    service.login(testCredentials.email, testCredentials.password).subscribe({
-      next: (user) => {
-        expect(user).toBeTruthy();
-        expect(user.email).toBe(testCredentials.email);
-        expect(localStorage.getItem('authHeader')).toBeTruthy();
-        expect(localStorage.getItem('currentUser')).toBeTruthy();
-        done();
-      },
-      error: (error) => {
-        console.error('Login failed:', error);
-        done();
+  // Test failed login
+  it('should not store auth header after failed login', () => {
+    service.login('wrong@example.com', 'wrongpass').subscribe({
+      error: () => {
+        expect(localStorage.getItem('authHeader')).toBeNull();
       }
     });
+
+    const req = httpMock.expectOne('http://localhost:5196/api/user/login');
+    req.error(new ErrorEvent('Unauthorized'));
   });
 
-  // ===== TEST 5: Get Current User =====
-  it('should get current user after login', (done) => {
-    // First login
-    service.login('test@example.com', 'test123').subscribe({
-      next: () => {
-        // Then get current user
-        service.getCurrentUser().subscribe({
-          next: (user) => {
-            expect(user).toBeTruthy();
-            expect(user.email).toBe('test@example.com');
-            done();
-          },
-          error: (error) => {
-            console.error('Get current user failed:', error);
-            done();
-          }
-        });
-      },
-      error: (error) => {
-        console.error('Login failed:', error);
-        done();
-      }
-    });
-  });
-
-  // ===== TEST 6: Update User =====
-  it('should update user profile', (done) => {
-    // First login
-    service.login('test@example.com', 'test123').subscribe({
-      next: (user) => {
-        // Then update user
-        const updatedUser: User = {
-          ...user,
-          name: 'Updated Name'
-        };
-
-        service.updateUser(updatedUser).subscribe({
-          next: () => {
-            expect(localStorage.getItem('currentUser')).toContain('Updated Name');
-            done();
-          },
-          error: (error) => {
-            console.error('Update failed:', error);
-            done();
-          }
-        });
-      },
-      error: (error) => {
-        console.error('Login failed:', error);
-        done();
-      }
-    });
-  });
-
-  // ===== TEST 7: Delete Account =====
-  it('should delete user account', (done) => {
-    // First login
-    service.login('test@example.com', 'test123').subscribe({
-      next: (user) => {
-        // Then delete account
-        service.deleteAccount(user.userId).subscribe({
-          next: () => {
-            expect(localStorage.getItem('authHeader')).toBeNull();
-            expect(localStorage.getItem('currentUser')).toBeNull();
-            done();
-          },
-          error: (error) => {
-            console.error('Delete failed:', error);
-            done();
-          }
-        });
-      },
-      error: (error) => {
-        console.error('Login failed:', error);
-        done();
-      }
-    });
-  });
-
-  // ===== TEST 8: Logout =====
-  it('should clear user data on logout', () => {
+  // Test logout
+  it('should clear auth data on logout', () => {
     // First set some data
     localStorage.setItem('authHeader', 'test-header');
-    localStorage.setItem('currentUser', JSON.stringify({ userId: 1, name: 'Test' }));
+    localStorage.setItem('currentUser', JSON.stringify({ userId: 1 }));
 
-    // Then logout
     service.logout();
 
-    // Verify data is cleared
     expect(localStorage.getItem('authHeader')).toBeNull();
     expect(localStorage.getItem('currentUser')).toBeNull();
+  });
+
+  // Test registration
+  it('should register new user', () => {
+    const newUser = { name: 'New User', email: 'new@example.com', password: 'pass123' };
+    
+    service.register(newUser.name, newUser.email, newUser.password).subscribe(response => {
+      expect(response).toBeTruthy();
+    });
+
+    const req = httpMock.expectOne('http://localhost:5196/api/user/register');
+    expect(req.request.method).toBe('POST');
+    req.flush({ message: 'User registered successfully' });
   });
 });

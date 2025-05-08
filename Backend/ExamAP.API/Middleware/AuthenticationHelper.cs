@@ -1,42 +1,56 @@
 using System;
 using System.Text;
 
-namespace ExamAP.API.Helpers
+namespace ExamAP.API.Middleware
 {
     public class AuthenticationHelper
     {
+        /// Creates a Basic Auth header from username and password
+
         public static string Encrypt(string username, string password)
         {
+            // 1. Combine username and password with a colon
             string credentials = $"{username}:{password}";
+            
+            // 2. Convert to Base64 (a way to encode text)
             byte[] bytes = Encoding.UTF8.GetBytes(credentials);
-            string encryptedCredentials = Convert.ToBase64String(bytes);
-            return $"Basic {encryptedCredentials}";
+            string base64 = Convert.ToBase64String(bytes);
+            
+            // 3. Add "Basic " prefix
+            return $"Basic {base64}";
         }
 
-        public static void Decrypt(string encryptedHeader, out string username, out string password)
+     
+        /// Extracts username and password from a Basic Auth header
+       
+        public static void Decrypt(string authHeader, out string username, out string password)
         {
-            if (string.IsNullOrEmpty(encryptedHeader))
-                throw new FormatException("Authorization header cannot be null or empty");
-
-            var parts = encryptedHeader.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length != 2 || parts[0] != "Basic")
-                throw new FormatException("Invalid authorization header format. Expected 'Basic <credentials>'");
+            // 1. Check if header exists and has correct format
+            if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Basic "))
+            {
+                throw new FormatException("Header must start with 'Basic '");
+            }
 
             try
             {
-                var decodedBytes = Convert.FromBase64String(parts[1]);
-                var decodedString = Encoding.UTF8.GetString(decodedBytes);
-                var credentials = decodedString.Split(new[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
-                
-                if (credentials.Length != 2)
-                    throw new FormatException("Invalid credentials format. Expected 'username:password'");
+                // 2. Remove "Basic " prefix and decode Base64
+                string base64 = authHeader.Substring(6);
+                byte[] bytes = Convert.FromBase64String(base64);
+                string credentials = Encoding.UTF8.GetString(bytes);
 
-                username = credentials[0];
-                password = credentials[1];
+                // 3. Split at colon to get username and password
+                string[] parts = credentials.Split(':');
+                if (parts.Length != 2)
+                {
+                    throw new FormatException("Credentials must be in format 'username:password'");
+                }
+
+                username = parts[0];
+                password = parts[1];
             }
-            catch (FormatException)
+            catch
             {
-                throw new FormatException("Invalid Base64 encoding in credentials");
+                throw new FormatException("Invalid Basic Auth header format");
             }
         }
     }
