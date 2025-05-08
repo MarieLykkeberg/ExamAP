@@ -7,13 +7,9 @@ namespace ExamAP.API.Helpers
     {
         public static string Encrypt(string username, string password)
         {
-            // 1. Concatenate credentials with a ':'
             string credentials = $"{username}:{password}";
-            // 2. Retrieve bytes from text
             byte[] bytes = Encoding.UTF8.GetBytes(credentials);
-            // 3. Base64 encode credentials
             string encryptedCredentials = Convert.ToBase64String(bytes);
-            // 4. Prefix credentials with 'Basic' and return
             return $"Basic {encryptedCredentials}";
         }
 

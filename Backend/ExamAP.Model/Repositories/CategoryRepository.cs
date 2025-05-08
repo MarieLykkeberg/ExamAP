@@ -15,7 +15,7 @@ namespace ExamAP.Model.Repositories
             var categories = new List<Category>();
             using var conn = new NpgsqlConnection(ConnectionString);
             var cmd = conn.CreateCommand();
-            cmd.CommandText = "SELECT * FROM public.categories";  // Query to fetch all categories
+            cmd.CommandText = "SELECT * FROM public.categories";  
 
          
             var reader = GetData(conn, cmd);

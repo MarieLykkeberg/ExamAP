@@ -1,7 +1,7 @@
-using ExamAP.Model.Entities;  // This imports the Color entity
-using Microsoft.Extensions.Configuration;  // This imports IConfiguration for accessing configuration
-using Npgsql;  // This is for database connectivity using Npgsql
-using System.Collections.Generic;  // This is for using List<T>
+using ExamAP.Model.Entities;  
+using Microsoft.Extensions.Configuration;  
+using Npgsql;  
+using System.Collections.Generic;  
 
 
 namespace ExamAP.Model.Repositories
@@ -15,7 +15,7 @@ namespace ExamAP.Model.Repositories
             var colors = new List<Color>();
             using var conn = new NpgsqlConnection(ConnectionString);
             var cmd = conn.CreateCommand();
-            cmd.CommandText = "SELECT * FROM public.colors";  // Query to fetch all colors
+            cmd.CommandText = "SELECT * FROM public.colors";  
 
            
             var reader = GetData(conn, cmd);

@@ -20,7 +20,6 @@ namespace ExamAP.API.Controllers
             Repository = repository;
         }
 
-        // ── Registration ────────────────────────────────────────
         [AllowAnonymous]
         [HttpPost("register")]
         public IActionResult RegisterUser([FromBody] RegisterDto dto)
@@ -45,7 +44,6 @@ namespace ExamAP.API.Controllers
             return BadRequest("Something went wrong while registering the user.");
         }
 
-        // ── Login ────────────────────────────────────────────────
         [AllowAnonymous]
         [HttpPost("login")]
         public ActionResult<User> Login([FromBody] LoginDto dto)
@@ -67,7 +65,6 @@ namespace ExamAP.API.Controllers
             return Ok(existingUser);
         }
 
-        // ── Get current user (from token) ───────────────────────
         [Authorize]
         [HttpGet("me")]
         public ActionResult<User> GetCurrentUser()
@@ -83,7 +80,6 @@ namespace ExamAP.API.Controllers
             return Ok(user);
         }
 
-        // ── Get any user by id ───────────────────────────────────
         [HttpGet("{id}")]
         public ActionResult<User> GetUserById(int id)
         {
@@ -92,7 +88,6 @@ namespace ExamAP.API.Controllers
             return Ok(user);
         }
 
-        // ── UPDATE user (PUT /api/user/{id}) ─────────────────────
         [Authorize]
         [HttpPut("{id}")]
         public IActionResult UpdateUser(int id, [FromBody] RegisterDto dto)
@@ -115,10 +110,9 @@ namespace ExamAP.API.Controllers
             bool success = Repository.UpdateUser(existing);
             if (!success) return StatusCode(500, "Failed to update user.");
 
-            return NoContent();  // HTTP 204
+            return NoContent();  
         }
 
-        // ── DELETE user (DELETE /api/user/{id}) ──────────────────
         [Authorize]
         [HttpDelete("{id}")]
         public IActionResult DeleteUser(int id)
@@ -129,8 +123,8 @@ namespace ExamAP.API.Controllers
             bool success = Repository.DeleteUser(id);
             if (!success) return StatusCode(500, "Failed to delete user.");
 
-            return NoContent();  // HTTP 204
+            return NoContent();  
         }
 
-    } // class UserController
-} // namespace ExamAP.API.Controllers
+    } 
+} 

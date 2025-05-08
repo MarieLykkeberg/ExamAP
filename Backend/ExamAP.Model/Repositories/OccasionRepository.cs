@@ -1,7 +1,7 @@
-using ExamAP.Model.Entities;  // This imports the Occasion entity
-using Microsoft.Extensions.Configuration;  // This imports IConfiguration for accessing configuration
-using Npgsql;  // This is for database connectivity using Npgsql
-using System.Collections.Generic;  // This is for using List<T>
+using ExamAP.Model.Entities;  
+using Microsoft.Extensions.Configuration;  
+using Npgsql;  
+using System.Collections.Generic;  
 
 namespace ExamAP.Model.Repositories
 {
@@ -11,44 +11,25 @@ namespace ExamAP.Model.Repositories
 
         public List<Occasion> GetAllOccasions()
         {
-            var Occasions = new List<Occasion>();  // Declare the list with uppercase 'O'
+            var Occasions = new List<Occasion>(); 
             using var conn = new NpgsqlConnection(ConnectionString);
             var cmd = conn.CreateCommand();
-            cmd.CommandText = "SELECT * FROM public.occasions";  // Query to fetch all categories
+            cmd.CommandText = "SELECT * FROM public.occasions";  
 
             
             var reader = GetData(conn, cmd);
 
             while (reader.Read())
             {
-                Occasions.Add(new Occasion  // Use 'Occasions' consistently with uppercase 'O'
+                Occasions.Add(new Occasion  
                 {
                     OccasionId = (int)reader["occasionid"],
                     OccasionName = reader["occasionname"].ToString()
                 });
             }
 
-            return Occasions;  // Return the list with uppercase 'O'
+            return Occasions;  
         }
 
-        public bool InsertOccasion(string name)
-        {
-            try
-            {
-                using var conn = new NpgsqlConnection(ConnectionString);
-                var cmd = conn.CreateCommand();
-                cmd.CommandText = @"
-                    INSERT INTO occasion (occasionname) 
-                    VALUES (@Name)
-                ";
-                cmd.Parameters.AddWithValue("@Name", name);
-                return InsertData(conn, cmd);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("InsertOccasion failed: " + ex.Message);
-                return false;
-            }
-        }
     }
 }

@@ -24,12 +24,17 @@ namespace ExamAP.Tests
         }
 
         [TestMethod]
-        public void Decrypt_ShouldExtractOriginalCredentials()
+        public void Decrypt_ShouldExtractOriginalCredentials()     // Tests that the encryption creates a valid Basic Auth header
         {
             // Arrange
             string originalUsername = "test.user";
             string originalPassword = "test123";
             string authHeader = AuthenticationHelper.Encrypt(originalUsername, originalPassword);
+
+            // Verifies:
+            // Header is not null
+            // Starts with "Basic "
+            // Contains valid Base64 encoding
 
             // Act
             string extractedUsername;
@@ -43,7 +48,7 @@ namespace ExamAP.Tests
 
         [TestMethod]
         [ExpectedException(typeof(FormatException))]
-        public void Decrypt_WithInvalidHeader_ShouldThrowException()
+        public void Decrypt_WithInvalidHeader_ShouldThrowException() //Error handling test
         {
             // Arrange
             string invalidHeader = "InvalidFormat";
