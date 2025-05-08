@@ -1,7 +1,7 @@
-using ExamAP.Model.Entities;  // This imports the Material entity
-using Microsoft.Extensions.Configuration;  // This imports IConfiguration for accessing configuration
-using Npgsql;  // This is for database connectivity using Npgsql
-using System.Collections.Generic;  // This is for using List<T>
+using ExamAP.Model.Entities; 
+using Microsoft.Extensions.Configuration;  
+using Npgsql;  
+using System.Collections.Generic;  
 
 namespace ExamAP.Model.Repositories
 {
@@ -14,7 +14,7 @@ namespace ExamAP.Model.Repositories
             var materials = new List<Material>();
             using var conn = new NpgsqlConnection(ConnectionString);
             var cmd = conn.CreateCommand();
-            cmd.CommandText = "SELECT * FROM public.materials";  // Query to fetch all categories
+            cmd.CommandText = "SELECT * FROM public.materials"; 
 
            
             var reader = GetData(conn, cmd);
@@ -31,24 +31,5 @@ namespace ExamAP.Model.Repositories
             return materials;
         }
 
-        public bool InsertMaterial(string name)
-        {
-            try
-            {
-                using var conn = new NpgsqlConnection(ConnectionString);
-                var cmd = conn.CreateCommand();
-                cmd.CommandText = @"
-                    INSERT INTO material (materialname) 
-                    VALUES (@Name)
-                ";
-                cmd.Parameters.AddWithValue("@Name", name);
-                return InsertData(conn, cmd);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("InsertMaterial failed: " + ex.Message);
-                return false;
-            }
-        }
     }
 }
