@@ -60,5 +60,8 @@
 
 .login-link {
   font-family: Didot;
+}
 
+.form-spacing {
+  height: 20px;
 }

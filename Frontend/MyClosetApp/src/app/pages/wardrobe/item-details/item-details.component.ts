@@ -99,7 +99,10 @@ export class ItemDetailsComponent implements OnInit {
   delete(): void {
     if (!confirm('Delete this item?')) return;
     this.ws.deleteItem(this.item.itemId).subscribe({
-      next: () => this.router.navigate(['/wardrobe']),
+      next: () => {
+        alert('Item deleted successfully');
+        this.router.navigate(['/wardrobe']);
+      },
       error: () => this.errorMsg = 'Delete failed'
     });
   }

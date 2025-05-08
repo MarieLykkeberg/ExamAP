@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+/* import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 export interface Item {
@@ -27,15 +27,13 @@ export class ItemService {
 
     const headers = new HttpHeaders({
       'Authorization': authHeader || '',
-      /* 'Content-Type': 'application/json' */
+     
     });
     this.http.post(this.apiUrl, item, { headers }).subscribe(
-      // handle response
-      // handle error
+     
     );
   }
 
-  // Get items for current user
   async getItems(): Promise<Item[]> {
     const authHeader = localStorage.getItem('authHeader');
 
@@ -51,7 +49,7 @@ export class ItemService {
     return response;
   }
 
-  // delete item
+
   async deleteItem(itemId: number): Promise<void> {
     const authHeader = localStorage.getItem('authHeader');
 
@@ -64,4 +62,4 @@ export class ItemService {
       throw new Error('Failed to delete item');
     }
   }
-}
+} */
