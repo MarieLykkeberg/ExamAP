@@ -1,5 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ExamAP.API.Helpers;
+using ExamAP.API.Middleware;
 
 namespace ExamAP.Tests
 {
@@ -7,7 +7,7 @@ namespace ExamAP.Tests
     public class AuthenticationHelperTests
     {
         [TestMethod]
-        public void Encrypt_ShouldCreateValidBasicAuthHeader()
+        public void Encrypt_Valid() // Should create a Basic Auth header
         {
             // Arrange
             string username = "test.user";
@@ -17,24 +17,17 @@ namespace ExamAP.Tests
             string authHeader = AuthenticationHelper.Encrypt(username, password);
 
             // Assert
-            Assert.IsNotNull(authHeader);
             Assert.IsTrue(authHeader.StartsWith("Basic "));
-            string base64Part = authHeader.Substring(6); // Remove "Basic "
-            Assert.IsTrue(IsValidBase64(base64Part));
+            Assert.IsTrue(authHeader.Length > 6); // More than just "Basic "
         }
 
         [TestMethod]
-        public void Decrypt_ShouldExtractOriginalCredentials()     // Tests that the encryption creates a valid Basic Auth header
+        public void Decrypt_Valid() // Should return correct login credentials
         {
             // Arrange
-            string originalUsername = "test.user";
-            string originalPassword = "test123";
-            string authHeader = AuthenticationHelper.Encrypt(originalUsername, originalPassword);
-
-            // Verifies:
-            // Header is not null
-            // Starts with "Basic "
-            // Contains valid Base64 encoding
+            string username = "test.user";
+            string password = "test123";
+            string authHeader = AuthenticationHelper.Encrypt(username, password);
 
             // Act
             string extractedUsername;
@@ -42,33 +35,19 @@ namespace ExamAP.Tests
             AuthenticationHelper.Decrypt(authHeader, out extractedUsername, out extractedPassword);
 
             // Assert
-            Assert.AreEqual(originalUsername, extractedUsername);
-            Assert.AreEqual(originalPassword, extractedPassword);
+            Assert.AreEqual(username, extractedUsername);
+            Assert.AreEqual(password, extractedPassword);
         }
 
         [TestMethod]
         [ExpectedException(typeof(FormatException))]
-        public void Decrypt_WithInvalidHeader_ShouldThrowException() //Error handling test
+        public void Decrypt_Invalid() // Should throw exception for invalid header
         {
             // Arrange
-            string invalidHeader = "InvalidFormat";
+            string invalidHeader = "NotBasicAuth";
 
             // Act
             AuthenticationHelper.Decrypt(invalidHeader, out string username, out string password);
-        }
-
-        // Helper method to validate Base64 string
-        private bool IsValidBase64(string base64String)
-        {
-            try
-            {
-                Convert.FromBase64String(base64String);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
         }
     }
 } 

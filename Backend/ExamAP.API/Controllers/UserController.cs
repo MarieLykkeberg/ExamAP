@@ -1,11 +1,12 @@
 using System;
 using System.Linq;
+using System.Text;
 using ExamAP.Model.Entities;
 using ExamAP.Model.Repositories;
 using ExamAP.API.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ExamAP.API.Helpers;
+using ExamAP.API.Middleware;
 
 namespace ExamAP.API.Controllers
 {
@@ -58,7 +59,7 @@ namespace ExamAP.API.Controllers
             var existingUser = Repository.GetUserByCredentials(dto.Email, dto.Password);
             if (existingUser == null) return Unauthorized("Invalid email or password");
 
-            // Generate auth header using AuthenticationHelper
+            // Use AuthenticationHelper to create Basic Auth header
             var authHeader = AuthenticationHelper.Encrypt(dto.Email, dto.Password);
             Response.Headers.Add("Authorization", authHeader);
 
@@ -103,14 +104,14 @@ namespace ExamAP.API.Controllers
             var existing = Repository.GetUserById(id);
             if (existing == null) return NotFound($"User {id} not found.");
 
-            existing.Name     = dto.Name;
-            existing.Email    = dto.Email;
+            existing.Name = dto.Name;
+            existing.Email = dto.Email;
             existing.Password = dto.Password;
 
             bool success = Repository.UpdateUser(existing);
             if (!success) return StatusCode(500, "Failed to update user.");
 
-            return NoContent();  
+            return NoContent();
         }
 
         [Authorize]
@@ -123,8 +124,7 @@ namespace ExamAP.API.Controllers
             bool success = Repository.DeleteUser(id);
             if (!success) return StatusCode(500, "Failed to delete user.");
 
-            return NoContent();  
+            return NoContent();
         }
-
-    } 
+    }
 } 

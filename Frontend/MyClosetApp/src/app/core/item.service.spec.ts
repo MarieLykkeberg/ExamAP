@@ -12,12 +12,12 @@ describe('ItemService', () => {
     service = TestBed.inject(ItemService);
   });
 
-  // ===== TEST 1: Service Creation =====
+  // TEST 1: Service Creation 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  // ===== TEST 2: Unit Tests =====
+  // TEST 2: Unit Tests 
   describe('Unit Tests', () => {
     it('should handle empty items array', async () => {
       // Mock localStorage
@@ -52,7 +52,7 @@ describe('ItemService', () => {
     });
   });
 
-  // ===== TEST 3: CREATE Operation =====
+  // TEST 3: CREATE Operation 
   it('should create a new item', async () => {
     // 3.1: Setup
     localStorage.setItem('headerValue', 'Basic dGVzdC51c2VyOlBhc3N3b3JkMTIz');
@@ -73,7 +73,7 @@ describe('ItemService', () => {
     await service.addItem(newItem);
   });
 
-  // ===== TEST 4: READ Operation =====
+  // TEST 4: READ Operation 
   it('should retrieve items for current user', async () => {
     // 4.1: Authentication Setup
     localStorage.setItem('headerValue', 'Basic dGVzdC51c2VyOlBhc3N3b3JkMTIz');
@@ -94,7 +94,7 @@ describe('ItemService', () => {
     expect(item.imageUrl).toBeDefined();
   });
 
-  // ===== TEST 5: UPDATE Operation =====
+  // TEST 5: UPDATE Operation 
   it('should update an existing item', async () => {
     // 5.1: Setup
     localStorage.setItem('headerValue', 'Basic dGVzdC51c2VyOlBhc3N3b3JkMTIz');
@@ -114,7 +114,7 @@ describe('ItemService', () => {
     await service.addItem(updatedItem);
   });
 
-  // ===== TEST 6: DELETE Operation =====
+  // TEST 6: DELETE Operation
   it('should delete an item', async () => {
     // 6.1: Setup
     localStorage.setItem('headerValue', 'Basic dGVzdC51c2VyOlBhc3N3b3JkMTIz');

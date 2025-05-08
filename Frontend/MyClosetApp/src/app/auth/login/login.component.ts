@@ -11,48 +11,41 @@ import { AuthService, User } from '../../core/auth.service';
   imports: [CommonModule, FormsModule],
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
-  email = '';
-  password = '';
+export class LoginComponent { // marked as export so it can be used by other components and modules
+  // bound to login form inouts in the template. Set as blank - will automatically update when the user types in the form
+  email = '';    
+  password = ''; 
 
+  // Constructor injects two services:
+  // 1. Router - for navigating between pages
+  // 2. AuthService - for handling authentication logic
   constructor(
     private router: Router,
     private authService: AuthService
   ) { }
 
+  // This method is called when the user clicks the login button
   login() {
 
-    console.log('Login called', this.email, this.password);
-
+    // Call the auth service to attempt login
+    // subscribe() handles the response asynchronously
     this.authService.login(this.email, this.password).subscribe({
+      // If login is successful:
       next: (user: User) => {
         console.log('Logged in user:', user);
-        // AuthService has stored `currentUser = user` for you
-        // you can still go straight to the wardrobe
+        // Navigate to the wardrobe page
         this.router.navigate(['/wardrobe']);
       },
+      // If login fails:
       error: err => {
         console.error('Login failed:', err);
+        // Show error message to user
         alert('Invalid email or password');
-
-
-    /* console.log('Login function called');
-    console.log('Email:', this.email);
-    console.log('Password:', this.password);
-
-    this.authService.login(this.email, this.password).subscribe({
-      next: (res: any) => {
-        console.log('Backend response:', res);
-        this.router.navigate(['/wardrobe']);
-      },
-      error: (err) => {
-        console.error('Login failed:', err);
-        alert('Invalid email or password'); */
       }
     });
   }
 
-
+  // It navigates to the registration page
   goToRegister() {
     this.router.navigate(['/register']);
   }

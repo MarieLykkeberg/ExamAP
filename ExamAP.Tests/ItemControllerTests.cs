@@ -40,7 +40,7 @@ namespace ExamAP.Tests
         }
 
         [TestMethod]
-        public void GetItems_ShouldReturnUserItems() // Tests that the controller returns the correct items for the current user
+        public void GetItems_User() // Should return items for the current user
         {
             // Arrange
             var expectedItems = new List<Item>
@@ -63,7 +63,7 @@ namespace ExamAP.Tests
         }
 
         [TestMethod]
-        public void GetItemById_WithValidId_ShouldReturnItem() // Tests that the controller returns the correct item for a given ID
+        public void GetItemById_Valid() // Should return the correct item for a given ID
         {
             // Arrange
             var expectedItem = new Item { ItemId = 1, UserId = TestUserId, BrandName = "Test Brand" };
@@ -82,7 +82,7 @@ namespace ExamAP.Tests
         }
 
         [TestMethod]
-        public void AddItem_WithValidItem_ShouldCreateItem() // Tests that the controller creates a new item
+        public void AddItem_Valid() // Should create a new item
         {
             // Arrange
             var newItem = new Item { BrandName = "New Brand" };
@@ -99,7 +99,7 @@ namespace ExamAP.Tests
         }
 
         [TestMethod]
-        public void UpdateItem_WithValidItem_ShouldUpdateItem() // Tests that the controller updates an existing item
+        public void UpdateItem_Valid() // Should update an existing item
         {
             // Arrange
             var existingItem = new Item { ItemId = 1, UserId = TestUserId, BrandName = "Original" };
@@ -120,7 +120,7 @@ namespace ExamAP.Tests
         }
 
         [TestMethod]
-        public void DeleteItem_WithValidId_ShouldDeleteItem() // Tests that the controller deletes an item
+        public void DeleteItem_Valid() // Should delete an item
         {
             // Arrange
             var existingItem = new Item { ItemId = 1, UserId = TestUserId };
