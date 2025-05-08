@@ -2,7 +2,6 @@ import { Component }       from '@angular/core';
 import { Router }          from '@angular/router';
 import { FormsModule }     from '@angular/forms';
 import { CommonModule }    from '@angular/common';
-import { switchMap }       from 'rxjs/operators';
 import { AuthService, User } from '../../core/auth.service';
 
 @Component({
@@ -23,23 +22,14 @@ export class RegisterComponent {
   ) { }
 
   register() {
-    // Clear any stale credentials
-    this.authService.logout();
-
-    this.authService
-      .register(this.name, this.email, this.password)
-      .pipe(
-        // After registering, immediately log in
-        switchMap(() => this.authService.login(this.email, this.password))
-      )
+    this.authService.register(this.name, this.email, this.password)
       .subscribe({
-        next: (user: User) => {
-          console.log('Registered and logged in as:', user);
-          // Now go directly to profile
+        next: () => {
+          console.log('Registration successful');
           this.router.navigate(['/wardrobe']);
         },
         error: (err) => {
-          console.error('Registration or login failed:', err);
+          console.error('Registration failed:', err);
         }
       });
   }

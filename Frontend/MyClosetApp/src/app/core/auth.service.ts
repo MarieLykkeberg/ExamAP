@@ -2,8 +2,10 @@
 
 import { Injectable }            from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of, tap }    from 'rxjs';
+import { Observable, of }    from 'rxjs';
+import { tap } from 'rxjs/operators';
 
+// Defines the structure of a user in our application
 export interface User {
   userId:   number;
   name:     string;
@@ -13,32 +15,33 @@ export interface User {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  // URL for our backend API
   private apiUrl = 'http://localhost:5196/api/user';
+  // Stores the currently logged in user
   private currentUser: User | null = null;
 
   constructor(private http: HttpClient) {}
 
-  /** Login and cache credentials + user */
+  // Handles user login - sets auth header and stores user data
   login(email: string, password: string): Observable<User> {
     const authHeader = 'Basic ' + btoa(`${email}:${password}`);
-    return this.http
-      .post<User>(`${this.apiUrl}/login`, { email, password })
-      .pipe(
-        tap(u => {
-          this.currentUser = u;
-          localStorage.setItem('authHeader', authHeader);
-          localStorage.setItem('currentUser', JSON.stringify(u));
-        })
-      );
+    localStorage.setItem('authHeader', authHeader);
+    
+    return this.http.post<User>(`${this.apiUrl}/login`, { email, password }).pipe(
+      tap((user: User) => {
+        this.currentUser = user;
+        localStorage.setItem('currentUser', JSON.stringify(user));
+      })
+    );
   }
 
-  /** Build Authorization header */
+  // Creates the authorization header for API requests
   private buildAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('authHeader') ?? '';
     return new HttpHeaders({ Authorization: token });
   }
 
-  /** Return cached user or from localStorage or error */
+  // Gets the current user's data from memory or localStorage
   getCurrentUser(): Observable<User> {
     if (this.currentUser) {
       return of(this.currentUser);
@@ -49,30 +52,22 @@ export class AuthService {
       this.currentUser = u;
       return of(u);
     }
-    // no user → error so component can redirect
+    // If no user is found, return null
     return of(null as any);
   }
 
-  /**
-   * Update profile via PUT /api/user/{id},
-   * which matches your [HttpPut("{id}")] action.
-   */
+  // Updates the user's profile information
   updateUser(user: User): Observable<void> {
-    return this.http
-      .put<void>(
-        `${this.apiUrl}/${user.userId}`,   // ← include the /{id}
-        user,
-        { headers: this.buildAuthHeaders() }
-      )
-      .pipe(
-        tap(() => {
-          this.currentUser = user;
-          localStorage.setItem('currentUser', JSON.stringify(user));
-        })
-      );
+    this.currentUser = user;
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    return this.http.put<void>(
+      `${this.apiUrl}/${user.userId}`,
+      user,
+      { headers: this.buildAuthHeaders() }
+    );
   }
 
-  /** Delete via DELETE /api/user/{id} */
+  // Deletes the user's account
   deleteAccount(id: number): Observable<void> {
     return this.http.delete<void>(
       `${this.apiUrl}/${id}`,
@@ -80,15 +75,37 @@ export class AuthService {
     );
   }
 
-  /** Clear everything */
+  // Clears all user data and logs out
   logout(): void {
     this.currentUser = null;
     localStorage.removeItem('authHeader');
     localStorage.removeItem('currentUser');
   }
 
-  /** Registration */
+  // Creates a new user account
   register(name: string, email: string, password: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, { name, email, password });
+    // Clear any existing user data first
+    this.logout();
+    
+    // Set auth header for the new user
+    const authHeader = 'Basic ' + btoa(`${email}:${password}`);
+    localStorage.setItem('authHeader', authHeader);
+    
+    // Create the new user account
+    return this.http.post(`${this.apiUrl}/register`, { name, email, password }).pipe(
+      tap((response: any) => {
+        // Create user object with registration data
+        const newUser: User = {
+          userId: response.userId,
+          name: name,
+          email: email,
+          password: password
+        };
+        
+        // Store the new user data
+        this.currentUser = newUser;
+        localStorage.setItem('currentUser', JSON.stringify(newUser));
+      })
+    );
   }
 }

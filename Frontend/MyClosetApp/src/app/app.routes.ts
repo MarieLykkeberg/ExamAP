@@ -2,7 +2,6 @@
 
 import { Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
-import { AuthGuard } from './core/auth.guard';
 
 export const routes: Routes = [
   // 1) Redirect root to login
@@ -29,7 +28,6 @@ export const routes: Routes = [
       // ── Wardrobe module ───────────────────────────────
       {
         path: 'wardrobe',
-        canActivate: [AuthGuard],
         children: [
           // 1. DETAILS must come first
           {
@@ -58,7 +56,6 @@ export const routes: Routes = [
       // ── Styling page ───────────────────────────────────
       {
         path: 'styling',
-        canActivate: [AuthGuard],
         loadComponent: () =>
           import('./pages/styling/styling.component').then(m => m.StylingComponent)
       },
@@ -66,7 +63,6 @@ export const routes: Routes = [
       // ── Profile (no ":id" any more) ─────────────────────
       {
         path: 'profile',
-        canActivate: [AuthGuard],
         loadComponent: () =>
           import('./pages/profile/profile.component').then(m => m.ProfileComponent)
       }
