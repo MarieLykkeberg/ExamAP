@@ -42,6 +42,31 @@ builder.Services.AddSwaggerGen(c =>
       Version = "v1",
       Description = "API for the ExamAP application"
     });
+
+    // Add Basic Authentication support
+    c.AddSecurityDefinition("Basic", new OpenApiSecurityScheme
+    {
+        Description = "Basic Authentication",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "basic"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Basic"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
 });
 
 builder.Services.AddAuthentication("Basic"); 

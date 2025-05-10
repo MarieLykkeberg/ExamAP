@@ -1,11 +1,6 @@
-using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using ExamAP.Model.Repositories;
-using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
-using System.Text.Encodings.Web;
-using Microsoft.Extensions.Options;
-using ExamAP.API.Middleware;
 
 namespace ExamAP.API.Middleware;
 
@@ -20,14 +15,6 @@ public class BasicAuthenticationMiddleware
 
     public async Task InvokeAsync(HttpContext context, UserRepository userRepository)
     {
-        // Allow Swagger UI and Swagger JSON requests without authentication
-        if (context.Request.Path.StartsWithSegments("/swagger") || 
-            context.Request.Path.StartsWithSegments("/") ||
-            context.GetEndpoint()?.Metadata.GetMetadata<IAllowAnonymous>() != null)
-        {
-            await _next(context);
-            return;
-        }
 
         var authHeader = context.Request.Headers["Authorization"].FirstOrDefault();
 
