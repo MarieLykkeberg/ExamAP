@@ -1,14 +1,10 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.AspNetCore.Mvc;
 using ExamAP.API.Controllers;
 using ExamAP.Model.Repositories;
 using ExamAP.Model.Entities;
 using Moq;
-using System.Collections.Generic;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
-using System;
-using Microsoft.Extensions.Configuration;
 
 namespace ExamAP.Tests
 {

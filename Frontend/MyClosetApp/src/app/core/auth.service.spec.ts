@@ -29,12 +29,12 @@ describe('AuthService', () => {
   it('should store auth header after successful login', () => {
     const testUser = { 
       userId: 1, 
-      email: 'test@example.com', 
-      name: 'Test User',
-      password: 'password123'
+      email: 'chanel@coco.com', 
+      name: 'Chanel',
+      password: 'chanel'
     };
     
-    service.login('test@example.com', 'password123').subscribe(user => {
+    service.login('chanel@coco.com', 'chanel').subscribe(user => {
       expect(user).toEqual(testUser);
       expect(localStorage.getItem('authHeader')).toBeTruthy();
     });
@@ -47,13 +47,15 @@ describe('AuthService', () => {
   // Test failed login
   it('should not store auth header after failed login', () => {
     service.login('wrong@example.com', 'wrongpass').subscribe({
+      next: () => fail('should have failed with 401 error'),
       error: () => {
         expect(localStorage.getItem('authHeader')).toBeNull();
       }
     });
-
+  
     const req = httpMock.expectOne('http://localhost:5196/api/user/login');
-    req.error(new ErrorEvent('Unauthorized'));
+    expect(req.request.method).toBe('POST');
+    req.flush({ message: 'Unauthorized' }, { status: 401, statusText: 'Unauthorized' });
   });
 
   // Test logout
@@ -70,7 +72,7 @@ describe('AuthService', () => {
 
   // Test registration
   it('should register new user', () => {
-    const newUser = { name: 'New User', email: 'new@example.com', password: 'pass123' };
+    const newUser = { name: 'Chanel', email: 'chanel@coco.com', password: 'chanel' };
     
     service.register(newUser.name, newUser.email, newUser.password).subscribe(response => {
       expect(response).toBeTruthy();
