@@ -1,20 +1,18 @@
 // src/app/pages/wardrobe/wardrobe.component.ts
 
-import { Component, OnInit }        from '@angular/core';
-import { CommonModule }             from '@angular/common';
-import { RouterModule }             from '@angular/router';
-import { FormsModule }              from '@angular/forms';
-import { forkJoin }                 from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { forkJoin } from 'rxjs';
+import { ItemService, Item } from '../../core/item.service';
+import { MaterialService, Material } from '../../core/material.service';
+import { CategoryService, Category } from '../../core/category.service';
+import { ColorService, Color } from '../../core/color.service';
+import { OccasionService, Occasion } from '../../core/occasion.service';
 
-import {
-  WardrobeService,
-  Color,
-  Material,
-  Occasion
-} from '../../core/wardrobe.service';
-
-import { MatIconModule }            from '@angular/material/icon';
-import { MatButtonModule }          from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-wardrobe',
@@ -27,21 +25,21 @@ import { MatButtonModule }          from '@angular/material/button';
     MatButtonModule
   ],
   templateUrl: './wardrobe.component.html',
-  styleUrls: ['./wardrobe.component.css'],
+  styleUrls: ['./wardrobe.component.css']
 })
 export class WardrobeComponent implements OnInit {
-  allItems         : any[] = [];
-  topsItems         : any[] = [];
-  bottomItems       : any[] = [];
-  footwearItems     : any[] = [];
-  accessoriesItems  : any[] = [];
-  outerwearItems    : any[] = [];
+  allItems: Item[] = [];
+  topsItems: Item[] = [];
+  bottomItems: Item[] = [];
+  footwearItems: Item[] = [];
+  accessoriesItems: Item[] = [];
+  outerwearItems: Item[] = [];
 
-  topsTitle         = '';
-  bottomsTitle      = '';
-  footwearTitle     = '';
-  accessoriesTitle  = '';
-  outerwearTitle    = '';
+  topsTitle = '';
+  bottomsTitle = '';
+  footwearTitle = '';
+  accessoriesTitle = '';
+  outerwearTitle = '';
 
   showOnlyFavorites = false;
 
@@ -53,7 +51,13 @@ export class WardrobeComponent implements OnInit {
   selectedMaterial : number | null = null;
   selectedOccasion : number | null = null;
 
-  constructor(private wardrobeService: WardrobeService) {}
+  constructor(
+    private itemService: ItemService,
+    private materialService: MaterialService,
+    private categoryService: CategoryService,
+    private colorService: ColorService,
+    private occasionService: OccasionService
+  ) {}
 
   ngOnInit(): void {
     this.loadWardrobe();
@@ -69,56 +73,46 @@ export class WardrobeComponent implements OnInit {
     this.filterWardrobe();
   }
 
-  /** Public so it can be called from the template (change)="filterWardrobe()" */
   filterWardrobe(): void {
     const filtered = this.allItems.filter(item =>
       (!this.showOnlyFavorites || item.isFavorite) &&
-      (this.selectedColor    == null || item.colorId    === this.selectedColor) &&
+      (this.selectedColor == null || item.colorId === this.selectedColor) &&
       (this.selectedMaterial == null || item.materialId === this.selectedMaterial) &&
       (this.selectedOccasion == null || item.occasionId === this.selectedOccasion)
     );
 
-    this.topsItems        = filtered.filter(i => i.categoryId === 1);
-    this.bottomItems      = filtered.filter(i => i.categoryId === 2);
-    this.footwearItems    = filtered.filter(i => i.categoryId === 3);
+    this.topsItems = filtered.filter(i => i.categoryId === 1);
+    this.bottomItems = filtered.filter(i => i.categoryId === 2);
+    this.footwearItems = filtered.filter(i => i.categoryId === 3);
     this.accessoriesItems = filtered.filter(i => i.categoryId === 4);
-    this.outerwearItems   = filtered.filter(i => i.categoryId === 5);
+    this.outerwearItems = filtered.filter(i => i.categoryId === 5);
   }
 
-  /** Used by *ngFor={{ getFiltered(...) }} to handle "My favorites" toggle */
-  getFiltered(items: any[]): any[] {
+  getFiltered(items: Item[]): Item[] {
     return this.showOnlyFavorites
       ? items.filter(i => i.isFavorite)
       : items;
   }
 
   private loadWardrobe(): void {
-    forkJoin({
-      Items:      this.wardrobeService.getItems(),
-      Categories: this.wardrobeService.getCategories(),
-      Colors:     this.wardrobeService.getColors(),
-      Materials:  this.wardrobeService.getMaterials(),
-      Occasions:  this.wardrobeService.getOccasions()
-    }).subscribe({
-      next: ({ Items, Categories, Colors, Materials, Occasions }) => {
-        this.allItems           = Items;
-        this.availableColors    = Colors;
-        this.availableMaterials = Materials;
-        this.availableOccasions = Occasions;
+    this.itemService.getItems().subscribe(items => {
+      this.allItems = items;
+      this.topsItems = items.filter(i => i.categoryId === 1);
+      this.bottomItems = items.filter(i => i.categoryId === 2);
+      this.footwearItems = items.filter(i => i.categoryId === 3);
+      this.accessoriesItems = items.filter(i => i.categoryId === 4);
+      this.outerwearItems = items.filter(i => i.categoryId === 5);
+    });
 
-        this.topsItems         = Items.filter(i => i.categoryId === 1);
-        this.bottomItems       = Items.filter(i => i.categoryId === 2);
-        this.footwearItems     = Items.filter(i => i.categoryId === 3);
-        this.accessoriesItems  = Items.filter(i => i.categoryId === 4);
-        this.outerwearItems    = Items.filter(i => i.categoryId === 5);
-
-        this.topsTitle         = this.findName(Categories, 1, 'Tops');
-        this.bottomsTitle      = this.findName(Categories, 2, 'Bottoms');
-        this.footwearTitle     = this.findName(Categories, 3, 'Footwear');
-        this.accessoriesTitle  = this.findName(Categories, 4, 'Accessories');
-        this.outerwearTitle    = this.findName(Categories, 5, 'Outerwear');
-      },
-      error: err => console.error('Failed to load wardrobe', err)
+    this.colorService.getColors().subscribe(colors => this.availableColors = colors);
+    this.materialService.getMaterials().subscribe(materials => this.availableMaterials = materials);
+    this.occasionService.getOccasions().subscribe(occasions => this.availableOccasions = occasions);
+    this.categoryService.getCategories().subscribe(categories => {
+      this.topsTitle = this.findName(categories, 1, 'Tops');
+      this.bottomsTitle = this.findName(categories, 2, 'Bottoms');
+      this.footwearTitle = this.findName(categories, 3, 'Footwear');
+      this.accessoriesTitle = this.findName(categories, 4, 'Accessories');
+      this.outerwearTitle = this.findName(categories, 5, 'Outerwear');
     });
   }
 

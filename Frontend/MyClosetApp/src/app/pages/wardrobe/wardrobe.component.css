@@ -1,16 +1,12 @@
-/* src/app/pages/wardrobe/wardrobe.component.css */
-
-/* ——— Filters bar ——— */
 .filter-favorites {
   display: flex;
   align-items: center;
-  gap: 1.5rem;        /* space between links & dropdown group */
+  gap: 1.5rem;        
   margin-left: 45px;
   margin-top: 30px;
-  flex-wrap: wrap;    /* wrap on small screens */
+  flex-wrap: wrap;    
 }
 
-/* ——— Filter links ——— */
 .filter-link {
   display: inline-block;
   cursor: pointer;
@@ -25,24 +21,23 @@
   text-decoration: underline;
 }
 
-/* ——— Dropdown group inside the filters bar ——— */
+
 .filter-section {
   display: flex;
   align-items: center;
-  gap: 2rem;          /* space between each dropdown */
+  gap: 2rem;         
   margin: 0;
   padding: 0;
-  margin-left: auto;  /* push dropdowns to the right edge */
+  margin-left: auto; 
   font-family: didot;
 }
 
-/* give each dropdown enough room for its text + arrow */
+
 .filter-dropdown {
-  width: 180px;       /* was 140px—bumped to fit “All Occasions” */
-  min-width: 160px;   /* ensure it never shrinks too small */
+  width: 180px;       
+  min-width: 160px;   
 }
 
-/* ——— Carousel sections ——— */
 .carousel-section {
   width: 100%;
   margin-bottom: 2rem;
@@ -62,7 +57,6 @@
   scroll-snap-type: x mandatory;
 }
 
-/* ——— Gallery items ——— */
 .gallery-item {
   flex: 0 0 auto;
   width: 140px;
@@ -76,7 +70,6 @@
   border-radius: 8px;
 }
 
-/* ——— Details button ——— */
 .details-button {
   font-family: Didot;
   font-size: 14px;
@@ -88,36 +81,15 @@
   text-decoration: underline;
 }
 
-/* ——— Responsive tweaks ——— */
-@media (max-width: 768px) {
-  .filter-favorites,
-  .carousel-title,
-  .carousel-row {
-    margin: 0 20px;
-  }
-  .gallery-item {
-    width: 120px;
-  }
-  .gallery-item img {
-    height: 140px;
-  }
-  .filter-section {
-    flex-direction: column;
-    align-items: stretch;
-  }
-}
-
-/* ——— Native select styling ——— */
 .select-container {
   position: relative;
   display: inline-block;
   width: 100%;
-  /* remove any padding here so width calculations are clean */
 }
 
 .select-container select {
   width: 100%;
-  padding: 0.5rem 2.5rem 0.5rem 0;  /* text & arrow both fit now */
+  padding: 0.5rem 2.5rem 0.5rem 0; 
   font: inherit;
   border: none;
   background: transparent;
@@ -129,7 +101,7 @@
 .select-container .dropdown-icon {
   position: absolute;
   top: 50%;
-  right: 1rem;                     /* arrow moved further from the label */
+  right: 1rem;                     
   transform: translateY(-50%);
   pointer-events: none;
   font-size: 1.2rem;

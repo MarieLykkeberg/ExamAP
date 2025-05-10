@@ -1,6 +1,3 @@
-/* src/app/pages/add/add.component.css */
-
-/* 1) Host + overall container */
 :host {
     display: block;
     max-width: 800px;
@@ -10,7 +7,6 @@
     color: #333;
   }
   
-  /* 2) Flex container: image-upload on left, form on right */
   .add-main {
     display: flex;
     align-items: flex-start;
@@ -18,7 +14,6 @@
     margin-bottom: 2rem;
   }
   
-  /* 3) Image-upload panel */
   .image-upload {
     flex: 0 0 200px;
     display: flex;
@@ -35,7 +30,6 @@
     border-radius: 8px;
   }
   
-  /* 4) The form itself becomes a 2-column grid */
   .add-item-form {
     flex: 1;
     display: grid;
@@ -44,7 +38,6 @@
     row-gap:    1.5rem;
   }
   
-  /* 5) Grid-aligned labels */
   .add-item-form .form-group {
     display: contents;
   }
@@ -55,7 +48,6 @@
     font-weight:  normal;
   }
   
-  /* 6) Select + arrow + plus all in one inline-flex container */
   .add-item-form .select-container {
     grid-column: 2;
     position: relative;
@@ -64,10 +56,9 @@
     width: 100%;
   }
   
-  /* 7) The select itself needs big right padding for both icons */
   .add-item-form .select-container select {
     flex: 1;
-    padding: 0.5rem 4rem 0.5rem 0; /* 4rem covers arrow+plus */
+    padding: 0.5rem 4rem 0.5rem 0; 
     font: inherit;
     border: none;
     background: transparent;
@@ -76,7 +67,6 @@
     cursor: pointer;
   }
   
-  /* 8) Arrow sits at 2.5rem from right */
   .add-item-form .select-container .dropdown-icon {
     position: absolute;
     right: 1.5rem;
@@ -85,7 +75,6 @@
     color: #333;
   }
   
-  /* 9) Plus sits at 0.5rem from right */
   .add-item-form .select-container .add-btn {
     position: absolute;
     right: -2rem;
@@ -103,7 +92,6 @@
     line-height: 1;
   }
   
-  /* 10) checkbox style */
   .add-item-form input[type="checkbox"] {
     grid-column:     2;
     transform:       scale(1.2);
@@ -112,7 +100,6 @@
     accent-color:    #000;
   }
   
-  /* 11) date styleg */
   .add-item-form input[type="date"] {
     grid-column:     2;
     padding:         0.5rem;
@@ -121,7 +108,6 @@
     border-radius:   4px;
   }
   
-  /* 12) Submit button */
   .add-item-form button[type="submit"] {
     grid-column: 1 / -2;
     padding:      0.6rem 1.2rem;
@@ -142,7 +128,6 @@
     cursor: not-allowed;
   }
   
-  /* 13) Inline-add input row */
   .inline-add {
     grid-column: 1 / -1;
     display: flex;

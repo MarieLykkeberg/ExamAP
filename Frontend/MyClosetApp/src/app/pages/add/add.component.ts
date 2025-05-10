@@ -1,5 +1,3 @@
-// src/app/pages/add/add.component.ts
-
 import { Component, OnInit }         from '@angular/core';
 import { CommonModule }              from '@angular/common';
 import { FormsModule }               from '@angular/forms';
@@ -32,29 +30,30 @@ import { ItemService, Item }         from '../../core/item.service';
   styleUrls: ['./add.component.css'],
 })
 export class AddComponent implements OnInit {
+  // Arrays to store available options for dropdowns
   categories: Category[] = [];
-  colors:     Color[]    = [];
-  materials:  Material[] = [];
-  occasions:  Occasion[] = [];
+  colors: Color[] = [];
+  materials: Material[] = [];
+  occasions: Occasion[] = [];
 
   
-  itemData: Partial<Item> & { imageUrl: string; brandName?: string } = {
-    categoryId:   null,
-    colorId:      null,
-    materialId:   null,
-    brandName:    '',
-    occasionId:   null,
-    isFavorite:   false,
+  itemData: Item = {
+    categoryId: null,
+    colorId: null,
+    materialId: null,
+    brandName: '',
+    occasionId: null,
+    isFavorite: false,
     purchaseDate: new Date().toISOString().split('T')[0],
-    imageUrl:     ''
+    imageUrl: ''
   };
 
   constructor(
+    private itemService: ItemService,
     private categoryService: CategoryService,
-    private colorService:    ColorService,
+    private colorService: ColorService,
     private materialService: MaterialService,
     private occasionService: OccasionService,
-    private itemService:     ItemService
   ) {}
 
   ngOnInit(): void {
@@ -83,19 +82,37 @@ export class AddComponent implements OnInit {
     reader.readAsDataURL(f);
   }
 
-  async addItem(): Promise<void> {
+  addItem(): void {
     const payload: Item = {
       ...(this.itemData as Item),
       purchaseDate: this.itemData.purchaseDate as string,
-      // use brandName instead of brandId
-      brandName:    this.itemData.brandName || ''
+      brandName: this.itemData.brandName || ''
     };
-    try {
-      await this.itemService.addItem(payload);
-      alert('Item added successfully!');
-    } catch (err) {
-      console.error(err);
-      alert('Error adding item');
-    }
+
+    this.itemService.addItem(payload).subscribe({
+      next: () => {
+        alert('Item added successfully!');
+        // Reset the form
+        this.itemData = {
+          categoryId: null,
+          colorId: null,
+          materialId: null,
+          brandName: '',
+          occasionId: null,
+          isFavorite: false,
+          purchaseDate: new Date().toISOString().split('T')[0],
+          imageUrl: ''
+        };
+        // Reset the file input if it exists
+        const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+        if (fileInput) {
+          fileInput.value = '';
+        }
+      },
+      error: (err) => {
+        console.error(err);
+        alert('Error adding item');
+      }
+    });
   }
 }

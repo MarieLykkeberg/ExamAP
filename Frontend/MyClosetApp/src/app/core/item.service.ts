@@ -1,17 +1,18 @@
-/* import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { map, Observable } from 'rxjs';
 
 export interface Item {
-    itemId?: number;
-    categoryId: number | null;
-    colorId: number | null;
-    materialId: number | null;
-    brandName: string;
-    occasionId: number | null;
-    isFavorite: boolean;
-    purchaseDate: string;
-    imageUrl: string;
-  }
+  itemId?: number;
+  categoryId: number | null;
+  colorId: number | null;
+  materialId: number | null;
+  brandName: string;
+  occasionId: number | null;
+  isFavorite: boolean;
+  purchaseDate: string;
+  imageUrl: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -21,45 +22,39 @@ export class ItemService {
 
   constructor(private http: HttpClient) {}
 
-  //Add new item for logged-in user
-  async addItem(item: Item): Promise<void> {
+  private getAuthHeaders(): HttpHeaders {
     const authHeader = localStorage.getItem('authHeader');
-
-    const headers = new HttpHeaders({
-      'Authorization': authHeader || '',
-     
-    });
-    this.http.post(this.apiUrl, item, { headers }).subscribe(
-     
-    );
-  }
-
-  async getItems(): Promise<Item[]> {
-    const authHeader = localStorage.getItem('authHeader');
-
-    const headers = new HttpHeaders({
+    return new HttpHeaders({
       'Authorization': authHeader || ''
     });
-    const response = await this.http.get<Item[]>(this.apiUrl, { headers }).toPromise();
-
-    if (!response) {
-      throw new Error('Failed to fetch items');
-    }
-
-    return response;
   }
 
-
-  async deleteItem(itemId: number): Promise<void> {
-    const authHeader = localStorage.getItem('authHeader');
-
-    const headers = new HttpHeaders({
-      'Authorization': authHeader || ''
-    });
-    const response = await this.http.delete(`${this.apiUrl}/${itemId}`, { headers }).toPromise();
-
-    if (!response) {
-      throw new Error('Failed to delete item');
-    }
+  getItems(): Observable<Item[]> {
+    return this.http.get<Item[]>(this.apiUrl, { headers: this.getAuthHeaders() });
   }
-} */
+
+  getItem(id: number): Observable<Item> {
+    return this.http.get<Item>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() });
+  }
+
+  addItem(item: Item): Observable<Item> {
+    return this.http.post<Item>(this.apiUrl, item, { headers: this.getAuthHeaders() });
+  }
+
+  updateItem(id: number, item: Item): Observable<Item> {
+    return this.http.put<Item>(`${this.apiUrl}/${id}`, item, { headers: this.getAuthHeaders() });
+  }
+
+  deleteItem(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() });
+  }
+
+  uploadImage(formData: FormData): Observable<string> {
+    return this.http.post<{ imageUrl: string }>('http://localhost:5196/api/upload-image', formData)
+      .pipe(map(res => res.imageUrl));
+  }
+
+  addLookup(kind: 'category'|'color'|'material'|'brand'|'occasion', name: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${kind}`, { name });
+  }
+}

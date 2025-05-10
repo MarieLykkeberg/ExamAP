@@ -1,4 +1,4 @@
-/* import { TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { ItemService, Item } from './item.service';
 import { provideHttpClient } from '@angular/common/http';
 
@@ -12,33 +12,38 @@ describe('ItemService', () => {
     service = TestBed.inject(ItemService);
   });
 
-  // TEST 1: Service Creation 
+  // test service creation 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  // TEST 2: Unit Tests 
+    // test unit tests 
   describe('Unit Tests', () => {
-    it('should handle empty items array', async () => {
+    it('should handle empty items array', () => {
       // Mock localStorage
-      localStorage.setItem('headerValue', 'Basic dGVzdC51c2VyOlBhc3N3b3JkMTIz');
+      localStorage.setItem('authHeader', 'Basic dGVzdC51c2VyOlBhc3N3b3JkMTIz');
       
       // Test empty array handling
-      const items = await service.getItems();
-      expect(Array.isArray(items)).toBeTruthy();
+      service.getItems().subscribe(items => {
+        expect(Array.isArray(items)).toBeTruthy();
+      });
     });
 
-    it('should handle missing auth header', async () => {
+    it('should handle missing auth header', () => {
       // Clear localStorage
-      localStorage.removeItem('headerValue');
+      localStorage.removeItem('authHeader');
       
       // Test missing auth header
-      await expectAsync(service.getItems()).toBeRejected();
+      service.getItems().subscribe({
+        error: (error) => {
+          expect(error).toBeTruthy();
+        }
+      });
     });
 
-    it('should handle invalid item data', async () => {
+    it('should handle invalid item data', () => {
       // Mock localStorage
-      localStorage.setItem('headerValue', 'Basic dGVzdC51c2VyOlBhc3N3b3JkMTIz');
+      localStorage.setItem('authHeader', 'Basic dGVzdC51c2VyOlBhc3N3b3JkMTIz');
       
       // Test with invalid item data
       const invalidItem = {
@@ -48,16 +53,20 @@ describe('ItemService', () => {
         imageUrl: ''
       } as Item;
 
-      await expectAsync(service.addItem(invalidItem)).toBeRejected();
+      service.addItem(invalidItem).subscribe({
+        error: (error) => {
+          expect(error).toBeTruthy();
+        }
+      });
     });
   });
 
-  // TEST 3: CREATE Operation 
-  it('should create a new item', async () => {
-    // 3.1: Setup
-    localStorage.setItem('headerValue', 'Basic dGVzdC51c2VyOlBhc3N3b3JkMTIz');
+  // test create operation
+  it('should create a new item', () => {
+    // Setup
+    localStorage.setItem('authHeader', 'Basic dGVzdC51c2VyOlBhc3N3b3JkMTIz');
     
-    // 3.2: Test Data
+    // Test Data
     const newItem: Item = {
       categoryId: 1,
       colorId: 1,
@@ -69,68 +78,65 @@ describe('ItemService', () => {
       imageUrl: 'test.jpg'
     };
 
-    // 3.3: Create Item
-    await service.addItem(newItem);
+    // Create Item
+    service.addItem(newItem).subscribe(item => {
+      expect(item).toBeTruthy();
+    });
   });
 
-  // TEST 4: READ Operation 
-  it('should retrieve items for current user', async () => {
-    // 4.1: Authentication Setup
-    localStorage.setItem('headerValue', 'Basic dGVzdC51c2VyOlBhc3N3b3JkMTIz');
+  // test read operation
+  it('should retrieve items for current user', () => {
+    // Authentication Setup
+    localStorage.setItem('authHeader', 'Basic dGVzdC51c2VyOlBhc3N3b3JkMTIz');
     
-    // 4.2: Service Call
-    const items = await service.getItems();
+    // Service Call
+    service.getItems().subscribe(items => {
+      // Response Structure Validation
+      expect(items).toBeTruthy();
+      expect(Array.isArray(items)).toBeTruthy();
+      expect(items.length).toBeGreaterThan(0);
 
-    // 4.3: Response Structure Validation
-    expect(items).toBeTruthy();
-    expect(Array.isArray(items)).toBeTruthy();
-    expect(items.length).toBeGreaterThan(0);
-
-    // 4.4: Item Property Validation
-    const item = items[0];
-    expect(item).toBeTruthy();
-    expect(item.itemId).toBeDefined();
-    expect(item.brandName).toBeDefined();
-    expect(item.imageUrl).toBeDefined();
+      // Item Property Validation
+      const item = items[0];
+      expect(item).toBeTruthy();
+      expect(item.itemId).toBeDefined();
+      expect(item.brandName).toBeDefined();
+      expect(item.imageUrl).toBeDefined();
+    });
   });
 
-  // TEST 5: UPDATE Operation 
-  it('should update an existing item', async () => {
-    // 5.1: Setup
-    localStorage.setItem('headerValue', 'Basic dGVzdC51c2VyOlBhc3N3b3JkMTIz');
+  // test update operation
+  it('should update an existing item', () => {
+    // Setup
+    localStorage.setItem('authHeader', 'Basic dGVzdC51c2VyOlBhc3N3b3JkMTIz');
     
-    // 5.2: Get existing item
-    const items = await service.getItems();
-    const itemToUpdate = items[0];
-    
-    // 5.3: Update item
+    // Test Data
     const updatedItem: Item = {
-      ...itemToUpdate,
+      itemId: 1,
+      categoryId: 1,
+      colorId: 1,
+      materialId: 1,
       brandName: 'Updated Brand',
-      isFavorite: true
+      occasionId: 1,
+      isFavorite: true,
+      purchaseDate: '2024-03-20',
+      imageUrl: 'test.jpg'
     };
 
-    // 5.4: Save changes
-    await service.addItem(updatedItem);
+    // Update item
+    service.updateItem(1, updatedItem).subscribe(item => {
+      expect(item).toBeTruthy();
+    });
   });
 
-  // TEST 6: DELETE Operation
-  it('should delete an item', async () => {
-    // 6.1: Setup
-    localStorage.setItem('headerValue', 'Basic dGVzdC51c2VyOlBhc3N3b3JkMTIz');
+  // test delete operation
+  it('should delete an item', () => {
+    // Setup
+    localStorage.setItem('authHeader', 'Basic dGVzdC51c2VyOlBhc3N3b3JkMTIz');
     
-    // 6.2: Get item to delete
-    const items = await service.getItems();
-    const itemToDelete = items[0];
-
-    // 6.3: Delete item
-    if (itemToDelete.itemId) {
-      await service.deleteItem(itemToDelete.itemId);
-      
-      // 6.4: Verify deletion
-      const updatedItems = await service.getItems();
-      const deletedItem = updatedItems.find(item => item.itemId === itemToDelete.itemId);
-      expect(deletedItem).toBeUndefined();
-    }
+    // Delete item
+    service.deleteItem(1).subscribe(response => {
+      expect(response).toBeUndefined();
+    });
   });
-}); */
+}); 

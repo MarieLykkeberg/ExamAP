@@ -15,7 +15,6 @@ export class CategoryService {
 
     constructor(private http: HttpClient) { }
 
-  // GET: all categories
   getCategories(): Observable<Category[]> {
     const authHeader = localStorage.getItem('authHeader') || '';
 

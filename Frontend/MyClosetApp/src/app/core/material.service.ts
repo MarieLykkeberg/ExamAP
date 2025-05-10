@@ -15,7 +15,6 @@ export class MaterialService {
 
   constructor(private http: HttpClient) {}
 
-  // GET: all material
   getMaterials(): Observable<Material[]> {
     const authHeader = localStorage.getItem('authHeader') || '';
 
