@@ -1,5 +1,3 @@
-// src/app/core/auth.service.ts
-
 import { Injectable }            from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of }    from 'rxjs';
@@ -15,7 +13,6 @@ export interface User {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  // URL for our backend API
   private apiUrl = 'http://localhost:5196/api/user';
   // Stores the currently logged in user
   private currentUser: User | null = null;
@@ -41,7 +38,6 @@ export class AuthService {
     return new HttpHeaders({ Authorization: token });
   }
 
-  // Gets the current user's data from memory or localStorage
   getCurrentUser(): Observable<User> {
     if (this.currentUser) {
       return of(this.currentUser);
@@ -52,11 +48,9 @@ export class AuthService {
       this.currentUser = u;
       return of(u);
     }
-    // If no user is found, return null
     return of(null as any);
   }
 
-  // Updates the user's profile information
   updateUser(user: User): Observable<void> {
     this.currentUser = user;
     localStorage.setItem('currentUser', JSON.stringify(user));
@@ -67,7 +61,6 @@ export class AuthService {
     );
   }
 
-  // Deletes the user's account
   deleteAccount(id: number): Observable<void> {
     return this.http.delete<void>(
       `${this.apiUrl}/${id}`,
@@ -75,14 +68,12 @@ export class AuthService {
     );
   }
 
-  // Clears all user data and logs out
   logout(): void {
-    this.currentUser = null;
-    localStorage.removeItem('authHeader');
-    localStorage.removeItem('currentUser');
+    this.currentUser = null; // Clears the current user
+    localStorage.removeItem('authHeader'); 
+    localStorage.removeItem('currentUser'); 
   }
 
-  // Creates a new user account
   register(name: string, email: string, password: string): Observable<any> {
     // Clear any existing user data first
     this.logout();

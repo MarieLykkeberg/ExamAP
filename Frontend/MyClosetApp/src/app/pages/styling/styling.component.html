@@ -8,8 +8,7 @@
           <button type="button" (click)="prevTop()">‹</button>
           <img
             *ngIf="topsItems.length"
-            [src]="topsItems[topIndex]?.imageUrl"
-            alt="{{ topsTitle }}"
+            [src]="topsItems[topIndex].imageUrl"
           />
           <button type="button" (click)="nextTop()">›</button>
         </div>
@@ -20,8 +19,7 @@
           <button type="button" (click)="prevOuter()">‹</button>
           <img
             *ngIf="outerwearItems.length"
-            [src]="outerwearItems[outerwearIndex]?.imageUrl"
-            alt="{{ outerwearTitle }}"
+            [src]="outerwearItems[outerwearIndex].imageUrl"
           />
           <button type="button" (click)="nextOuter()">›</button>
         </div>
@@ -35,8 +33,7 @@
           <button type="button" (click)="prevBottom()">‹</button>
           <img
             *ngIf="bottomItems.length"
-            [src]="bottomItems[bottomIndex]?.imageUrl"
-            alt="{{ bottomsTitle }}"
+            [src]="bottomItems[bottomIndex].imageUrl"
           />
           <button type="button" (click)="nextBottom()">›</button>
         </div>
@@ -47,8 +44,7 @@
           <button type="button" (click)="prevAccTop()">‹</button>
           <img
             *ngIf="accessoriesItems.length"
-            [src]="accessoriesItems[accessoriesIndexTop]?.imageUrl"
-            alt="{{ accessoriesTitle }}"
+            [src]="accessoriesItems[accessoriesIndexTop].imageUrl"
           />
           <button type="button" (click)="nextAccTop()">›</button>
         </div>
@@ -62,8 +58,7 @@
           <button type="button" (click)="prevFootwear()">‹</button>
           <img
             *ngIf="footwearItems.length"
-            [src]="footwearItems[footwearIndex]?.imageUrl"
-            alt="{{ footwearTitle }}"
+            [src]="footwearItems[footwearIndex].imageUrl"
           />
           <button type="button" (click)="nextFootwear()">›</button>
         </div>
@@ -74,8 +69,7 @@
           <button type="button" (click)="prevAccBottom()">‹</button>
           <img
             *ngIf="accessoriesItems.length"
-            [src]="accessoriesItems[accessoriesIndexBottom]?.imageUrl"
-            alt="{{ accessoriesTitle }}"
+            [src]="accessoriesItems[accessoriesIndexBottom].imageUrl"
           />
           <button type="button" (click)="nextAccBottom()">›</button>
         </div>

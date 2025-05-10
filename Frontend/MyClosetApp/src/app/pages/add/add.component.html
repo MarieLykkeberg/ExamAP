@@ -37,15 +37,6 @@
           </select>
           <mat-icon class="dropdown-icon">arrow_drop_down</mat-icon>
         </div>
-        <div
-          *ngIf="
-            itemForm.controls['categoryId']?.invalid &&
-            itemForm.controls['categoryId']?.touched
-          "
-          class="error"
-        >
-          Category is required
-        </div>
       </div>
   
       <!-- Color -->
@@ -67,15 +58,6 @@
             </option>
           </select>
           <mat-icon class="dropdown-icon">arrow_drop_down</mat-icon>
-        </div>
-        <div
-          *ngIf="
-            itemForm.controls['colorId']?.invalid &&
-            itemForm.controls['colorId']?.touched
-          "
-          class="error"
-        >
-          Color is required
         </div>
       </div>
   
@@ -99,15 +81,6 @@
           </select>
           <mat-icon class="dropdown-icon">arrow_drop_down</mat-icon>
         </div>
-        <div
-          *ngIf="
-            itemForm.controls['materialId']?.invalid &&
-            itemForm.controls['materialId']?.touched
-          "
-          class="error"
-        >
-          Material is required
-        </div>
       </div>
   
       <!-- Occasion -->
@@ -130,15 +103,6 @@
           </select>
           <mat-icon class="dropdown-icon">arrow_drop_down</mat-icon>
         </div>
-        <div
-          *ngIf="
-            itemForm.controls['occasionId']?.invalid &&
-            itemForm.controls['occasionId']?.touched
-          "
-          class="error"
-        >
-          Occasion is required
-        </div>
       </div>
 
       <!-- Brand -->
@@ -152,7 +116,6 @@
             name="brandName"
             [(ngModel)]="itemData.brandName"
             placeholder="Enter brand"
-            required
           />
         </mat-form-field>
       </div>

@@ -2,146 +2,101 @@
 
 
 <div class="details-main">
-    <!-- 1) Large image on the left -->
-    <div class="details-image" *ngIf="item.imageUrl">
-      <img
-        [src]="item.imageUrl"
-        alt="Item #{{ item.itemId }}"
-        class="large-image"
-      />
-    </div>
-  
-    <!-- 2) Form on the right -->
-    <div class="item-details">
-      <form #itemForm="ngForm" (ngSubmit)="save()">
-  
-        <!-- Category dropdown -->
-        <div class="form-group">
-          <label for="categoryId">Category</label>
-          <div class="select-container">
-          <select
-            id="categoryId"
-            name="categoryId"
-            [(ngModel)]="item.categoryId"
-            #categoryField="ngModel"
-            required
-          >
+  <!-- 1) Large image on the left -->
+  <div class="details-image" *ngIf="item.imageUrl">
+    <img [src]="item.imageUrl" alt="Item #{{ item.itemId }}" class="large-image" />
+  </div>
+
+  <!-- 2) Form on the right -->
+  <div class="item-details">
+    <form #itemForm="ngForm" (ngSubmit)="save()">
+
+      <!-- Category dropdown -->
+      <div class="form-group">
+        <label for="categoryId">Category</label>
+        <div class="select-container">
+          <select id="categoryId" name="categoryId" [(ngModel)]="item.categoryId" #categoryField="ngModel" required>
             <option *ngFor="let c of categories" [ngValue]="c.categoryId">
               {{ c.categoryName }}
             </option>
           </select>
           <mat-icon class="dropdown-icon">arrow_drop_down</mat-icon>
         </div>
-          <div *ngIf="categoryField.invalid && categoryField.touched" class="error">
-            Category is required
-          </div>
-        </div>
-  
-        <!-- Color dropdown -->
-        <div class="form-group">
-          <label for="colorId">Color</label>
-          <div class="select-container">
-          <select
-            id="colorId"
-            name="colorId"
-            [(ngModel)]="item.colorId"
-            #colorField="ngModel"
-            required
-          >
+      </div>
+
+      <!-- Color dropdown -->
+      <div class="form-group">
+        <label for="colorId">Color</label>
+        <div class="select-container">
+          <select id="colorId" name="colorId" [(ngModel)]="item.colorId" #colorField="ngModel" required>
             <option *ngFor="let col of colors" [ngValue]="col.colorId">
               {{ col.colorName }}
             </option>
           </select>
           <mat-icon class="dropdown-icon">arrow_drop_down</mat-icon>
         </div>
-          <div *ngIf="colorField.invalid && colorField.touched" class="error">
-            Color is required
-          </div>
-        </div>
-  
-        <!-- Material dropdown -->
-        <div class="form-group">
-          <label for="materialId">Material</label>
-          <div class="select-container">
-          <select
-            id="materialId"
-            name="materialId"
-            [(ngModel)]="item.materialId"
-          >
+      </div>
+
+      <!-- Material dropdown -->
+      <div class="form-group">
+        <label for="materialId">Material</label>
+        <div class="select-container">
+          <select id="materialId" name="materialId" [(ngModel)]="item.materialId">
             <option *ngFor="let m of materials" [ngValue]="m.materialId">
               {{ m.materialName }}
             </option>
           </select>
           <mat-icon class="dropdown-icon">arrow_drop_down</mat-icon>
         </div>
-        </div>
-  
-        <!-- Occasion dropdown -->
-        <div class="form-group">
-          <label for="occasionId">Occasion</label>
-          <div class="select-container">
-          <select
-            id="occasionId"
-            name="occasionId"
-            [(ngModel)]="item.occasionId"
-          >
+      </div>
+
+      <!-- Occasion dropdown -->
+      <div class="form-group">
+        <label for="occasionId">Occasion</label>
+        <div class="select-container">
+          <select id="occasionId" name="occasionId" [(ngModel)]="item.occasionId">
             <option *ngFor="let o of occasions" [ngValue]="o.occasionId">
               {{ o.occasionName }}
             </option>
           </select>
           <mat-icon class="dropdown-icon">arrow_drop_down</mat-icon>
         </div>
-        </div>
+      </div>
 
-        <!-- Brand dropdown -->
-        <div class="form-group">
-          <mat-form-field appearance="outline" class="brand-field">
-            <mat-label>Brand</mat-label>
-            <input
-              matInput
-              id="brandName"
-              name="brandName"
-              type="text"
-              [(ngModel)]="item.brandName"
-              [placeholder]="item.brandName || 'Enter brand name'"
-            />
-          </mat-form-field>
-        </div>
-  
-        <!-- Purchase Date on its own row under the dropdowns -->
-   <div class="form-group">
-          <label></label>
-          <mat-form-field appearance="outline" class="date-field">
-            <mat-label>Purchase Date</mat-label>
-            <input
-              matInput
-              [matDatepicker]="picker"
-              [(ngModel)]="item.purchaseDate"
-              name="purchaseDate"
-            />
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
-        </div>
-    
-        <!-- Favorite checkbox on the line under the datepicker -->
-         <div class="form-group">
-           <label>
-             <input
-               type="checkbox"
-               name="isFavorite"
-               [(ngModel)]="item.isFavorite"
-             />
-             Mark as favorite
-           </label>
-         </div>
-  
-        <!-- Actions -->
-        <div class="actions">
-          <button type="submit" [disabled]="itemForm.invalid">Save</button>
-          <button type="delete" (click)="delete()">Delete</button>
-          <div *ngIf="errorMsg" class="error">{{ errorMsg }}</div>
-        </div>
-      </form>
-    </div>
+      <!-- Brand field -->
+      <div class="form-group">
+        <mat-form-field appearance="outline" class="brand-field">
+          <mat-label>Brand</mat-label>
+          <input matInput id="brandName" name="brandName" type="text" [(ngModel)]="item.brandName"
+            [placeholder]="item.brandName || 'Enter brand name'" />
+        </mat-form-field>
+      </div>
+
+      <!-- Purchase Date -->
+      <div class="form-group">
+        <label></label>
+        <mat-form-field appearance="outline" class="date-field">
+          <mat-label>Purchase Date</mat-label>
+          <input matInput [matDatepicker]="picker" [(ngModel)]="item.purchaseDate" name="purchaseDate" />
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <!-- Favorite checkbox -->
+      <div class="form-group">
+        <label>
+          <input type="checkbox" name="isFavorite" [(ngModel)]="item.isFavorite" />
+          Mark as favorite
+        </label>
+      </div>
+
+      <!-- Actions -->
+      <div class="actions">
+        <button type="submit" [disabled]="itemForm.invalid">Save</button>
+        <button type="button" class="delete-button" (click)="delete()">Delete</button>
+        <div *ngIf="errorMsg" class="error">{{ errorMsg }}</div>
+      </div>
+    </form>
   </div>
+</div>

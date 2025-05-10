@@ -15,7 +15,6 @@ export class OccasionService {
 
   constructor(private http: HttpClient) {}
 
-  // GET: all occasions
   getOccasions(): Observable<Occasion[]> {
     const authHeader = localStorage.getItem('authHeader') || '';
 

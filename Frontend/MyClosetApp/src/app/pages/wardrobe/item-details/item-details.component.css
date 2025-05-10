@@ -10,8 +10,8 @@
   
   .back-button {
     position: absolute;
-    top:    -3rem;   /* lift it up by the host's top margin */
-    left:   -14rem;   /* nudge it left if you want it closer to the edge */
+    top:    -3rem;   
+    left:   -14rem;  
     background: transparent;
     border: none;
     font-family: Didot, serif;
@@ -108,27 +108,41 @@
 
   /* 9) Actions row */
   .actions {
-    grid-column:     1;
-    display:         flex;
+    grid-column: 1 / -1;
+    display: flex;
     justify-content: flex-start;
-    gap:             1rem;
-    margin-top:      1rem;
-    margin-bottom:   3rem;
+    gap: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 3rem;
   }
-  .actions button {
-    padding:         0.6rem 1.2rem;
-    font-size:       1rem;
-    border:          black solid 1px;
-    cursor:          pointer;
-    font-family:     Didot, serif;
-    transition:      box-shadow .2s;
-  }
-  .actions button[type="submit"] { background: transparent; color: black; }
-  .actions button[type="delete"] { background: transparent; color: #222; }
-  .actions button:hover          { box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
-  .actions button[disabled]     { opacity: 0.5; cursor: not-allowed; }
 
-  
+  .actions button,
+  .delete-button {
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    border: black solid 1px;
+    cursor: pointer;
+    font-family: Didot, serif;
+    transition: box-shadow .2s;
+    background: transparent;
+    color: black;
+  }
+
+  .actions button:hover,
+  .delete-button:hover {
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+
+  .actions button[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .action_delete {
+    display: inline-block;
+    margin-left: 1rem;
+  }
+
   .brand-field,
   .date-field {
     grid-column: 1;
