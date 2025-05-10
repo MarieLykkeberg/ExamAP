@@ -1,4 +1,3 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ExamAP.API.Middleware;
 
 namespace ExamAP.Tests
@@ -10,23 +9,23 @@ namespace ExamAP.Tests
         public void Encrypt_Valid() // Should create a Basic Auth header
         {
             // Arrange
-            string username = "test.user";
-            string password = "test123";
+            string username = "Bottega.Veneta";
+            string password = "Bottega";
 
             // Act
             string authHeader = AuthenticationHelper.Encrypt(username, password);
 
             // Assert
             Assert.IsTrue(authHeader.StartsWith("Basic "));
-            Assert.IsTrue(authHeader.Length > 6); // More than just "Basic "
+            Assert.IsTrue(authHeader.Length > 6); // More than just Basic
         }
 
         [TestMethod]
         public void Decrypt_Valid() // Should return correct login credentials
         {
             // Arrange
-            string username = "test.user";
-            string password = "test123";
+            string username = "Bottega.Veneta";
+            string password = "Bottega";
             string authHeader = AuthenticationHelper.Encrypt(username, password);
 
             // Act
