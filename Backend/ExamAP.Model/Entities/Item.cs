@@ -12,5 +12,5 @@ namespace ExamAP.Model.Entities
         public string ImageUrl { get; set; }
         public DateTime PurchaseDate { get; set; }
         public bool IsFavorite { get; set; }
-    }
+}
 }
