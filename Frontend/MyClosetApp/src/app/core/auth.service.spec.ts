@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { AuthService } from './auth.service';
-import {HttpTestingController } from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -8,8 +8,8 @@ describe('AuthService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpTestingController],
-      providers: [AuthService]
+      imports: [HttpClientTestingModule],
+      // providers: [AuthService] // Optional, only needed if not providedIn: 'root'
     });
     service = TestBed.inject(AuthService);
     httpMock = TestBed.inject(HttpTestingController);

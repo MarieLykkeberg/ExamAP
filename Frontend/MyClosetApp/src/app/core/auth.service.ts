@@ -22,11 +22,11 @@ export class AuthService {
   // Handles user login - sets auth header and stores user data
   login(email: string, password: string): Observable<User> {
     const authHeader = 'Basic ' + btoa(`${email}:${password}`);
-    localStorage.setItem('authHeader', authHeader);
     
     return this.http.post<User>(`${this.apiUrl}/login`, { email, password }).pipe(
       tap((user: User) => {
         this.currentUser = user;
+        localStorage.setItem('authHeader', authHeader);
         localStorage.setItem('currentUser', JSON.stringify(user));
       })
     );
