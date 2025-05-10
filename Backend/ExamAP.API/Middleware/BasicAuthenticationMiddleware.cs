@@ -21,7 +21,7 @@ public class BasicAuthenticationMiddleware
     public async Task InvokeAsync(HttpContext context, UserRepository userRepository)
     {
         // Allow Swagger UI and Swagger JSON requests without authentication
-        if (context.Request.Path.StartsWithSegments("/swagger") || 
+        if (context.Request.Path.StartsWithSegments("/swagger") ||
             context.Request.Path.StartsWithSegments("/") ||
             context.GetEndpoint()?.Metadata.GetMetadata<IAllowAnonymous>() != null)
         {
