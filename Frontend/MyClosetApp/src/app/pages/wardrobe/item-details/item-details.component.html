@@ -2,12 +2,12 @@
 
 
 <div class="details-main">
-  <!-- 1) Large image on the left -->
+  <!-- Large image on the left -->
   <div class="details-image" *ngIf="item.imageUrl">
     <img [src]="item.imageUrl" alt="Item #{{ item.itemId }}" class="large-image" />
   </div>
 
-  <!-- 2) Form on the right -->
+  <!-- Form on the right -->
   <div class="item-details">
     <form #itemForm="ngForm" (ngSubmit)="save()">
 

@@ -19,7 +19,7 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  // Handles user login - sets auth header and stores user data
+  // Handles user login, sets auth header and stores user data
   login(email: string, password: string): Observable<User> {
     const authHeader = 'Basic ' + btoa(`${email}:${password}`);
     
