@@ -16,10 +16,7 @@ export class AuthService {
   private apiUrl = 'http://localhost:5196/api/user';
   // Stores the currently logged in user
   private currentUser: User | null = null;
-  // Stores the currently logged in user
-  private currentUser: User | null = null;
 
-  constructor(private http: HttpClient) {}
   constructor(private http: HttpClient) {}
 
   // Handles user login - sets auth header and stores user data
@@ -72,39 +69,9 @@ export class AuthService {
   }
 
   logout(): void {
-    this.currentUser = null; // Clears the current user
-    localStorage.removeItem('authHeader'); 
-    localStorage.removeItem('currentUser'); 
-  }
-
-  register(name: string, email: string, password: string): Observable<any> {
-    // Clear any existing user data first
-    this.logout();
-    
-    // Set auth header for the new user
-    const authHeader = 'Basic ' + btoa(`${email}:${password}`);
-    localStorage.setItem('authHeader', authHeader);
-    
-    // Create the new user account
-    return this.http.post(`${this.apiUrl}/register`, { name, email, password }).pipe(
-      tap((response: any) => {
-        // Create user object with registration data
-        const newUser: User = {
-          userId: response.userId,
-          name: name,
-          email: email,
-          password: password
-        };
-        
-        // Store the new user data
-        this.currentUser = newUser;
-        localStorage.setItem('currentUser', JSON.stringify(newUser));
-      })
-    );
-  logout(): void {
-    this.currentUser = null; // Clears the current user
-    localStorage.removeItem('authHeader'); 
-    localStorage.removeItem('currentUser'); 
+    this.currentUser = null;
+    localStorage.removeItem('authHeader');
+    localStorage.removeItem('currentUser');
   }
 
   register(name: string, email: string, password: string): Observable<any> {
@@ -132,4 +99,5 @@ export class AuthService {
       })
     );
   }
-}
+
+  }
