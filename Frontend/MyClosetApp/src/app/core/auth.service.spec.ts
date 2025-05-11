@@ -75,4 +75,47 @@ describe('AuthService', () => {
     expect(req.request.method).toBe('POST');
     req.flush({ message: 'User registered successfully' });
   });
+
+  // Unit Tests for getCurrentUser()
+  describe('getCurrentUser()', () => {
+    it('should return the currentUser if already set in memory', () => {
+      const testUser = {
+        userId: 1,
+        name: 'Loewe',
+        email: 'loewe@fashion.com',
+        password: 'loewe123'
+      };
+
+      (service as any).currentUser = testUser;
+
+      service.getCurrentUser().subscribe(user => {
+        expect(user).toEqual(testUser);
+      });
+    });
+
+    it('should return the user from localStorage if not set in memory', () => {
+      const storedUser = {
+        userId: 2,
+        name: 'Miu Miu',
+        email: 'miumiu@fashion.com',
+        password: 'miumiu123'
+      };
+
+      localStorage.setItem('currentUser', JSON.stringify(storedUser));
+      (service as any).currentUser = null;
+
+      service.getCurrentUser().subscribe(user => {
+        expect(user).toEqual(storedUser);
+      });
+    });
+
+    it('should return null if no user is stored in memory or localStorage', () => {
+      localStorage.removeItem('currentUser');
+      (service as any).currentUser = null;
+
+      service.getCurrentUser().subscribe(user => {
+        expect(user).toBeNull();
+      });
+    });
+  });
 });
