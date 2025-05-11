@@ -22,7 +22,7 @@ namespace ExamAP.API.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Color>> GetColors()
         {
-            var colors = _repository.GetAllColors(); // Fetch all colors from the repository
+            var colors = _repository.GetAllColors(); // get all colors from the repository
             return Ok(colors);
         }
 

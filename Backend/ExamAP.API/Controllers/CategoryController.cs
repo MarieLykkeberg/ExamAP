@@ -20,7 +20,7 @@ namespace ExamAP.API.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Category>> GetCategories()
         {
-            var categories = _repository.GetAllCategories();  // Fetch all categories from the repository
+            var categories = _repository.GetAllCategories();  // get categories from the repository
             return Ok(categories);
         }
     }
