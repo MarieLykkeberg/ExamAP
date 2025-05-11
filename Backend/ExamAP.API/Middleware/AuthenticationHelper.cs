@@ -5,27 +5,27 @@ namespace ExamAP.API.Middleware
 {
     public class AuthenticationHelper
     {
-        /// Creates a Basic Auth header from username and password
+        // create a Basic Auth header from username and password
 
         public static string Encrypt(string username, string password)
         {
-            // 1. Combine username and password with a colon
+            // combine username & password into one string
             string credentials = $"{username}:{password}";
             
-            // 2. Convert to Base64 (a way to encode text)
+            // convert to Base64 (a way to encode text)
             byte[] bytes = Encoding.UTF8.GetBytes(credentials);
             string base64 = Convert.ToBase64String(bytes);
             
-            // 3. Add "Basic " prefix
+            // add basic in front of base64 encoding
             return $"Basic {base64}";
         }
 
      
-        /// Extracts username and password from a Basic Auth header
+        // extract username and password from a Basic Auth header
        
         public static void Decrypt(string authHeader, out string username, out string password)
         {
-            // 1. Check if header exists and has correct format
+            // check if header exits and has the right format
             if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Basic "))
             {
                 throw new FormatException("Header must start with 'Basic '");
@@ -33,12 +33,12 @@ namespace ExamAP.API.Middleware
 
             try
             {
-                // 2. Remove "Basic " prefix and decode Base64
+                // then remove "basic" and decode
                 string base64 = authHeader.Substring(6);
                 byte[] bytes = Convert.FromBase64String(base64);
                 string credentials = Encoding.UTF8.GetString(bytes);
 
-                // 3. Split at colon to get username and password
+                // split the username and password up
                 string[] parts = credentials.Split(':');
                 if (parts.Length != 2)
                 {

@@ -17,8 +17,8 @@ export class LoginComponent { // marked as export so it can be used by other com
   password = ''; 
 
   // Constructor injects two services:
-  // 1. Router - for navigating between pages
-  // 2. AuthService - for handling authentication logic
+  // Router - for navigating between pages
+  // AuthService - for handling authentication logic
   constructor(
     private router: Router,
     private authService: AuthService
