@@ -82,8 +82,8 @@ describe('AuthService', () => {
       const testUser = {
         userId: 1,
         name: 'Loewe',
-        email: 'loewe@fashion.com',
-        password: 'loewe123'
+        email: 'loewe@loewe.com',
+        password: 'loeweloewe'
       };
 
       (service as any).currentUser = testUser;
@@ -97,8 +97,8 @@ describe('AuthService', () => {
       const storedUser = {
         userId: 2,
         name: 'Miu Miu',
-        email: 'miumiu@fashion.com',
-        password: 'miumiu123'
+        email: 'miumiu@miumiu.com',
+        password: 'miumiumiumiu'
       };
 
       localStorage.setItem('currentUser', JSON.stringify(storedUser));
