@@ -23,13 +23,24 @@ export class AuthService {
   login(email: string, password: string): Observable<User> {
     const authHeader = 'Basic ' + btoa(`${email}:${password}`);
     
-    return this.http.post<User>(`${this.apiUrl}/login`, { email, password }).pipe(
-      tap((user: User) => {
-        this.currentUser = user;
-        localStorage.setItem('authHeader', authHeader);
-        localStorage.setItem('currentUser', JSON.stringify(user));
-      })
-    );
+    // Create a new Observable that will handle storing the user data
+    return new Observable<User>(observer => {
+      this.http.post<User>(`${this.apiUrl}/login`, { email, password }).subscribe({
+        next: (user: User) => {
+          // Store user data and auth header
+          this.currentUser = user;
+          localStorage.setItem('authHeader', authHeader);
+          localStorage.setItem('currentUser', JSON.stringify(user));
+          
+          // Pass the user data to the component
+          observer.next(user);
+          observer.complete();
+        },
+        error: (error) => {
+          observer.error(error);
+        }
+      });
+    });
   }
 
   // Creates the authorization header for API requests
@@ -83,21 +94,7 @@ export class AuthService {
     localStorage.setItem('authHeader', authHeader);
     
     // Create the new user account
-    return this.http.post(`${this.apiUrl}/register`, { name, email, password }).pipe(
-      tap((response: any) => {
-        // Create user object with registration data
-        const newUser: User = {
-          userId: response.userId,
-          name: name,
-          email: email,
-          password: password
-        };
-        
-        // Store the new user data
-        this.currentUser = newUser;
-        localStorage.setItem('currentUser', JSON.stringify(newUser));
-      })
-    );
+    return this.http.post(`${this.apiUrl}/register`, { name, email, password });
   }
 
   }
